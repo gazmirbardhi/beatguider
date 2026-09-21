@@ -30,6 +30,7 @@ import {
   DBMeter,
   DipSwitchBank,
   TapeEdgeLabel,
+  ErrorLog,
 } from "./components";
 import { BpmCalculator, CamelotCalculator, PowerCalculator, GearDueler } from "./tools";
 import { SpectrumAnalyzer, PhaseMeter, LabActivityFeed, Knob, RivetRow } from "./decorative";
@@ -109,7 +110,7 @@ export function FaceplateHero({ entryCount, lastPublish }: { entryCount: number;
           </div>
 
           {/* VU meter + LCD readout */}
-          <div className="specplate brushed p-5 sm:p-6 relative">
+          <div className="specplate brushed corner-brackets pcb-traces p-5 sm:p-6 relative">
             <Screws />
             <div className="flex items-center gap-2 mb-3">
               <span className="led led-a led-breathe" aria-hidden="true" />
@@ -479,6 +480,18 @@ export function StyleGuideSection() {
           <FreshnessIndicator status="stale" recheckDate="2024-09" />
         </div>
       </div>
+
+      {/* error log — surfaces the anti-fake-testing rule status visually */}
+      <ErrorLog
+        checks={[
+          { label: "duplicate slug check", status: "pass", detail: "8 articles, 0 collisions" },
+          { label: "duplicate display code check", status: "pass", detail: "across articles + gear" },
+          { label: "quickAnswer required for fix/compare", status: "pass", detail: "FIX-001, FIX-002, CMP-003" },
+          { label: "anti-fake-testing rule (hands-on → tested.equipment)", status: "pass", detail: "all hands-on articles carry equipment" },
+          { label: "related-gear existence", status: "pass", detail: "all referenced GEAR codes exist" },
+          { label: "content freshness windows", status: "warn", detail: "1 entry approaching recheck" },
+        ]}
+      />
 
       {/* decorative hardware: knobs + rivets + spectrum + DIP + DB meter */}
       <div className="specplate brushed p-5 mb-6 relative">

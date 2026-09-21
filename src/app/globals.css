@@ -1453,3 +1453,101 @@
   .clock-readout::before { animation: none; }
   .electronics::before { animation: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   PANEL VISUAL DETAIL LAYER (round 9 enhancements)
+   - Amber VU meter needle overlay (analog needle on digital segments)
+   - SPIN UP indicator on gear cards (animated, on mount)
+   - LOAD bar on footer (animated progress bar, decorative)
+   - Subtle power-line hum on the data-bus
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── VU meter needle overlay ───
+   A thin amber needle line that sits over the VU segments, pointing
+   to the current level — like the analog needle on a real VU meter.
+   Positioned absolutely over the .vu-needle-host element. */
+.vu-needle-host {
+  position: relative;
+}
+.vu-needle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--amber);
+  box-shadow: 0 0 6px var(--amber), 0 0 12px rgba(255, 176, 0, 0.5);
+  transform-origin: bottom center;
+  transition: left 150ms ease-out;
+  z-index: 3;
+  pointer-events: none;
+}
+.vu-needle::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 6px var(--amber);
+}
+
+/* ─── SPIN UP indicator ───
+   A brief amber "SPIN UP" pulse on gear cards when they mount,
+   like a platter spinning up to speed. One-shot. Reduced-motion: no-op. */
+@keyframes spin-up {
+  0% { opacity: 0; transform: scale(0.8); }
+  30% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+.spin-up-badge {
+  animation: spin-up 1.2s ease-out 1;
+  animation-delay: 300ms;
+}
+
+/* ─── LOAD bar ───
+   An animated progress bar that fills + resets, like a CPU load
+   indicator. For the footer. Paused under reduced-motion. */
+@keyframes load-fill {
+  0% { width: 0%; }
+  70% { width: 65%; }
+  85% { width: 70%; }
+  100% { width: 100%; }
+}
+.load-bar {
+  position: relative;
+  height: 3px;
+  background: var(--disp-b);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.load-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--vu-g), var(--amber));
+  animation: load-fill 3s ease-in-out infinite;
+}
+
+/* ─── Power-line hum on data-bus ───
+   The data-bus indicator gets a subtle brightness wobble, like
+   a real power-line with slight ripple. Paused under reduced-motion. */
+@keyframes power-hum {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+.data-bus::before {
+  animation: power-hum 1.5s ease-in-out infinite;
+}
+
+/* ─── Reduced motion additions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .vu-needle { transition: none; }
+  .spin-up-badge { animation: none; opacity: 0; }
+  .load-bar::before { animation: none; width: 60%; }
+  .data-bus::before { animation: none; }
+}

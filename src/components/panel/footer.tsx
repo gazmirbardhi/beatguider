@@ -305,6 +305,11 @@ export function SiteFooter({ serial }: { serial: string }) {
             </span>
             {/* live clock readout — real-time HH:MM:SS with blinking tick LED */}
             <LiveClock />
+            {/* LOAD bar — decorative CPU-load-style indicator */}
+            <span className="inline-flex items-center gap-2" aria-hidden="true">
+              <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>LOAD</span>
+              <span className="load-bar w-12" />
+            </span>
             <span className="mono text-xs" style={{ color: "var(--mut)" }}>
               © {new Date().getFullYear()} BeatGuider · Test. Fix. Mix.
             </span>

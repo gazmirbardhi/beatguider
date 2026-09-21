@@ -241,6 +241,7 @@ export function ReaderBar({
   backHref?: string;
 }) {
   const [progress, setProgress] = useState(0);
+  const [chapter, setChapter] = useState("");
   const raf = useRef<number | null>(null);
 
   useEffect(() => {
@@ -252,12 +253,37 @@ export function ReaderBar({
         const article = document.getElementById("specimen-article");
         if (!article) {
           setProgress(0);
+          setChapter("");
           return;
         }
         const rect = article.getBoundingClientRect();
         const total = rect.height - window.innerHeight + 80;
         const scrolled = Math.min(Math.max(-rect.top + 80, 0), Math.max(total, 1));
         setProgress(total > 0 ? Math.round((scrolled / total) * 100) : 0);
+
+        // determine the active chapter (diagnostic step) from which section is in view
+        const chapters = [
+          { id: "why-this-happens", label: "01 · WHY" },
+          { id: "step-1", label: "02 · PHYSICAL" },
+          { id: "step-2", label: "03 · OS AUDIO" },
+          { id: "step-3", label: "04 · APP ROUTE" },
+          { id: "step-4", label: "05 · DRIVER" },
+          { id: "checklist", label: "06 · CHECKLIST" },
+          { id: "spec-table", label: "07 · SPECS" },
+          { id: "comparison", label: "08 · COMPARE" },
+          { id: "figure", label: "09 · PHOTO" },
+          { id: "methodology", label: "10 · METHOD" },
+          { id: "ad", label: "11 · VERDICT" },
+        ];
+        let active = "";
+        for (const c of chapters) {
+          const el = document.getElementById(c.id);
+          if (el) {
+            const r = el.getBoundingClientRect();
+            if (r.top <= 160) active = c.label;
+          }
+        }
+        setChapter(active);
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -316,10 +342,17 @@ export function ReaderBar({
                   );
                 })}
               </div>
-              <span className="lcd !text-[0.6875rem] !bg-transparent font-semibold tabular-nums">
+              <span className="lcd lcd-ghost !text-[0.6875rem] !bg-transparent font-semibold tabular-nums">
                 {String(progress).padStart(3, "0")}%
               </span>
             </div>
+            {/* chapter indicator — which diagnostic step the reader is in */}
+            {chapter && (
+              <span className="hidden md:inline-flex codechip" aria-label={`Current chapter: ${chapter}`}>
+                <span className="led led-a" aria-hidden="true" />
+                {chapter}
+              </span>
+            )}
             {/* mobile compact percent */}
             <span className="sm:hidden lcd !text-[0.6875rem] !bg-transparent font-semibold tabular-nums">
               {String(progress).padStart(3, "0")}%

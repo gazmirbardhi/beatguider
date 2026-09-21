@@ -432,14 +432,19 @@ export function VUMeter({
   const lit = Math.round((v / 100) * segments);
   const h = size === "sm" ? "h-2" : size === "lg" ? "h-4" : "h-3";
   return (
-    <div className="electronics p-3 sm:p-4 my-4">
+    <div className="electronics electronics-deep p-3 sm:p-4 my-4">
       <div className="flex items-end gap-3">
-        <div className="flex items-center gap-px flex-1" aria-hidden="true">
+        <div className="flex items-center gap-px flex-1 vu-needle-host" aria-hidden="true">
           {Array.from({ length: segments }).map((_, i) => {
             const on = i < lit;
             const cls = i < 16 ? "vu-seg-g" : i < 21 ? "vu-seg-a" : "vu-seg-r";
             return <span key={i} className={`vu-seg ${h} ${on ? cls : ""}`} />;
           })}
+          {/* analog needle overlay — points to the current level */}
+          <span
+            className="vu-needle"
+            style={{ left: `${(lit / segments) * 100}%` }}
+          />
         </div>
         {showDigits && (
           <div className="flex flex-col items-end flex-shrink-0">
@@ -918,7 +923,7 @@ export function Screws({ corners = "all" }: { corners?: "all" | "top" }) {
 /* ─── Spec plate (article spec plate wrapper) ─── */
 export function SpecPlate({ children }: { children: ReactNode }) {
   return (
-    <div className="specplate brushed vent-grille corner-brackets p-5 sm:p-6 my-6 relative">
+    <div className="specplate brushed vent-grille corner-brackets pcb-traces p-5 sm:p-6 my-6 relative">
       <Screws />
       {children}
     </div>
@@ -1237,6 +1242,62 @@ export function LabNotesStrip({
               <span style={{ color: "var(--amber)" }}>{e.label}</span>
               <span className="flex-1 border-b border-dotted border-[var(--disp-b)] mx-2" style={{ borderBottomWidth: "1px" }} />
               <span className="font-semibold text-right">{e.value}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+/* ─── Error log — build-time validation results console ───
+   A dark LCD console-style log of the content validation results.
+   Surfaces the anti-fake-testing rule status visually: each check
+   renders as a log line with a PASS/FAIL LED. For the style guide
+   or a dedicated editorial-trust section. */
+export function ErrorLog({
+  checks,
+}: {
+  checks: { label: string; status: "pass" | "fail" | "warn"; detail?: string }[];
+}) {
+  const passCount = checks.filter((c) => c.status === "pass").length;
+  const failCount = checks.filter((c) => c.status === "fail").length;
+  const warnCount = checks.filter((c) => c.status === "warn").length;
+
+  return (
+    <div className="electronics electronics-deep p-4 my-6">
+      <div className="flex items-center gap-2 mb-3">
+        <span className={`led led-a ${failCount === 0 ? "led-breathe" : ""}`} aria-hidden="true" />
+        <span className="silk" style={{ color: "var(--amber)" }}>Error log · content validation</span>
+        <span className="ml-auto codechip">LOG-01</span>
+      </div>
+      <div className="flex items-center gap-3 mb-3 text-[0.5625rem]">
+        <span className="inline-flex items-center gap-1">
+          <span className="led led-g" aria-hidden="true" />
+          <span className="silk" style={{ color: "var(--ok)" }}>{passCount} PASS</span>
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="led led-a" aria-hidden="true" />
+          <span className="silk" style={{ color: "var(--amber)" }}>{warnCount} WARN</span>
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="led led-r" aria-hidden="true" />
+          <span className="silk" style={{ color: "var(--err)" }}>{failCount} FAIL</span>
+        </span>
+      </div>
+      <ul className="space-y-1">
+        {checks.map((c, i) => {
+          const ledCls = c.status === "pass" ? "led led-g" : c.status === "fail" ? "led led-r" : "led led-a";
+          const labelClr = c.status === "pass" ? "var(--ok)" : c.status === "fail" ? "var(--err)" : "var(--amber)";
+          return (
+            <li key={i} className="flex items-baseline gap-2 lcd !text-xs !bg-transparent" style={{ color: "var(--amber)" }}>
+              <span className={ledCls} aria-hidden="true" />
+              <span style={{ color: "rgba(255,176,0,0.55)" }}>{String(i + 1).padStart(2, "0")}</span>
+              <span style={{ color: labelClr }}>{c.status.toUpperCase()}</span>
+              <span style={{ color: "var(--amber)" }}>{c.label}</span>
+              {c.detail && (
+                <span style={{ color: "rgba(255,176,0,0.5)" }}>— {c.detail}</span>
+              )}
             </li>
           );
         })}

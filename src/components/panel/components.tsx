@@ -501,7 +501,7 @@ export function VerdictCard({
   score?: { label: string; value: number; max?: number; unit?: string }[];
 }) {
   return (
-    <div className="specplate brushed p-5 sm:p-6 my-6 relative">
+    <div className="specplate brushed vent-grille p-5 sm:p-6 my-6 relative">
       <Screws />
       <div className="flex items-center gap-2 mb-3">
         <span className="led led-a" aria-hidden="true" />
@@ -918,7 +918,7 @@ export function Screws({ corners = "all" }: { corners?: "all" | "top" }) {
 /* ─── Spec plate (article spec plate wrapper) ─── */
 export function SpecPlate({ children }: { children: ReactNode }) {
   return (
-    <div className="specplate brushed vent-grille p-5 sm:p-6 my-6 relative">
+    <div className="specplate brushed vent-grille corner-brackets p-5 sm:p-6 my-6 relative">
       <Screws />
       {children}
     </div>

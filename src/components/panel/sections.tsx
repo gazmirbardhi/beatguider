@@ -58,7 +58,7 @@ function SectionLabel({ code, title, kicker }: { code?: string; title: string; k
 
 function SectionFrame({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
   return (
-    <section id={id} className={`py-10 sm:py-14 ${className}`} style={{ borderTop: "1px solid var(--line)" }}>
+    <section id={id} className={`chassis-seam py-10 sm:py-14 ${className}`} style={{ borderTop: "1px solid var(--line)" }}>
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6">{children}</div>
     </section>
   );

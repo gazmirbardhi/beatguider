@@ -291,6 +291,17 @@ export function SiteFooter({ serial }: { serial: string }) {
               <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>34.2°C</span>
               <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>TEMP</span>
             </span>
+            {/* battery readout — decorative backup-power indicator */}
+            <span className="battery-readout" aria-hidden="true">
+              <span className="battery-cells">
+                <span className="on" />
+                <span className="on" />
+                <span className="on" />
+                <span />
+              </span>
+              <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>75%</span>
+              <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>BATT</span>
+            </span>
             <span className="mono text-xs" style={{ color: "var(--mut)" }}>
               © {new Date().getFullYear()} BeatGuider · Test. Fix. Mix.
             </span>

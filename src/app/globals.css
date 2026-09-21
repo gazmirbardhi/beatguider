@@ -1274,3 +1274,96 @@
 @media (prefers-reduced-motion: reduce) {
   .data-bus::before { animation: none; opacity: 0.6; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   PANEL VISUAL DETAIL LAYER (round 7 enhancements)
+   - Amber corner brackets on spec plates (┌ ┐ └ ┘)
+   - Battery readout (decorative, for footer)
+   - Subtle screw-tightening rotation on mount
+   - LCD ghost text (faint duplicate behind active text)
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Amber corner brackets ───
+   Four small amber L-shaped brackets at the corners of spec plates,
+   like alignment marks on real equipment. Pure CSS via pseudo-elements. */
+.corner-brackets {
+  position: relative;
+}
+.corner-brackets::before,
+.corner-brackets::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--amber);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 5;
+}
+.corner-brackets::before {
+  top: 4px;
+  left: 4px;
+  border-width: 1.5px 0 0 1.5px;
+  border-top-left-radius: 2px;
+}
+.corner-brackets::after {
+  bottom: 4px;
+  right: 4px;
+  border-width: 0 1.5px 1.5px 0;
+  border-bottom-right-radius: 2px;
+}
+
+/* ─── Battery readout ───
+   A small LCD segment showing a battery level, like equipment backup
+   power monitoring. Decorative. */
+.battery-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: var(--disp);
+  border: 1px solid var(--disp-b);
+}
+.battery-cells {
+  display: inline-flex;
+  gap: 1px;
+}
+.battery-cells span {
+  width: 3px;
+  height: 8px;
+  background: var(--disp-b);
+  border-radius: 1px;
+}
+.battery-cells span.on {
+  background: var(--vu-g);
+  box-shadow: 0 0 2px var(--vu-g);
+}
+
+/* ─── Screw tighten animation on mount ───
+   Screws do a tiny rotation when they first mount, like being
+   tightened. One-shot. Reduced-motion: no-op. */
+@keyframes screw-tighten {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(45deg); }
+  100% { transform: rotate(0deg); }
+}
+.screw {
+  animation: screw-tighten 400ms ease-out 1;
+  animation-delay: 200ms;
+}
+
+/* ─── LCD ghost text ───
+   A faint duplicate of the active text rendered behind it, like
+   a phosphor afterglow on old CRTs. Applied to .lcd elements. */
+.lcd-ghost {
+  text-shadow:
+    0 0 1px rgba(255, 176, 0, 0.4),
+    0 0 4px rgba(255, 176, 0, 0.15);
+
+}
+
+/* ─── Reduced motion additions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .screw { animation: none; }
+}

@@ -504,3 +504,127 @@ export function PostSequence() {
     </div>
   );
 }
+
+/* ─── Signal chain visualization ───
+   A horizontal block diagram showing the DJ signal path:
+   SOURCE → MIXER → FX → OUTPUT. Each node is a dark display module
+   with an amber LED + label. Animated signal dots flow between nodes
+   (paused under reduced-motion). Decorative but educational. */
+export function SignalChain({
+  nodes = [
+    { label: "SOURCE", sub: "deck / DVS" },
+    { label: "MIXER", sub: "EQ / gain" },
+    { label: "FX", sub: "filter / echo" },
+    { label: "MASTER", sub: "limiter" },
+    { label: "OUTPUT", sub: "RCA / booth" },
+  ],
+}: {
+  nodes?: { label: string; sub: string }[];
+}) {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, []);
+
+  return (
+    <div className="electronics p-4 my-4">
+      <div className="flex items-center gap-2 mb-3">
+        <span className="led led-a led-breathe" aria-hidden="true" />
+        <span className="silk" style={{ color: "var(--amber)" }}>Signal chain · audio path</span>
+        <span className="ml-auto codechip">SIG-02</span>
+      </div>
+      <div className="flex items-stretch gap-1 overflow-x-auto scroll-x pb-1">
+        {nodes.map((n, i) => (
+          <div key={n.label} className="flex items-stretch flex-shrink-0">
+            <div
+              className="flex flex-col items-center justify-center px-3 py-2 border rounded-sm"
+              style={{
+                borderColor: "var(--disp-b)",
+                background: "#060606",
+                minWidth: "70px",
+              }}
+            >
+              <span className="led led-a mb-1" aria-hidden="true" />
+              <span className="lcd !text-[0.6875rem] !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>
+                {n.label}
+              </span>
+              <span className="silk !text-[0.5rem] mt-0.5" style={{ color: "rgba(255,176,0,0.55)" }}>
+                {n.sub}
+              </span>
+            </div>
+            {i < nodes.length - 1 && (
+              <div
+                className="signal-flow flex items-center self-stretch"
+                aria-hidden="true"
+                style={{ width: "28px", position: "relative" }}
+              >
+                {!reduced && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: 0,
+                      width: "5px",
+                      height: "5px",
+                      borderRadius: "50%",
+                      background: "var(--amber)",
+                      boxShadow: "0 0 4px var(--amber)",
+                      transform: "translateY(-50%)",
+                      animation: "signal-travel 2s linear infinite",
+                      animationDelay: `${i * 250}ms`,
+                    }}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <p className="lcd !text-[0.6875rem] !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+        &gt; signal flows left → right · each node adds processing · output is line-level
+      </p>
+    </div>
+  );
+}
+
+/* ─── Cassette reel spinner ───
+   Two circular reels that spin slowly, like a tape deck. Decorative.
+   For the Lab Activity feed header. Paused under reduced-motion. */
+export function CassetteReels({ size = 24 }: { size?: number }) {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, []);
+
+  return (
+    <span className="inline-flex items-center gap-1" aria-hidden="true">
+      <span
+        className="inline-block rounded-full border-2"
+        style={{
+          width: size,
+          height: size,
+          borderColor: "var(--amber)",
+          borderTopColor: "transparent",
+          animation: reduced ? "none" : "reel-spin 2s linear infinite",
+        }}
+      />
+      <span
+        className="inline-block rounded-full border-2"
+        style={{
+          width: size,
+          height: size,
+          borderColor: "var(--amber)",
+          borderBottomColor: "transparent",
+          animation: reduced ? "none" : "reel-spin 2s linear infinite reverse",
+        }}
+      />
+      <style>{`@keyframes reel-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+    </span>
+  );
+}

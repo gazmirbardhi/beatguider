@@ -17,6 +17,7 @@ import {
 import { SpecimenArticle } from "@/components/panel/specimen-article";
 import { SiteFooter, SearchOverlay } from "@/components/panel/footer";
 import { HomePageClient } from "@/components/panel/home-page-client";
+import { SignalChain } from "@/components/panel/decorative";
 import { articles, validateContent, gearDb } from "@/lib/content/data";
 
 // Build-time content validation — runs at request on every render in dev.
@@ -64,6 +65,7 @@ export default function HomePage() {
     >
       <FaceplateHero entryCount={entryCount} lastPublish={lastPublish} />
       <IntentPaths />
+      <SignalChain />
       <FaultReport />
       <TestedHardware />
       <SoftwareLog />

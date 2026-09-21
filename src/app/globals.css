@@ -833,4 +833,120 @@
   .led-r-pulse { animation: none; }
   .winner-glow { animation: none; }
   .boot-on-load { animation: none; opacity: 1; }
+  .led-chase { animation: none; }
+  .modcard-scan { animation: none; opacity: 0; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PANEL VISUAL DETAIL LAYER (round 3 enhancements)
+   - LED chase animation on faceplate header (one-shot on first scroll)
+   - Module-card scan-reveal hover effect (amber sweep)
+   - Signal-trace pulse for active TOC chips
+   - Engraved plate title treatment
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── LED chase — sequential power-on of the header LED row ───
+   One-shot animation that runs once when the LED row first scrolls into
+   view. Uses IntersectionObserver + a class toggle (see chrome.tsx). */
+@keyframes led-chase {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 8px currentColor, 0 0 16px currentColor; }
+  100% { opacity: 1; transform: scale(1); }
+}
+.led-chase { animation: led-chase 600ms ease-out 1; }
+
+/* ─── Module-card scan reveal — amber sweep on hover ───
+   A thin amber line sweeps across the top of the card on hover,
+   like a scanner reading the module. Pure CSS, no JS. */
+.modcard-scan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+  z-index: 3;
+}
+.modcard:hover .modcard-scan {
+  opacity: 1;
+  animation: scan-sweep 800ms ease-out 1;
+}
+@keyframes scan-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ─── Signal-trace pulse for active TOC diagnostic chips ─── */
+@keyframes trace-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 176, 0, 0); }
+  50% { box-shadow: 0 0 0 3px rgba(255, 176, 0, 0.25); }
+}
+.diagchip:hover {
+  animation: trace-pulse 1.2s ease-in-out infinite;
+}
+
+/* ─── Engraved plate title — recessed text effect ───
+   For spec-plate headings. Uses dual text-shadows to simulate
+   engraving: dark below, light above (mode-invariant on dark plates). */
+.engraved {
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.8),
+    0 -1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ─── Pulse-ring for winner verdict plate ─── */
+@keyframes verdict-pulse {
+  0%, 100% { border-color: var(--amber); box-shadow: 0 0 0 0 rgba(255, 176, 0, 0.3); }
+  50% { border-color: var(--amber); box-shadow: 0 0 0 4px rgba(255, 176, 0, 0.15); }
+}
+.verdict-pulse {
+  animation: verdict-pulse 2.4s ease-in-out infinite;
+}
+
+/* ─── Wire-grid background for electronics modules (subtle) ───
+   Adds a faint grid behind LCD content, like a scope graticule. */
+.electronics::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 176, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 176, 0, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border-radius: inherit;
+  z-index: 0;
+}
+/* keep content above both ::before (scanlines) and ::after (grid) */
+.electronics > * { z-index: 2; }
+
+/* ─── Power-on flicker for LCD readouts on mount ─── */
+@keyframes lcd-power-on {
+  0% { opacity: 0; filter: brightness(2); }
+  20% { opacity: 1; filter: brightness(1.8); }
+  40% { opacity: 0.6; filter: brightness(0.8); }
+  100% { opacity: 1; filter: brightness(1); }
+}
+.lcd-power-on {
+  animation: lcd-power-on 500ms ease-out 1;
+}
+
+/* ─── Tab focus ring enhancement for hardware buttons ─── */
+.hwbtn:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 176, 0, 0.2);
+}
+
+/* ─── Reduced motion additions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .led-chase { animation: none; }
+  .modcard-scan { animation: none; opacity: 0; }
+  .diagchip:hover { animation: none; }
+  .verdict-pulse { animation: none; }
+  .lcd-power-on { animation: none; opacity: 1; }
+  .modcard:hover .modcard-scan { animation: none; opacity: 0; }
 }

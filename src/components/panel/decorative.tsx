@@ -346,3 +346,38 @@ export function BootSplash() {
     </div>
   );
 }
+
+/* ─── LED chase — sequential power-on of the header LED row ───
+   Observes the LED row with IntersectionObserver; on first scroll into
+   view, adds the .led-chase class to each LED in sequence with a
+   staggered delay. One-shot per page load. Reduced-motion: no-op. */
+export function LedChase() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const row = document.querySelector(".faceplate-led-row");
+    if (!row) return;
+    const leds = Array.from(row.querySelectorAll(".led"));
+    if (leds.length === 0) return;
+    let fired = false;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (fired) return;
+        if (entries[0]?.isIntersecting) {
+          fired = true;
+          leds.forEach((led, i) => {
+            setTimeout(() => {
+              led.classList.remove("led-chase");
+              void (led as HTMLElement).offsetWidth;
+              led.classList.add("led-chase");
+            }, i * 120);
+          });
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    obs.observe(row);
+    return () => obs.disconnect();
+  }, []);
+  return null;
+}

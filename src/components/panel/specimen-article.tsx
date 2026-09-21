@@ -22,6 +22,8 @@ import {
   FreshnessIndicator,
   DiagnosticSequence,
   ReadingTimeChip,
+  ShareButton,
+  LabNotesStrip,
 } from "./components";
 import { ReaderBar } from "./chrome";
 import { articles, gearDb, computeReadingTime } from "@/lib/content/data";
@@ -90,14 +92,14 @@ export function SpecimenArticle() {
         <div className="max-w-[1280px] mx-auto">
           <DiagnosticSequence
             steps={[
-              { n: 1, label: "Physical chain", status: "pending" },
-              { n: 2, label: "OS output device", status: "pending" },
-              { n: 3, label: "App routing", status: "pending" },
-              { n: 4, label: "Driver / firmware", status: "pending" },
-              { n: 5, label: "Checklist", status: "pending" },
-              { n: 6, label: "Specs", status: "pending" },
-              { n: 7, label: "Compare", status: "pending" },
-              { n: 8, label: "Verdict", status: "pending" },
+              { n: 1, label: "Physical chain", status: "pending", target: "step-1" },
+              { n: 2, label: "OS output device", status: "pending", target: "step-2" },
+              { n: 3, label: "App routing", status: "pending", target: "step-3" },
+              { n: 4, label: "Driver / firmware", status: "pending", target: "step-4" },
+              { n: 5, label: "Checklist", status: "pending", target: "checklist" },
+              { n: 6, label: "Specs", status: "pending", target: "spec-table" },
+              { n: 7, label: "Compare", status: "pending", target: "comparison" },
+              { n: 8, label: "Verdict", status: "pending", target: "ad" },
             ]}
           />
         </div>
@@ -212,7 +214,22 @@ export function SpecimenArticle() {
           />
 
           <h2 id="figure">Photo reference</h2>
-          <Figure n={2} caption="Original testing photo placeholder — rear-panel connections of the DDJ-FLX4 (owned unit GEAR-014). Reserved aspect ratio prevents CLS." ratio="16/9" />
+          <Figure
+            n={2}
+            caption="Rear-panel connections of the DDJ-FLX4 (owned unit GEAR-014). Stylized illustrative photo — not a measurement. Reserved aspect ratio prevents CLS."
+            ratio="16/9"
+          >
+            <img
+              src="/articles/ddj-flx4-rear-panel.png"
+              alt="Rear panel of the Pioneer DDJ-FLX4 DJ controller showing RCA outputs and USB-C port, photographed on a dark test bench surface"
+              width={1344}
+              height={768}
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ filter: "saturate(0.9) contrast(1.05)" }}
+            />
+          </Figure>
 
           <h2 id="methodology">Methodology</h2>
           <p>
@@ -228,12 +245,27 @@ export function SpecimenArticle() {
             PLATFORMS · {a.tested?.platforms?.join(" · ")}
           </p>
 
+          {/* Lab notes strip — build-time methodology digest from validated frontmatter */}
+          <LabNotesStrip
+            entries={[
+              { label: "Equipment under test", value: a.tested?.equipment?.[0] ?? "—", led: "g" },
+              { label: "Software version", value: a.tested?.software?.join(", ") ?? "—", led: "a" },
+              { label: "Platforms verified", value: a.tested?.platforms?.join(", ") ?? "—", led: "data" },
+              { label: "Test environment", value: a.tested?.environment ?? "—", led: "a" },
+              { label: "Last verified", value: a.lastVerified ?? a.updatedDate ?? a.publishedDate, led: "g" },
+              { label: "Experience type", value: a.experienceType, led: "g" },
+            ]}
+          />
+
           <h2 id="ad">Sponsor bay</h2>
           <AdSlot height={120} label="Ad slot · disabled in initial release" />
         </div>
 
         {/* Verdict */}
         <div className="max-w-[860px] mx-auto">
+          <div className="flex justify-end mb-2">
+            <ShareButton label="Share diagnostic" />
+          </div>
           <VerdictCard
             title="The FLX4 is almost certainly not broken"
             meta={["FIX-001", "diagnostic", "verified"]}

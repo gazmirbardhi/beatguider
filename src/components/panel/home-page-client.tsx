@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import { StickyNav } from "./chrome";
 import { SiteFooter, SearchOverlay } from "./footer";
 import { ThemeProvider } from "./theme-toggle";
-import { BootSplash } from "./decorative";
+import { BootSplash, LedChase } from "./decorative";
 
 /**
  * HomePageClient — the client interactivity shell for the / route.
@@ -32,6 +32,7 @@ export function HomePageClient({
   return (
     <ThemeProvider>
       <BootSplash />
+      <LedChase />
       <div className="min-h-screen flex flex-col panel-surface">
         {faceplate}
         <StickyNav items={nav} onSearchClick={() => setSearchOpen(true)} />

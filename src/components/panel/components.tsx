@@ -73,11 +73,12 @@ export function ModuleCard({
 
   const content = (
     <>
+      <span className="modcard-scan" aria-hidden="true" />
       <div className="flex items-start justify-between gap-3 p-4">
         <div className="min-w-0">
           {code && <span className="codechip mb-2">{code}</span>}
           <h3
-            className="font-[family-name:var(--font-chakra)] font-semibold text-base sm:text-lg leading-tight mt-1"
+            className="font-[family-name:var(--font-chakra)] font-semibold text-base sm:text-lg leading-tight mt-1 engraved"
             style={{ color: "var(--text2)" }}
           >
             {title}
@@ -950,22 +951,40 @@ export function FreshnessIndicator({
 /* ─── Diagnostic sequence — signal-path stepper for FIX articles ───
    A horizontal flow diagram showing the diagnostic steps as a signal
    chain, like a real test-bench signal path. Each node is a dark display
-   module with the step number glowing amber. Active step (hover/click)
-   lights green. Reduced-motion safe (no animation). */
+   module with the step number glowing amber. Active step (click) lights
+   amber + scrolls to the matching section. Reduced-motion safe. */
 export function DiagnosticSequence({
   steps,
-  active,
+  active: activeProp,
   onSelect,
 }: {
-  steps: { n: number; label: string; status?: "pass" | "fail" | "pending" }[];
+  steps: { n: number; label: string; status?: "pass" | "fail" | "pending"; target?: string }[];
   active?: number;
   onSelect?: (n: number) => void;
 }) {
+  const [activeState, setActiveState] = useState<number | undefined>(activeProp);
+  const active = activeProp ?? activeState;
+
+  const handleSelect = (s: { n: number; target?: string }) => {
+    setActiveState(s.n);
+    onSelect?.(s.n);
+    // scroll to the target section if provided (TOC chip behavior)
+    if (s.target) {
+      const el = document.getElementById(s.target);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
+
   return (
     <nav aria-label="Diagnostic sequence" className="my-6 electronics p-4">
       <div className="flex items-center gap-2 mb-3">
         <span className="led led-a led-breathe" aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>Signal path · diagnostic sequence</span>
+        <span className="ml-auto silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>
+          {active ? `STEP ${String(active).padStart(2, "0")} ACTIVE` : "click to jump"}
+        </span>
       </div>
       <ol className="flex items-stretch gap-1 overflow-x-auto scroll-x pb-1">
         {steps.map((s, i) => {
@@ -973,12 +992,12 @@ export function DiagnosticSequence({
           const statusLed =
             s.status === "pass" ? "led led-g" :
             s.status === "fail" ? "led led-r" :
-            "led led-a";
+            isActive ? "led led-a" : "led";
           return (
             <li key={s.n} className="flex items-stretch flex-shrink-0">
               <button
                 type="button"
-                onClick={() => onSelect?.(s.n)}
+                onClick={() => handleSelect(s)}
                 className={`flex items-center gap-2 px-3 py-2 border rounded-sm transition-colors text-left ${isActive ? "bg-[#161616]" : "hover:bg-[#161616]"}`}
                 style={{
                   borderColor: isActive ? "var(--amber)" : "var(--disp-b)",
@@ -991,7 +1010,7 @@ export function DiagnosticSequence({
                   className="font-[family-name:var(--font-chakra)] font-bold text-lg flex-shrink-0"
                   style={{
                     color: "var(--amber)",
-                    textShadow: "0 0 8px rgba(255,176,0,0.6)",
+                    textShadow: isActive ? "0 0 12px rgba(255,176,0,0.8)" : "0 0 8px rgba(255,176,0,0.6)",
                   }}
                 >
                   {String(s.n).padStart(2, "0")}
@@ -1002,7 +1021,11 @@ export function DiagnosticSequence({
                 <span className={statusLed} aria-hidden="true" />
               </button>
               {i < steps.length - 1 && (
-                <span className="flex items-center px-1 flex-shrink-0" style={{ color: "var(--disp-b)" }} aria-hidden="true">
+                <span
+                  className="flex items-center px-1 flex-shrink-0 transition-colors"
+                  style={{ color: isActive ? "var(--amber)" : "var(--disp-b)" }}
+                  aria-hidden="true"
+                >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M2 8H14M14 8L10 4M14 8L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -1013,7 +1036,7 @@ export function DiagnosticSequence({
         })}
       </ol>
       <p className="lcd !text-[0.6875rem] !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
-        &gt; walk the chain in failure-probability order · do not skip nodes
+        &gt; walk the chain in failure-probability order · do not skip nodes · click to jump
       </p>
     </nav>
   );
@@ -1130,5 +1153,94 @@ export function TapeEdgeLabel({ children, side = "top" }: { children: ReactNode;
     >
       {children}
     </span>
+  );
+}
+
+/* ─── Share button — copy-to-clipboard with hardware-button styling ───
+   Copies the current page URL to the clipboard. Shows a transient
+   "COPIED" state with a green LED for 1.5s. Falls back to a prompt
+   if the Clipboard API is unavailable. */
+export function ShareButton({ label = "Share signal" }: { label?: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const onShare = async () => {
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        // fallback for older browsers
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // silent — clipboard may be blocked
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={onShare}
+      className="hwbtn !text-[0.6875rem] !py-1.5"
+      aria-label="Copy page URL to clipboard"
+    >
+      <span className={`led ${copied ? "led-g" : "led-a"}`} aria-hidden="true" />
+      {copied ? "COPIED" : label}
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        {copied ? (
+          <path d="M3 8L7 12L13 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        ) : (
+          <>
+            <rect x="4" y="4" width="8" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M6 4V2.5C6 2.224 6.224 2 6.5 2H12.5C12.776 2 13 2.224 13 2.5V11.5C13 11.776 12.776 12 12.5 12H11" stroke="currentColor" strokeWidth="1.5" />
+          </>
+        )}
+      </svg>
+    </button>
+  );
+}
+
+/* ─── Lab notes strip — build-time generated methodology digest ───
+   A dark LCD log strip rendering methodology + test-environment data
+   as a scrolling log. Uses real content (no fabrication). For FIX
+   articles it surfaces the tested.equipment + environment fields. */
+export function LabNotesStrip({
+  entries,
+}: {
+  entries: { label: string; value: string; led?: "g" | "a" | "r" | "data" }[];
+}) {
+  return (
+    <div className="electronics p-4 my-6">
+      <div className="flex items-center gap-2 mb-3">
+        <span className="led led-a led-breathe" aria-hidden="true" />
+        <span className="silk" style={{ color: "var(--amber)" }}>Lab notes · test environment log</span>
+        <span className="ml-auto codechip">LAB-01</span>
+      </div>
+      <ul className="space-y-1.5">
+        {entries.map((e, i) => {
+          const ledCls =
+            e.led === "g" ? "led led-g" :
+            e.led === "r" ? "led led-r" :
+            e.led === "data" ? "led led-data" :
+            "led led-a";
+          return (
+            <li key={i} className="flex items-baseline gap-3 lcd !text-xs !bg-transparent" style={{ color: "var(--amber)" }}>
+              <span className={ledCls} aria-hidden="true" />
+              <span style={{ color: "rgba(255,176,0,0.65)" }}>{String(i + 1).padStart(2, "0")}</span>
+              <span style={{ color: "var(--amber)" }}>{e.label}</span>
+              <span className="flex-1 border-b border-dotted border-[var(--disp-b)] mx-2" style={{ borderBottomWidth: "1px" }} />
+              <span className="font-semibold text-right">{e.value}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }

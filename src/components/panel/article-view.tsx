@@ -28,7 +28,6 @@ import {
   ShareButton,
   LabNotesStrip,
   ModuleCard,
-  Screws as _Screws,
 } from "./components";
 import { ReaderBar } from "./chrome";
 import { computeReadingTime, gearDb, articles, type ArticleMeta } from "@/lib/content/data";
@@ -345,8 +344,53 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
             </div>
           </div>
         )}
+
+        {/* Next article CTA — keeps readers on the site, lowers bounce rate */}
+        <NextArticleCta currentArticle={article} />
       </article>
     </>
+  );
+}
+
+/* Next article CTA — suggests the next article to read */
+function NextArticleCta({ currentArticle }: { currentArticle: ArticleMeta }) {
+  // find the next article in the same category, or wrap around
+  const sameCategory = articles.filter((a) => a.category === currentArticle.category && a.slug !== currentArticle.slug);
+  const nextArticle = sameCategory[0] ?? articles.find((a) => a.slug !== currentArticle.slug);
+  if (!nextArticle) return null;
+
+  return (
+    <div className="max-w-[860px] mx-auto mt-12">
+      <Link
+        href={`/${nextArticle.category}/${nextArticle.slug}`}
+        className="modcard block p-5 group transition-colors hover:bg-[var(--plate)]"
+        style={{ borderLeftColor: "var(--acc)" }}
+      >
+        <div className="flex items-center gap-2 mb-2">
+          <span className="led led-a led-breathe" aria-hidden="true" />
+          <span className="silk" style={{ color: "var(--mut)" }}>Next module · keep reading</span>
+        </div>
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <span className="codechip mb-1">{nextArticle.code}</span>
+            <h3
+              className="font-[family-name:var(--font-chakra)] font-semibold text-base sm:text-lg leading-tight mt-1"
+              style={{ color: "var(--text2)" }}
+            >
+              {nextArticle.title}
+            </h3>
+            <p className="text-xs mt-1" style={{ color: "var(--body)" }}>
+              {nextArticle.description}
+            </p>
+          </div>
+          <span style={{ color: "var(--amber)" }} aria-hidden="true" className="flex-shrink-0">
+            <svg width="24" height="24" viewBox="0 0 16 16" fill="none">
+              <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        </div>
+      </Link>
+    </div>
   );
 }
 

@@ -32,7 +32,7 @@ import {
   TapeEdgeLabel,
   ErrorLog,
 } from "./components";
-import { BpmCalculator, CamelotCalculator, PowerCalculator, GearDueler } from "./tools";
+import { BpmCalculator, CamelotCalculator, PowerCalculator, GearDueler, KeyBpmMatcher, SetLengthPlanner } from "./tools";
 import { SpectrumAnalyzer, PhaseMeter, LabActivityFeed, Knob, RivetRow } from "./decorative";
 import { gearDb, articles, freshnessStatus, buildValidationChecks, type ArticleMeta } from "@/lib/content/data";
 
@@ -315,6 +315,8 @@ export function ToolModules() {
         <BpmCalculator />
         <CamelotCalculator />
         <PowerCalculator />
+        <KeyBpmMatcher />
+        <SetLengthPlanner />
       </div>
       <div className="mt-4">
         <GearDueler gear={gearDb} />

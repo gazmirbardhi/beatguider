@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { FaceplateHeader, StickyNav } from "./chrome";
 import { SiteFooter, SearchOverlay, ShortcutsHelp } from "./footer";
 import { ThemeProvider, useTheme } from "./theme-toggle";
@@ -73,8 +73,7 @@ function GlobalKeyHandler({
 }) {
   const { toggle } = useTheme();
 
-  useState(() => {
-    if (typeof window === "undefined") return;
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
       const inInput = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
@@ -91,7 +90,7 @@ function GlobalKeyHandler({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  });
+  }, [toggle, setHelpOpen, setSearchOpen]);
 
   return null;
 }

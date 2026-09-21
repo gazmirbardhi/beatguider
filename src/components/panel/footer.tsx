@@ -346,7 +346,7 @@ function BuildManifest() {
   const allCodes = [
     ...articles.map((a) => a.code),
     ...gearDb.map((g) => g.code),
-    "TOOL-01", "TOOL-02", "TOOL-03", "TOOL-04",
+    "TOOL-01", "TOOL-02", "TOOL-03", "TOOL-04", "TOOL-05", "TOOL-06",
   ];
   const groups: { prefix: string; label: string; codes: string[]; led: string }[] = [
     { prefix: "FIX", label: "FIX", codes: [], led: "led led-r" },

@@ -716,3 +716,224 @@ function DuelistCard({
     </div>
   );
 }
+
+/* ─── DJ Key/BPM Matcher (TOOL-05) ───
+   Find compatible tracks by BPM + Camelot key. Enter your current
+   track's BPM + key, and the tool shows which BPM ranges and keys
+   will mix smoothly. Reference only — does not detect audio. */
+export function KeyBpmMatcher() {
+  const [bpm, setBpm] = useState("124");
+  const [key, setKey] = useState("8A");
+  const num = parseFloat(bpm);
+  const valid = !isNaN(num) && num > 0;
+
+  const data = useMemo(() => {
+    if (!valid) return null;
+    // BPM compatibility: ±6% is the industry standard for smooth beatmatching
+    const minBpm = num * 0.94;
+    const maxBpm = num * 1.06;
+    // Half-time / double-time options
+    const halfBpm = num / 2;
+    const doubleBpm = num * 2;
+    return { minBpm, maxBpm, halfBpm, doubleBpm };
+  }, [bpm, valid]);
+
+  // Camelot compatibility for the selected key
+  const keyCompat = useMemo(() => {
+    const m = key.match(/^(\d+)([AB])$/);
+    if (!m) return null;
+    const n = parseInt(m[1], 10);
+    const letter = m[2];
+    const next = ((n) % 12) + 1;
+    const prev = ((n - 2 + 12) % 12) + 1;
+    return {
+      same: `${n}${letter}`,
+      relativeUp: `${next}${letter}`,
+      relativeDown: `${prev}${letter}`,
+      modal: `${n}${letter === "A" ? "B" : "A"}`,
+      energyBoost: `${((n + 6) % 12) + 1}${letter}`,
+    };
+  }, [key]);
+
+  return (
+    <RackFrame
+      code="TOOL-05"
+      title="Key / BPM Matcher"
+      foot="Reference only. Does not detect audio. BPM ±6% is the industry standard for smooth beatmatching; half/double-time works for genre switches."
+    >
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <label className="flex flex-col gap-1">
+          <span className="silk" style={{ color: "var(--mut)" }}>BPM</span>
+          <input
+            type="number"
+            min="20"
+            max="400"
+            step="0.1"
+            value={bpm}
+            onChange={(e) => setBpm(e.target.value)}
+            className="electronics px-3 py-2 lcd !bg-transparent !text-lg font-semibold tabular-nums w-full outline-none"
+            style={{ color: "var(--amber)" }}
+            aria-label="Tempo in beats per minute"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="silk" style={{ color: "var(--mut)" }}>Key (Camelot)</span>
+          <select
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            className="electronics px-3 py-2 lcd !bg-transparent !text-lg font-semibold outline-none w-full"
+            style={{ color: "var(--amber)" }}
+            aria-label="Camelot key"
+          >
+            {CAMELOT.map((c) => (
+              <option key={c.code} value={c.code} style={{ background: "#0A0A0A", color: "#FFB000" }}>
+                {c.code} · {c.key}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      {data && keyCompat && (
+        <LcdReadout label={`Match · ${bpm} BPM · ${key}`}>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+            <Row k="BPM range (±6%)" v={`${data.minBpm.toFixed(1)}–${data.maxBpm.toFixed(1)}`} />
+            <Row k="Half-time" v={`${data.halfBpm.toFixed(1)} BPM`} />
+            <Row k="Double-time" v={`${data.doubleBpm.toFixed(1)} BPM`} />
+            <Row k="Energy boost" v={`${keyCompat.energyBoost}`} />
+          </div>
+          <div className="mt-3 pt-3 border-t border-[var(--disp-b)]">
+            <div className="silk mb-1.5" style={{ color: "rgba(255,176,0,0.6)" }}>Harmonic matches</div>
+            <ul className="space-y-1">
+              <li className="flex items-baseline justify-between gap-3">
+                <span style={{ color: "var(--amber)" }}>Same key · perfect</span>
+                <span className="font-semibold">{keyCompat.same}</span>
+              </li>
+              <li className="flex items-baseline justify-between gap-3">
+                <span style={{ color: "var(--amber)" }}>+1 relative</span>
+                <span className="font-semibold">{keyCompat.relativeUp}</span>
+              </li>
+              <li className="flex items-baseline justify-between gap-3">
+                <span style={{ color: "var(--amber)" }}>-1 relative</span>
+                <span className="font-semibold">{keyCompat.relativeDown}</span>
+              </li>
+              <li className="flex items-baseline justify-between gap-3">
+                <span style={{ color: "var(--amber)" }}>Modal swap</span>
+                <span className="font-semibold">{keyCompat.modal}</span>
+              </li>
+            </ul>
+          </div>
+        </LcdReadout>
+      )}
+    </RackFrame>
+  );
+}
+
+/* ─── Set Length Planner (TOOL-06) ───
+   Calculate total set duration from track count + average BPM.
+   Helps DJs plan set lengths for gigs (45min, 60min, 90min, 2hr). */
+export function SetLengthPlanner() {
+  const [tracks, setTracks] = useState("30");
+  const [avgBpm, setAvgBpm] = useState("124");
+  const [avgMins, setAvgMins] = useState("3.5");
+
+  const data = useMemo(() => {
+    const t = parseInt(tracks, 10);
+    const bpm = parseFloat(avgBpm);
+    const mins = parseFloat(avgMins);
+    if (isNaN(t) || isNaN(bpm) || isNaN(mins) || t <= 0 || bpm <= 0 || mins <= 0) return null;
+    const totalMins = t * mins;
+    const hours = Math.floor(totalMins / 60);
+    const remMins = Math.round(totalMins % 60);
+    const totalBars = Math.round(t * (mins * bpm) / 4);
+    const totalBeats = Math.round(t * mins * bpm);
+    return {
+      totalMins: totalMins.toFixed(1),
+      formatted: `${hours}h ${remMins}m`,
+      totalBars,
+      totalBeats,
+      tracksNeeded: (target: number) => Math.ceil(target / mins),
+    };
+  }, [tracks, avgBpm, avgMins]);
+
+  const gigLengths = [
+    { label: "45 min warmup", target: 45 },
+    { label: "60 min opener", target: 60 },
+    { label: "90 min set", target: 90 },
+    { label: "2 hr headliner", target: 120 },
+  ];
+
+  return (
+    <RackFrame
+      code="TOOL-06"
+      title="Set Length Planner"
+      foot="Estimates based on average track length. Real sets vary with mixing style — longer transitions add ~10%."
+    >
+      <div className="grid grid-cols-3 gap-2 mb-3">
+        <label className="flex flex-col gap-1">
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>TRACKS</span>
+          <input
+            type="number"
+            min="1"
+            value={tracks}
+            onChange={(e) => setTracks(e.target.value)}
+            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            style={{ color: "var(--amber)" }}
+            aria-label="Number of tracks"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>AVG BPM</span>
+          <input
+            type="number"
+            min="20"
+            value={avgBpm}
+            onChange={(e) => setAvgBpm(e.target.value)}
+            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            style={{ color: "var(--amber)" }}
+            aria-label="Average BPM"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>MIN/TRACK</span>
+          <input
+            type="number"
+            min="1"
+            step="0.5"
+            value={avgMins}
+            onChange={(e) => setAvgMins(e.target.value)}
+            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            style={{ color: "var(--amber)" }}
+            aria-label="Average minutes per track"
+          />
+        </label>
+      </div>
+
+      {data ? (
+        <LcdReadout label={`Set duration · ${tracks} tracks`}>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+            <Row k="Total duration" v={data.formatted} />
+            <Row k="Total minutes" v={`${data.totalMins}m`} />
+            <Row k="Total bars" v={data.totalBars.toLocaleString()} />
+            <Row k="Total beats" v={data.totalBeats.toLocaleString()} />
+          </div>
+          <div className="mt-3 pt-3 border-t border-[var(--disp-b)]">
+            <div className="silk mb-1.5" style={{ color: "rgba(255,176,0,0.6)" }}>Tracks needed for common gig lengths</div>
+            <ul className="space-y-1">
+              {gigLengths.map((g) => (
+                <li key={g.target} className="flex items-baseline justify-between gap-3">
+                  <span style={{ color: "var(--amber)" }}>{g.label}</span>
+                  <span className="font-semibold">{data.tracksNeeded(g.target)} tracks</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </LcdReadout>
+      ) : (
+        <LcdReadout label="Readout">
+          <span style={{ color: "var(--vu-r)" }}>&gt; ERR · invalid input</span>
+        </LcdReadout>
+      )}
+    </RackFrame>
+  );
+}

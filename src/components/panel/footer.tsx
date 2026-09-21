@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { SearchModule } from "./components";
+import { LiveClock } from "./decorative";
 import { buildSearchIndex, articles, gearDb } from "@/lib/content/data";
 
 /* ───────────────────────── SEARCH MODAL ─────────────────────────
@@ -302,6 +303,8 @@ export function SiteFooter({ serial }: { serial: string }) {
               <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>75%</span>
               <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>BATT</span>
             </span>
+            {/* live clock readout — real-time HH:MM:SS with blinking tick LED */}
+            <LiveClock />
             <span className="mono text-xs" style={{ color: "var(--mut)" }}>
               © {new Date().getFullYear()} BeatGuider · Test. Fix. Mix.
             </span>

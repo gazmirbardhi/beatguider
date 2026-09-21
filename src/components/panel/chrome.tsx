@@ -118,7 +118,7 @@ export function LcdStatus({
           <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>
             {s.label}
           </span>
-          <span className="lcd !text-[0.8125rem] sm:!text-sm font-semibold !bg-transparent">
+          <span className="lcd lcd-ghost !text-[0.8125rem] sm:!text-sm font-semibold !bg-transparent">
             {s.value}
           </span>
         </div>

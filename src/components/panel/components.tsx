@@ -444,7 +444,7 @@ export function VUMeter({
         {showDigits && (
           <div className="flex flex-col items-end flex-shrink-0">
             <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>LEVEL</span>
-            <span className="lcd !text-lg !bg-transparent font-semibold tabular-nums">
+            <span className="lcd lcd-ghost !text-lg !bg-transparent font-semibold tabular-nums">
               {String(Math.round(v)).padStart(3, "0")}%
             </span>
           </div>
@@ -472,7 +472,7 @@ export function ScoreMeter({
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between gap-2 mb-1">
           <span className="silk truncate" style={{ color: "var(--mut)" }}>{label}</span>
-          <span className="lcd !text-sm !bg-transparent font-semibold tabular-nums">
+          <span className="lcd lcd-ghost !text-sm !bg-transparent font-semibold tabular-nums">
             {String(pct).padStart(3, "0")}{unit}
           </span>
         </div>

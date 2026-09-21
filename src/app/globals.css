@@ -1367,3 +1367,89 @@
 @media (prefers-reduced-motion: reduce) {
   .screw { animation: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   PANEL VISUAL DETAIL LAYER (round 8 enhancements)
+   - Amber PCB-trace lines on spec plate backgrounds
+   - TRANSMIT indicator (animated, for newsletter CTA)
+   - CLOCK readout (decorative, for footer)
+   - LCD scanline drift (subtle horizontal motion on electronics)
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Amber PCB-trace lines ───
+   Faint circuit-board traces on spec plate backgrounds, like the
+   copper traces visible through translucent PCB solder mask. */
+.pcb-traces {
+  position: relative;
+}
+.pcb-traces::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(135deg, transparent 48%, var(--acc-soft) 49%, var(--acc-soft) 50%, transparent 51%),
+    linear-gradient(45deg, transparent 48%, var(--acc-soft) 49%, var(--acc-soft) 50%, transparent 51%),
+    radial-gradient(circle at 20% 30%, var(--acc-soft) 1px, transparent 2px),
+    radial-gradient(circle at 80% 70%, var(--acc-soft) 1px, transparent 2px);
+  background-size: 60px 60px, 60px 60px, 40px 40px, 40px 40px;
+  opacity: 0.3;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* ─── TRANSMIT indicator ───
+   An animated amber pulse, like a transmit LED on networking equipment.
+   For the newsletter CTA. Paused under reduced-motion. */
+@keyframes transmit-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--amber), 0 0 12px rgba(255,176,0,0.5); }
+  50% { opacity: 0.4; box-shadow: 0 0 3px var(--amber); }
+}
+.transmit-led {
+  animation: transmit-pulse 1.6s ease-in-out infinite;
+}
+
+/* ─── CLOCK readout ───
+   A small LCD segment showing the current time, updating every second.
+   Like a real-time clock on equipment. For the footer. */
+.clock-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: var(--disp);
+  border: 1px solid var(--disp-b);
+}
+.clock-readout::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--vu-g);
+  box-shadow: 0 0 3px var(--vu-g);
+  animation: clock-tick 1s steps(1) infinite;
+}
+@keyframes clock-tick {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.3; }
+}
+
+/* ─── LCD scanline drift ───
+   The existing CRT scanlines (electronics::before) get a subtle
+   vertical drift, like a real CRT with slight vertical hold wobble.
+   Paused under reduced-motion. */
+@keyframes scanline-drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 3px; }
+}
+.electronics::before {
+  animation: scanline-drift 8s linear infinite;
+}
+
+/* ─── Reduced motion additions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .transmit-led { animation: none; }
+  .clock-readout::before { animation: none; }
+  .electronics::before { animation: none; }
+}

@@ -410,8 +410,9 @@ export function NewsletterCta() {
       <SectionLabel code="SEC-07" title="Field log dispatch" kicker="newsletter · no spam" />
       <div className="electronics p-5 sm:p-6 max-w-[640px]">
         <div className="flex items-center gap-2 mb-3">
-          <span className="led led-a led-breathe" aria-hidden="true" />
+          <span className="led led-a transmit-led" aria-hidden="true" />
           <span className="silk-lg" style={{ color: "var(--amber)" }}>Subscribe · field log</span>
+          <span className="ml-auto codechip">SUB-01</span>
         </div>
         <p className="lcd !text-sm !bg-transparent leading-relaxed mb-4" style={{ color: "var(--amber)" }}>
           &gt; occasional dispatch with new gear tests, fix guides and the lab notes that don't make it
@@ -635,6 +636,55 @@ export function StyleGuideSection() {
         <AffiliateButton product="ddj-flx4" retailer="amazon" url="https://www.amazon.com/">
           Check current price
         </AffiliateButton>
+      </div>
+    </SectionFrame>
+  );
+}
+
+/* ─── 11. GLOSSARY — build-time DJ term dictionary ───
+   A dark LCD reference module defining common DJ terms. Educational +
+   SEO-relevant. Rendered as a 2-column grid of term/definition pairs
+   inside an electronics module. No fabrication — real industry terms. */
+export function Glossary() {
+  const terms: { term: string; def: string }[] = [
+    { term: "BPM", def: "Beats per minute — the tempo of a track. House ≈ 124, techno ≈ 130, drum & bass ≈ 174." },
+    { term: "Camelot key", def: "A numeric notation (1A–12B) for harmonic mixing. Adjacent numbers in the same letter mix in-key." },
+    { term: "DVS", def: "Digital Vinyl System — uses timecode records/CDs to control DJ software with traditional turntables." },
+    { term: "Phrase", def: "A musical section of typically 8 or 16 bars. Mixing on phrase boundaries keeps transitions musical." },
+    { term: "EQ swap", def: "Gradually swapping the frequency balance (low/mid/high) between two tracks during a transition." },
+    { term: "Gain staging", def: "Setting input levels at each stage of the signal chain to avoid clipping and noise." },
+    { term: "Rekordbox", def: "Pioneer DJ's music management software. Exports analyzed libraries to USB for CDJ players." },
+    { term: "Serato", def: "A DJ software platform (Serato DJ Pro / Lite). Popular for DVS and controller-based setups." },
+    { term: "Jog wheel", def: "The spinning platter on a DJ controller or media player used for scratching and track navigation." },
+    { term: "Hot cue", def: "A saved jump-point within a track. Pressing the pad jumps instantly to that position." },
+    { term: "Beatgrid", def: "A visual grid overlaid on a track's waveform marking each beat. Used for sync and quantized jumping." },
+    { term: "Booth output", def: "A dedicated monitor output for the DJ's headphones or booth speakers, separate from the master." },
+  ];
+
+  return (
+    <SectionFrame id="glossary">
+      <SectionLabel code="SEC-09" title="Glossary" kicker="DJ terms · reference" />
+      <p className="text-sm mb-4 max-w-[68ch]" style={{ color: "var(--body)" }}>
+        Common DJ terms defined plainly. Build-time generated — no fabrication, real industry vocabulary.
+      </p>
+      <div className="electronics p-4 sm:p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="led led-a led-breathe" aria-hidden="true" />
+          <span className="silk" style={{ color: "var(--amber)" }}>Reference dictionary · {terms.length} entries</span>
+          <span className="ml-auto codechip">REF-01</span>
+        </div>
+        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+          {terms.map((t) => (
+            <div key={t.term} className="flex flex-col gap-0.5">
+              <dt className="lcd lcd-ghost !text-sm !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>
+                {t.term}
+              </dt>
+              <dd className="text-xs leading-relaxed" style={{ color: "rgba(255,176,0,0.75)" }}>
+                {t.def}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </SectionFrame>
   );

@@ -180,6 +180,8 @@ export function LabActivityFeed() {
       <div className="flex items-center gap-2 px-3 py-1.5 border-b border-[var(--disp-b)]" style={{ background: "#060606" }}>
         <span className={`led led-g ${reduced ? "" : "led-breathe"}`} aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>LAB · ACTIVITY</span>
+        {/* Cassette reels — decorative tape-deck spinners when live */}
+        {!paused && !reduced && <CassetteReels size={14} />}
         {/* REC indicator — blinking red dot when live */}
         {!paused && !reduced && (
           <span className="rec-indicator" aria-hidden="true">
@@ -625,6 +627,42 @@ export function CassetteReels({ size = 24 }: { size?: number }) {
         }}
       />
       <style>{`@keyframes reel-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+    </span>
+  );
+}
+
+/* ─── Live clock readout ───
+   A real-time HH:MM:SS clock with a blinking green tick LED, like
+   equipment with an RTC. Updates every second. Reduced-motion: the
+   tick LED stops blinking but the time still updates. */
+export function LiveClock() {
+  const [time, setTime] = useState("--:--:--");
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    /* eslint-enable react-hooks/set-state-in-effect */
+    const update = () => {
+      const d = new Date();
+      const h = String(d.getHours()).padStart(2, "0");
+      const m = String(d.getMinutes()).padStart(2, "0");
+      const s = String(d.getSeconds()).padStart(2, "0");
+      setTime(`${h}:${m}:${s}`);
+    };
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className="clock-readout" aria-label="Current time">
+      <span className={`led led-g ${reduced ? "" : ""}`} aria-hidden="true" style={{ width: 4, height: 4, animation: reduced ? "none" : "clock-tick 1s steps(1) infinite" }} />
+      <span className="lcd !text-[0.5625rem] !bg-transparent font-semibold tabular-nums" style={{ color: "var(--amber)" }}>
+        {time}
+      </span>
+      <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>UTC</span>
     </span>
   );
 }

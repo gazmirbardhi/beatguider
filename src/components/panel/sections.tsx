@@ -27,6 +27,9 @@ import {
   SpecPlate,
   FreshnessIndicator,
   Screws,
+  DBMeter,
+  DipSwitchBank,
+  TapeEdgeLabel,
 } from "./components";
 import { BpmCalculator, CamelotCalculator, PowerCalculator, GearDueler } from "./tools";
 import { SpectrumAnalyzer, PhaseMeter, LabActivityFeed, Knob, RivetRow } from "./decorative";
@@ -443,6 +446,7 @@ export function StyleGuideSection() {
       {/* badges */}
       <div className="specplate brushed p-5 mb-6 relative">
         <Screws />
+        <TapeEdgeLabel>SEC-A · BADGES</TapeEdgeLabel>
         <div className="silk mb-3" style={{ color: "var(--acc)" }}>Testing-status badges</div>
         <div className="flex flex-wrap gap-3">
           <TestedBadge />
@@ -454,7 +458,7 @@ export function StyleGuideSection() {
         </div>
       </div>
 
-      {/* decorative hardware: knobs + rivets + spectrum */}
+      {/* decorative hardware: knobs + rivets + spectrum + DIP + DB meter */}
       <div className="specplate brushed p-5 mb-6 relative">
         <Screws />
         <div className="silk mb-4" style={{ color: "var(--acc)" }}>Decorative hardware</div>
@@ -465,8 +469,13 @@ export function StyleGuideSection() {
           <Knob value={35} label="FILTER" size={28} />
         </div>
         <RivetRow count={8} />
-        <div className="mt-4">
+        <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
           <SpectrumAnalyzer bars={32} height={48} label="SPECTRUM · DEMO" />
+          <DBMeter value={62} peak={78} />
+        </div>
+        <div className="mt-4 flex flex-wrap items-end gap-4">
+          <DipSwitchBank switches={[true, false, true, true, false, true]} labels={["1","2","3","4","5","6"]} />
+          <span className="silk" style={{ color: "var(--mut)" }}>DIP switch bank · decorative config</span>
         </div>
       </div>
 

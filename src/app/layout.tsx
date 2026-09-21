@@ -65,12 +65,21 @@ export const metadata: Metadata = {
     siteName: "BeatGuider",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/og/brand.png",
+        width: 1200,
+        height: 630,
+        alt: "BeatGuider — Test. Fix. Mix. Independent DJ test bench",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "BeatGuider — Test. Fix. Mix.",
     description:
       "Independent DJ gear, software, troubleshooting and education publication.",
+    images: ["/og/brand.png"],
   },
   icons: { icon: "/favicon.svg" },
 };

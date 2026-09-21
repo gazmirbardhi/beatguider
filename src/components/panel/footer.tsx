@@ -148,14 +148,30 @@ export function SiteFooter({ serial }: { serial: string }) {
           />
         </div>
 
-        {/* serial line */}
-        <div className="mt-8 pt-4 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-2">
-          <span className="mono text-xs" style={{ color: "var(--mut)" }}>
-            BEATGUIDER BG-1 — SN {serial} — built {new Date().toISOString().slice(0, 10)}
-          </span>
-          <span className="mono text-xs" style={{ color: "var(--mut)" }}>
-            © {new Date().getFullYear()} BeatGuider · independent publication
-          </span>
+        {/* build-version LCD strip + serial line */}
+        <div className="mt-8 pt-4 border-t border-[var(--line)]">
+          <div className="electronics flex flex-wrap items-center gap-3 px-3 py-2 mb-3">
+            <span className="led led-g" aria-hidden="true" />
+            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>FW</span>
+            <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>BG-1.2.0</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>·</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>BUILD</span>
+            <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>{new Date().toISOString().slice(0, 10)}</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>·</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>SN</span>
+            <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>{serial}</span>
+            <span className="flex-1" />
+            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>STATUS</span>
+            <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--vu-g)" }}>ONLINE</span>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="mono text-xs" style={{ color: "var(--mut)" }}>
+              BEATGUIDER BG-1 — independent DJ test bench
+            </span>
+            <span className="mono text-xs" style={{ color: "var(--mut)" }}>
+              © {new Date().getFullYear()} BeatGuider · Test. Fix. Mix.
+            </span>
+          </div>
         </div>
       </div>
     </footer>

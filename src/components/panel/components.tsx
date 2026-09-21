@@ -946,3 +946,189 @@ export function FreshnessIndicator({
     </span>
   );
 }
+
+/* ─── Diagnostic sequence — signal-path stepper for FIX articles ───
+   A horizontal flow diagram showing the diagnostic steps as a signal
+   chain, like a real test-bench signal path. Each node is a dark display
+   module with the step number glowing amber. Active step (hover/click)
+   lights green. Reduced-motion safe (no animation). */
+export function DiagnosticSequence({
+  steps,
+  active,
+  onSelect,
+}: {
+  steps: { n: number; label: string; status?: "pass" | "fail" | "pending" }[];
+  active?: number;
+  onSelect?: (n: number) => void;
+}) {
+  return (
+    <nav aria-label="Diagnostic sequence" className="my-6 electronics p-4">
+      <div className="flex items-center gap-2 mb-3">
+        <span className="led led-a led-breathe" aria-hidden="true" />
+        <span className="silk" style={{ color: "var(--amber)" }}>Signal path · diagnostic sequence</span>
+      </div>
+      <ol className="flex items-stretch gap-1 overflow-x-auto scroll-x pb-1">
+        {steps.map((s, i) => {
+          const isActive = active === s.n;
+          const statusLed =
+            s.status === "pass" ? "led led-g" :
+            s.status === "fail" ? "led led-r" :
+            "led led-a";
+          return (
+            <li key={s.n} className="flex items-stretch flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => onSelect?.(s.n)}
+                className={`flex items-center gap-2 px-3 py-2 border rounded-sm transition-colors text-left ${isActive ? "bg-[#161616]" : "hover:bg-[#161616]"}`}
+                style={{
+                  borderColor: isActive ? "var(--amber)" : "var(--disp-b)",
+                  boxShadow: isActive ? "0 0 8px rgba(255,176,0,0.3)" : "none",
+                }}
+                aria-pressed={isActive}
+                aria-label={`Step ${s.n}: ${s.label}`}
+              >
+                <span
+                  className="font-[family-name:var(--font-chakra)] font-bold text-lg flex-shrink-0"
+                  style={{
+                    color: "var(--amber)",
+                    textShadow: "0 0 8px rgba(255,176,0,0.6)",
+                  }}
+                >
+                  {String(s.n).padStart(2, "0")}
+                </span>
+                <span className="lcd !text-xs !bg-transparent flex-1 min-w-0" style={{ color: "var(--amber)" }}>
+                  {s.label}
+                </span>
+                <span className={statusLed} aria-hidden="true" />
+              </button>
+              {i < steps.length - 1 && (
+                <span className="flex items-center px-1 flex-shrink-0" style={{ color: "var(--disp-b)" }} aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 8H14M14 8L10 4M14 8L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+      <p className="lcd !text-[0.6875rem] !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+        &gt; walk the chain in failure-probability order · do not skip nodes
+      </p>
+    </nav>
+  );
+}
+
+/* ─── Reading-time chip — auto-computed, never hand-written (spec §8) ─── */
+export function ReadingTimeChip({ minutes }: { minutes: number }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 codechip" title={`Auto-computed: words ÷ 200`}>
+      <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ color: "var(--amber)" }}>
+        <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M8 4V8L10.5 9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+      {minutes} min read
+    </span>
+  );
+}
+
+/* ─── DIP switch bank — decorative hardware switch row ───
+   For spec plates and tool headers. Each switch is a small physical
+   toggle rendered in CSS. Off = down, On = up (amber). */
+export function DipSwitchBank({
+  switches,
+  labels,
+}: {
+  switches: boolean[];
+  labels?: string[];
+}) {
+  return (
+    <div className="inline-flex items-end gap-1 p-2 border rounded-sm" style={{ borderColor: "var(--plate-b)", background: "var(--sw-bg)" }}>
+      {switches.map((on, i) => (
+        <div key={i} className="flex flex-col items-center gap-0.5">
+          <div
+            className="w-3 h-5 border rounded-sm relative"
+            style={{
+              borderColor: "var(--sw-b)",
+              background: "var(--sw-bg)",
+            }}
+            aria-hidden="true"
+          >
+            <div
+              className="absolute left-0 right-0 w-full h-2 rounded-sm transition-all"
+              style={{
+                top: on ? "1px" : "11px",
+                background: on ? "var(--amber)" : "var(--knob)",
+                boxShadow: on ? "0 0 4px var(--amber)" : "none",
+              }}
+            />
+          </div>
+          {labels?.[i] && (
+            <span className="silk !text-[0.5rem]" style={{ color: "var(--mut)" }}>{labels[i]}</span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── DB meter — peak-hold level meter ───
+   Like a real dB meter on a mixer: gradient segments with a peak-hold
+   marker line. Decorative but value-driven. */
+export function DBMeter({ value = 60, peak = 75 }: { value?: number; peak?: number }) {
+  const v = Math.max(0, Math.min(100, value));
+  const p = Math.max(0, Math.min(100, peak));
+  const lit = Math.round((v / 100) * 20);
+  const peakPct = 100 - (p / 100) * 100;
+  return (
+    <div className="electronics p-3 my-3" aria-hidden="true">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="led led-g" />
+        <span className="silk" style={{ color: "var(--amber)" }}>LEVEL · dB</span>
+        <span className="ml-auto lcd !text-xs !bg-transparent tabular-nums" style={{ color: "var(--amber)" }}>
+          -{(60 - v / 100 * 60).toFixed(1)} dB
+        </span>
+      </div>
+      <div className="relative">
+        <div className="flex items-end gap-px h-6" >
+          {Array.from({ length: 20 }).map((_, i) => {
+            const on = i < lit;
+            const cls = i < 12 ? "vu-seg-g" : i < 16 ? "vu-seg-a" : "vu-seg-r";
+            return <span key={i} className={`vu-seg flex-1 ${on ? cls : ""}`} />;
+          })}
+        </div>
+        {/* peak-hold marker */}
+        <div
+          className="absolute left-0 right-0 h-px"
+          style={{ top: `${peakPct}%`, background: "var(--amber)", boxShadow: "0 0 4px var(--amber)" }}
+        />
+      </div>
+      <div className="flex justify-between mt-1 silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.5)" }}>
+        <span>-60</span>
+        <span>-30</span>
+        <span>-12</span>
+        <span>0</span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Tape-edge label — silkscreen label etched into plate edge ───
+   For spec plates. A small all-caps label that sits on the plate border
+   like it was silk-screened onto the metal. */
+export function TapeEdgeLabel({ children, side = "top" }: { children: ReactNode; side?: "top" | "bottom" }) {
+  return (
+    <span
+      className="absolute silk !text-[0.5625rem] px-2 py-0.5"
+      style={{
+        background: "var(--plate)",
+        color: "var(--mut)",
+        [side === "top" ? "top" : "bottom"]: "-0.5rem",
+        left: "1rem",
+        letterSpacing: "0.15em",
+      }}
+    >
+      {children}
+    </span>
+  );
+}

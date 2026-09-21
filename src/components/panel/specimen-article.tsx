@@ -20,9 +20,11 @@ import {
   AdSlot,
   TestedBadge,
   FreshnessIndicator,
+  DiagnosticSequence,
+  ReadingTimeChip,
 } from "./components";
 import { ReaderBar } from "./chrome";
-import { articles, gearDb } from "@/lib/content/data";
+import { articles, gearDb, computeReadingTime } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
    Specimen article — the one fixture article that exercises the full
@@ -68,6 +70,8 @@ export function SpecimenArticle() {
             <span>Updated {a.updatedDate}</span>
             <span>·</span>
             <span>Verified {a.lastVerified}</span>
+            <span>·</span>
+            <ReadingTimeChip minutes={computeReadingTime(820)} />
           </div>
           <SpecTable
             caption="Spec plate"
@@ -81,6 +85,22 @@ export function SpecimenArticle() {
             ]}
           />
         </SpecPlate>
+
+        {/* Diagnostic sequence — signal-path stepper */}
+        <div className="max-w-[1280px] mx-auto">
+          <DiagnosticSequence
+            steps={[
+              { n: 1, label: "Physical chain", status: "pending" },
+              { n: 2, label: "OS output device", status: "pending" },
+              { n: 3, label: "App routing", status: "pending" },
+              { n: 4, label: "Driver / firmware", status: "pending" },
+              { n: 5, label: "Checklist", status: "pending" },
+              { n: 6, label: "Specs", status: "pending" },
+              { n: 7, label: "Compare", status: "pending" },
+              { n: 8, label: "Verdict", status: "pending" },
+            ]}
+          />
+        </div>
 
         {/* Quick answer */}
         <div className="max-w-[68ch] mx-auto prose-panel">

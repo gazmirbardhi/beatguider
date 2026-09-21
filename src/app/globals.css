@@ -1642,3 +1642,94 @@
   .signal-wave { animation: none; }
   .scroll-top-led { animation: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE OPTIMIZATION — fix retina moiré / blurriness
+   On small screens (≤768px), disable the fine 1px scanlines and
+   2px brushed textures that cause moiré patterns on high-DPI mobile
+   displays. The electronics still render with their glow + grid
+   texture (which is 20px, safe on retina).
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* disable CRT scanlines on mobile — they moiré on retina */
+  .electronics::before {
+    display: none;
+  }
+  /* disable the scanline-drift animation's source */
+  .electronics::before {
+    animation: none;
+  }
+  /* soften the brushed texture — increase period to avoid moiré */
+  [data-mode="day"] .brushed,
+  .brushed {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 0px,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  }
+  /* disable the wire-grid graticule on mobile — it's subtle but adds noise */
+  .electronics::after {
+    display: none;
+  }
+  /* soften PCB traces on mobile — they're fine diagonal lines that moiré */
+  .pcb-traces::before {
+    display: none;
+  }
+  /* disable the vent-grille on mobile — 3px repeating lines moiré */
+  .vent-grille::before {
+    display: none;
+  }
+  /* reduce the led-hum shimmer on mobile — it can cause perceived blur */
+  .led-hum {
+    animation: none;
+  }
+  /* reduce text-shadow glows on mobile — they soften text edges */
+  .wordmark-glow {
+    text-shadow: 0 0 4px rgba(255, 176, 0, 0.3);
+  }
+  .lcd-ghost {
+    text-shadow: none;
+  }
+  .engraved,
+  .engraved-deep {
+    text-shadow: none;
+  }
+  /* sharpen LCD text — prevent subpixel rounding blur */
+  .lcd {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ARTICLE PAGE STYLES — for the multi-page blog routes
+   ════════════════════════════════════════════════════════════════ */
+
+/* article hero — the top of every article page */
+.article-hero {
+  border-bottom: 1px solid var(--line);
+}
+
+/* article body container — readable measure */
+.article-body {
+  max-width: 68ch;
+  margin: 0 auto;
+}
+
+/* category index grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* author page header */
+.author-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}

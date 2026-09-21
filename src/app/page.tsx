@@ -44,12 +44,12 @@ export default function HomePage() {
   })();
 
   const navItems = [
-    { label: "Gear", href: "#tested-hardware" },
-    { label: "Software", href: "#software-log" },
-    { label: "Fix", href: "#fault-report" },
-    { label: "Learn", href: "#latest" },
-    { label: "Tools", href: "#tools" },
-    { label: "Mobile DJ", href: "#mobile-dj" },
+    { label: "Gear", href: "/gear" },
+    { label: "Software", href: "/software" },
+    { label: "Fix", href: "/fix" },
+    { label: "Learn", href: "/learn" },
+    { label: "Tools", href: "/#tools" },
+    { label: "Mobile DJ", href: "/mobile-dj" },
   ];
 
   return (

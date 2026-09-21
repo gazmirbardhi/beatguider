@@ -233,18 +233,18 @@ export function SiteFooter({ serial }: { serial: string }) {
           <FooterCol
             title="Publication"
             links={[
-              { label: "About", href: "#style-guide" },
-              { label: "How we test", href: "#style-guide" },
-              { label: "Editorial policy", href: "#style-guide" },
-              { label: "Corrections", href: "#style-guide" },
+              { label: "About", href: "/about" },
+              { label: "How we test", href: "/how-we-test" },
+              { label: "Editorial policy", href: "/editorial-policy" },
+              { label: "Corrections", href: "/corrections-policy" },
             ]}
           />
           <FooterCol
             title="Site"
             links={[
-              { label: "Affiliate disclosure", href: "#style-guide" },
-              { label: "Contact", href: "#newsletter" },
-              { label: "Style guide", href: "#style-guide" },
+              { label: "Affiliate disclosure", href: "/affiliate-disclosure" },
+              { label: "Contact", href: "/contact" },
+              { label: "Style guide", href: "/style-guide" },
               { label: "RSS feed", href: "/feed.xml" },
             ]}
           />

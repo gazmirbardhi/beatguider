@@ -98,7 +98,7 @@ export function FaceplateHero({ entryCount, lastPublish }: { entryCount: number;
               <Link href="#tools" className="hwbtn">
                 Open tool rack
               </Link>
-              <Link href="#specimen" className="hwbtn">
+              <Link href="/fix/ddj-flx4-no-sound" className="hwbtn">
                 See a fixture article
               </Link>
             </div>
@@ -220,7 +220,7 @@ export function FaultReport() {
             subtitle={a.description}
             led={freshnessStatus(a) === "stale" ? "r" : "a"}
             accent="r"
-            href={`#specimen`}
+            href={`/${a.category}/${a.slug}`}
             meta={`Updated ${a.updatedDate ?? a.publishedDate} · ${a.experienceType}`}
           />
         ))}
@@ -253,7 +253,7 @@ export function TestedHardware() {
             year={g.releaseYear}
             status={g.status}
             rating={g.rating ? Math.round(g.rating.reduce((s, r) => s + r.value, 0) / g.rating.length) : undefined}
-            href={`#specimen`}
+            href={`/gear/${g.slug}`}
             imageSlot={
               g.tested && photoForSlug[g.slug] ? (
                 <img
@@ -293,7 +293,7 @@ export function SoftwareLog() {
             subtitle={a.description}
             led="data"
             accent="data"
-            href={`#specimen`}
+            href={`/${a.category}/${a.slug}`}
             meta={a.topic}
           />
         ))}
@@ -350,7 +350,7 @@ export function LatestLog() {
                 ? "data"
                 : "amber"
             }
-            href={`#specimen`}
+            href={`/${a.category}/${a.slug}`}
             meta={`${a.category} · ${a.publishedDate}`}
           />
         ))}
@@ -377,7 +377,7 @@ export function MobileDjModule() {
               Open power calculator
             </Link>
             {mob[0] && (
-              <Link href="#specimen" className="hwbtn hwbtn-amber">
+              <Link href={`/${mob[0].category}/${mob[0].slug}`} className="hwbtn hwbtn-amber">
                 {mob[0].code} · read
               </Link>
             )}

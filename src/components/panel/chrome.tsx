@@ -32,7 +32,7 @@ export function FaceplateHeader({
                 BEAT
               </span>
               <span
-                className="font-[family-name:var(--font-chakra)] text-xl sm:text-2xl font-bold tracking-tight"
+                className="font-[family-name:var(--font-chakra)] text-xl sm:text-2xl font-bold tracking-tight wordmark-glow"
                 style={{ color: "var(--amber)" }}
               >
                 GUIDER

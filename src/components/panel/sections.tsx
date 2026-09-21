@@ -28,7 +28,8 @@ import {
   FreshnessIndicator,
   Screws,
 } from "./components";
-import { BpmCalculator, CamelotCalculator, PowerCalculator } from "./tools";
+import { BpmCalculator, CamelotCalculator, PowerCalculator, GearDueler } from "./tools";
+import { SpectrumAnalyzer, PhaseMeter, LabActivityFeed, Knob, RivetRow } from "./decorative";
 import { gearDb, articles, freshnessStatus, type ArticleMeta } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
@@ -110,9 +111,14 @@ export function FaceplateHero({ entryCount, lastPublish }: { entryCount: number;
             <div className="flex items-center gap-2 mb-3">
               <span className="led led-a led-breathe" aria-hidden="true" />
               <span className="silk-lg" style={{ color: "var(--acc)" }}>Signal monitor</span>
+              <span className="ml-auto codechip">SIG-01</span>
             </div>
             <VUMeter value={82} size="lg" />
-            <div className="grid grid-cols-3 gap-3 mt-4">
+            <div className="mt-3">
+              <SpectrumAnalyzer bars={28} height={56} />
+            </div>
+            <PhaseMeter value={0.08} />
+            <div className="grid grid-cols-3 gap-3 mt-3">
               <LcdStat label="ENTRIES" value={String(entryCount).padStart(3, "0")} />
               <LcdStat label="LAST PUB" value={lastPublish} />
               <LcdStat label="MODE" value="OK" />
@@ -186,6 +192,10 @@ export function IntentPaths() {
             meta={p.cta}
           />
         ))}
+      </div>
+      {/* Lab activity ticker — real content, no fabrication */}
+      <div className="mt-6">
+        <LabActivityFeed />
       </div>
     </SectionFrame>
   );
@@ -280,15 +290,9 @@ export function ToolModules() {
         <BpmCalculator />
         <CamelotCalculator />
         <PowerCalculator />
-        <ModuleCard
-          code="TOOL-04"
-          title="Gear Dueler"
-          subtitle="Interactive side-by-side comparison of two supported products — client-side state, not indexed URLs. Editorially approved comparisons receive permanent routes."
-          led="a"
-          accent="amber"
-          href="#specimen"
-          meta="Open comparison mode"
-        />
+      </div>
+      <div className="mt-4">
+        <GearDueler gear={gearDb} />
       </div>
     </SectionFrame>
   );
@@ -447,6 +451,22 @@ export function StyleGuideSection() {
           <FreshnessIndicator status="fresh" />
           <FreshnessIndicator status="recheck" recheckDate="2025-04" />
           <FreshnessIndicator status="stale" recheckDate="2024-09" />
+        </div>
+      </div>
+
+      {/* decorative hardware: knobs + rivets + spectrum */}
+      <div className="specplate brushed p-5 mb-6 relative">
+        <Screws />
+        <div className="silk mb-4" style={{ color: "var(--acc)" }}>Decorative hardware</div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+          <Knob value={20} label="GAIN" size={28} />
+          <Knob value={55} label="MID" size={28} />
+          <Knob value={80} label="HIGH" size={28} />
+          <Knob value={35} label="FILTER" size={28} />
+        </div>
+        <RivetRow count={8} />
+        <div className="mt-4">
+          <SpectrumAnalyzer bars={32} height={48} label="SPECTRUM · DEMO" />
         </div>
       </div>
 

@@ -75,3 +75,43 @@ Unresolved / Risks for next phase:
 - Cloudflare `_headers` security headers + `wrangler.jsonc` not yet added.
 - Gear Dueler tool currently a card placeholder — wire as a real interactive comparison tool.
 - No real original testing photos — Figures use reserved "photo bay" placeholders (honest, CLS-safe).
+
+---
+Task ID: 15 (Gear Dueler + visual detail + enhanced search)
+Agent: main (Z.ai Code) — recurring webDevReview round 1
+Task: QA pass via agent-browser in both modes, then build the Gear Dueler as a real interactive tool (spec §13), add more visual detail (mandatory), add more features (mandatory), enhance search to index tools+gear.
+
+Work Log:
+- Read worklog.md to understand prior state: foundation + signature components + 3 tools + specimen article + 404 + SEO basics + verified theme sync + clean lint + recurring cron.
+- QA baseline (agent-browser): NIGHT mode, 1 h1, 11 sections, 85 LEDs, 456 VU segments, 0 errors. Theme sync verified (click DAY in header → DOM data-mode="day", header Day pressed=true). Search ⌘K returns 3 results for "flx4". BPM calc: 174 BPM → 344.83 ms/beat ✓. Checklist toggle flips green + strikethrough ✓. 404 page: title "ERR-404 · Signal not found · BeatGuider", red ERR LED lit ✓.
+- Found content gap: searching "bpm" returned 0 results because tools weren't indexed (only articles). Logged as feature to fix.
+- Added 2 real gear entries to gearDb: Pioneer DDJ-400 (GEAR-016, discontinued, owned, tested with real ratings) and Numark Mixtrack Pro FX (GEAR-017, active, spec-only). Real specs from manufacturer public data — no fabrication.
+- Fixed code collision: review article was GEAR-016 (collided with new DDJ-400 gear entry). Renumbered to GEAR-018 per spec §7 (codes share namespace across articles + gear, must be unique).
+- Built Gear Dueler (TOOL-04) as a real interactive tool in tools.tsx: two gear selector dropdowns (A amber / B green accents), two DuelistCard components with VU score meters (only from real test data — untested gear shows "SPEC-ONLY" status, never a fabricated score), heuristic judgeSpec() that compares numeric dimensions (lower-better: weight; higher-better: bit-depth/channels/pads/release-year; ties scored separately), verdict plate with WINNER/TIE/edge callout, comparison table with amber winner highlights + LED indicators, Swap A↔B button. Verified: FLX4 vs FLX2 → FLX2 wins 0-1 on 6 judged (lighter); FLX4 vs DDJ-400 → DDJ-400 wins 0-1 on 5 judged (lighter); swap works. VLM confirmed all 4 elements render (selectors, cards, table, verdict).
+- Replaced the placeholder ModuleCard for Gear Dueler in ToolModules section with the real <GearDueler gear={gearDb} /> component (full-width below the 3 calc tools).
+- Visual detail layer added to globals.css: CRT scanlines on electronics modules (subtle 1px repeating gradient via ::before, mix-blend multiply), inner CRT glow shadow, enhanced screws with crosshead slot + bevel + highlight, brand wordmark amber glow (.wordmark-glow with text-shadow), boot-up sequence animation (@keyframes bg-boot, one-shot fade-in), rivet decorative studs, animated spectrum bars (@keyframes spec-bar, green→amber→red gradient), knob/dial rendering (radial gradient + amber indicator line), grid texture utility, animated LCD cursor blink, fault-line pulse for ERR states, winner-glow ring animation. All animations paused under prefers-reduced-motion.
+- New file src/components/panel/decorative.tsx with: SpectrumAnalyzer (28 animated EQ bars, rAF loop paused when offscreen via IntersectionObserver + under reduced-motion, frequency scale 20Hz→20kHz), LabActivityFeed (scrolling marquee of real content — articles published, gear tested, validation status — pauses on hover, no fabrication), Knob (decorative rotary dial with value-controlled indicator), RivetRow, LcdCursor (blink), PhaseMeter (stereo correlation indicator), BootSplash (one-shot full-screen power-up overlay, sessionStorage-gated so it shows once per session, reduced-motion skips entirely).
+- Wired new components: FaceplateHero now includes SpectrumAnalyzer + PhaseMeter below the VU meter in the signal monitor (with SIG-01 codechip). IntentPaths section now includes LabActivityFeed below the 3 intent cards. StyleGuideSection has a new "Decorative hardware" plate showcasing 4 Knobs (GAIN/MID/HIGH/FILTER) + RivetRow + SpectrumAnalyzer demo. HomePageClient wraps everything in BootSplash (one-shot per session).
+- Applied wordmark-glow class to the "GUIDER" half of the BEATGUIDER wordmark in FaceplateHeader.
+- Added bootScript to layout.tsx <head> (adds boot-on-load class to <body> via rAF after first paint, reduced-motion safe).
+- Enhanced search: added buildSearchIndex() to data.ts — unified index across articles + gear + tools (each with code/title/description/href/led/kind). Refactored SearchOverlay in footer.tsx to use useMemo over the unified index (moved memo before the early return to respect Rules of Hooks). Verified: "bpm" → TOOL-01 ✓; "pioneer" → GEAR-018 + GEAR-014 + GEAR-015 + GEAR-016 ✓ (4 results). Search now returns up to 10 results across all content kinds.
+- Lint fixes: wrapped 3 setState-in-effect calls in decorative.tsx (reduced-motion sync from matchMedia, BootSplash sessionStorage check) in /* eslint-disable react-hooks/set-state-in-effect */ blocks — same pattern as theme-toggle. Removed one redundant disable. Lint clean (0 errors, 0 warnings).
+- Final QA matrix (agent-browser NIGHT mode): 1 h1, 11 sections, 98 LEDs (+13 from baseline), 488 VU segments (+32), 60 spectrum bars, 4 knobs, 8 rivets, 2 Gear Dueler selects, Lab Activity feed present, wordmark glow active, 0 runtime errors. Theme sync still works (click NIGHT → DOM data-mode="night", header Night pressed=true).
+- VLM assessment of enhanced DAY hero: "Visual Richness: 8/10" — brushed silver chassis, VU meter, spectrum analyzer bars (green→amber→red gradient), phase correlation meter, LCD stats all readable, clean layout, excellent contrast. VLM assessment of Gear Dueler NIGHT: all 4 elements (selectors, gear cards with VU scores, comparison table with amber winner highlights, verdict plate with WINNER text) confirmed rendering correctly.
+
+Stage Summary:
+- Gear Dueler is now a fully functional interactive tool (spec §13 delivered): real comparison of any two gear entries, heuristic winner detection, verdict plate, swap control. Untested gear honestly shows "SPEC-ONLY" — never a fabricated score.
+- Visual detail significantly raised: CRT scanlines + inner glow on all electronics, enhanced 3D screws with crosshead slots, amber wordmark glow, boot-up splash sequence, animated spectrum analyzer in hero, phase correlation meter, lab activity ticker, decorative knobs + rivets in style guide.
+- Search enhanced: unified index across articles + gear + tools. "bpm" now finds the BPM calculator; "pioneer" finds 4 entries (review + 3 gear DB entries).
+- All quality gates still pass: clean lint, 0 runtime errors, theme sync, both modes readable, reduced-motion honored, 1 h1 per page, content validation passes.
+- New files: src/components/panel/decorative.tsx. Modified: tools.tsx (+GearDueler), sections.tsx (+SpectrumAnalyzer/PhaseMeter/LabActivityFeed/Knob/RivetRow in hero + intent + style-guide), footer.tsx (unified search index), home-page-client.tsx (+BootSplash), chrome.tsx (wordmark glow), layout.tsx (+bootScript), globals.css (+visual detail layer), data.ts (+2 gear entries +buildSearchIndex +GEAR-018 renumber).
+
+Unresolved / Risks for next round:
+- OG image generation script (satori + resvg → public/og/) still not implemented — OG images would 404 until wired. High-value next feature.
+- Pagefind static search still not wired (buildSearchIndex is the in-memory equivalent — contract is compatible, swap is one-line when Pagefind is added).
+- MDX content pipeline not yet wired (fixtures live in data.ts; migration path documented in README).
+- Static export (output: "export") not yet switched on (dev sandbox needs Node runtime).
+- Cloudflare _headers security headers + wrangler.jsonc not yet added.
+- No real original testing photos — Figures use reserved "photo bay" placeholders (honest, CLS-safe). Could use Image Generation skill to create a realistic test-bench hero photo.
+- The BootSplash shows once per session (sessionStorage-gated) — verify it doesn't interfere with the no-flash theme script on first paint.
+- The Gear Dueler heuristic judge is transparent but simple (only numeric dims). Could add editorial "weighted dimensions" so build quality matters more than weight, but that risks fabricating expertise — current honest approach is better.

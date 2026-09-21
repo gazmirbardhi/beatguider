@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { SearchModule } from "./components";
-import { articles } from "@/lib/content/data";
+import { buildSearchIndex } from "@/lib/content/data";
 
 /* ───────────────────────── SEARCH MODAL ─────────────────────────
    Static client-side search. UI is the backlit display module.
@@ -18,6 +18,28 @@ export function SearchOverlay({
 }) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // memoized search results — hooks must run unconditionally (before any early return)
+  const q = query.trim().toLowerCase();
+  const results = useMemo(() => {
+    if (!q) return [];
+    const index = buildSearchIndex();
+    return index
+      .filter(
+        (e) =>
+          e.title.toLowerCase().includes(q) ||
+          e.description.toLowerCase().includes(q) ||
+          e.code.toLowerCase().includes(q) ||
+          e.kind.includes(q)
+      )
+      .slice(0, 10)
+      .map((e) => ({
+        code: e.code,
+        title: e.title,
+        href: e.href,
+        led: e.led,
+      }));
+  }, [q]);
 
   useEffect(() => {
     if (open) {
@@ -43,31 +65,6 @@ export function SearchOverlay({
   }, [setOpen]);
 
   if (!open) return null;
-
-  const q = query.trim().toLowerCase();
-  const results = q
-    ? articles
-        .filter(
-          (a) =>
-            a.title.toLowerCase().includes(q) ||
-            a.description.toLowerCase().includes(q) ||
-            a.topic.toLowerCase().includes(q) ||
-            a.tags.some((t) => t.toLowerCase().includes(q)) ||
-            a.code.toLowerCase().includes(q)
-        )
-        .slice(0, 8)
-        .map((a) => ({
-          code: a.code,
-          title: a.title,
-          href: "#specimen",
-          led:
-            a.experienceType === "hands-on" || a.experienceType === "long-term-owned"
-              ? ("g" as const)
-              : a.experienceType === "research-based"
-              ? ("data" as const)
-              : ("a" as const),
-        }))
-    : [];
 
   return (
     <div

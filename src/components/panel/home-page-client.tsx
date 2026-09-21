@@ -4,12 +4,14 @@ import { useState, type ReactNode } from "react";
 import { StickyNav } from "./chrome";
 import { SiteFooter, SearchOverlay } from "./footer";
 import { ThemeProvider } from "./theme-toggle";
+import { BootSplash } from "./decorative";
 
 /**
  * HomePageClient — the client interactivity shell for the / route.
  * Holds the search overlay state and wires the SEARCH nav button to focus it.
  * Wraps everything in ThemeProvider so the faceplate rocker and the
  * reader-bar toggle stay in sync (single source of truth for mode).
+ * Renders a one-shot BootSplash on first session load (reduced-motion safe).
  * Everything else is rendered as static Server Component output where possible.
  */
 export function HomePageClient({
@@ -29,6 +31,7 @@ export function HomePageClient({
 
   return (
     <ThemeProvider>
+      <BootSplash />
       <div className="min-h-screen flex flex-col panel-surface">
         {faceplate}
         <StickyNav items={nav} onSearchClick={() => setSearchOpen(true)} />

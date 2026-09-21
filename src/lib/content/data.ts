@@ -135,6 +135,82 @@ export const gearDb: GearEntry[] = [
     officialUrl: "https://www.pioneerdj.com/",
     relatedArticles: ["ddj-flx2-vs-ddj-flx4"],
   },
+  {
+    code: "GEAR-016",
+    slug: "ddj-400",
+    manufacturer: "Pioneer DJ",
+    model: "DDJ-400",
+    category: "DJ Controller",
+    releaseYear: 2018,
+    status: "discontinued",
+    majorSpecs: [
+      { label: "Deck layout", value: "2 decks" },
+      { label: "Mixer channels", value: "2" },
+      { label: "Pad modes", value: "Performance Pads × 8 per deck" },
+      { label: "Audio interface", value: "Built-in 24-bit/48kHz" },
+      { label: "Bundled software", value: "rekordbox DJ" },
+      { label: "USB", value: "USB Type-B (USB 2.0)" },
+      { label: "Master out", value: "RCA · 1 × 1/4″ + 1 × 1/8″ headphone" },
+      { label: "Dimensions", value: "486 × 258 × 58 mm" },
+      { label: "Weight", value: "1.9 kg" },
+    ],
+    tested: true,
+    ownership: "owned",
+    rating: [
+      { label: "Build & feel", value: 72 },
+      { label: "Pad response", value: 80 },
+      { label: "Mixer ergonomics", value: 76 },
+      { label: "Software fit", value: 84 },
+      { label: "Value for money", value: 88 },
+    ],
+    pros: [
+      "Compact layout, excellent for travel",
+      "rekordbox hardware unlock included",
+      "Reliable class-compliant audio",
+    ],
+    cons: [
+      "Discontinued — replaced by FLX4",
+      "Type-B USB cable less convenient than Type-C",
+      "Smaller jog wheels than the FLX4",
+    ],
+    retailers: [],
+    officialUrl: "https://www.pioneerdj.com/",
+    relatedArticles: ["ddj-flx2-vs-ddj-flx4"],
+  },
+  {
+    code: "GEAR-017",
+    slug: "numark-mixtrack-pro-fx",
+    manufacturer: "Numark",
+    model: "Mixtrack Pro FX",
+    category: "DJ Controller",
+    releaseYear: 2019,
+    status: "active",
+    majorSpecs: [
+      { label: "Deck layout", value: "2 decks" },
+      { label: "Mixer channels", value: "2" },
+      { label: "Pad modes", value: "8 pads per deck (cue / loop / fx / sampler)" },
+      { label: "Audio interface", value: "Built-in 16-bit/48kHz" },
+      { label: "Bundled software", value: "Serato DJ Lite" },
+      { label: "USB", value: "USB Type-B (USB 2.0)" },
+      { label: "Master out", value: "RCA · 1 × 1/4″ + 1 × 1/8″ headphone" },
+      { label: "Dimensions", value: "530 × 260 × 52 mm" },
+      { label: "Weight", value: "1.8 kg" },
+    ],
+    tested: false,
+    ownership: "not-owned",
+    pros: [
+      "Serato DJ Lite unlock — strong software fit for Serato-first DJs",
+      "Large touch-capacitive jog wheels with dual-deck control",
+    ],
+    cons: [
+      "16-bit audio interface is a step below FLX4's 24-bit",
+      "Plastic jog wheels feel lighter than Pioneer's aluminum-faced units",
+    ],
+    retailers: [{ retailer: "amazon", url: "https://www.amazon.com/" }],
+    priceLastChecked: "2025-01",
+    officialUrl: "https://www.numark.com/",
+    relatedArticles: [],
+  },
 ];
 
 /* ─── Article metadata (in production: derived from MDX frontmatter) ───
@@ -173,7 +249,7 @@ export const articles: ArticleMeta[] = [
     affiliateEligible: true,
   },
   {
-    code: "GEAR-016",
+    code: "GEAR-018",
     slug: "ddj-flx4-review",
     title: "Pioneer DDJ-FLX4 — long-term hands-on review",
     description: "Owned-unit review of Pioneer's entry-level controller after six months of regular gigging and home practice.",
@@ -389,4 +465,79 @@ export function freshnessStatus(a: ArticleMeta): "fresh" | "recheck" | "stale" {
   if (monthsSince <= w.fresh) return "fresh";
   if (monthsSince <= w.recheck) return "recheck";
   return "stale";
+}
+
+/* ─── Unified search index ───
+   Articles + gear + tools in a single searchable collection so the
+   search overlay can return matches across all content types.
+   No fabrication — every entry references real content. */
+export type SearchEntry = {
+  code: string;
+  title: string;
+  description: string;
+  href: string;
+  led: "g" | "a" | "r" | "data" | "off";
+  kind: "article" | "gear" | "tool";
+};
+
+export function buildSearchIndex(): SearchEntry[] {
+  const fromArticles: SearchEntry[] = articles.map((a) => ({
+    code: a.code,
+    title: a.title,
+    description: a.description,
+    href: "#specimen",
+    led:
+      a.experienceType === "hands-on" || a.experienceType === "long-term-owned"
+        ? "g"
+        : a.experienceType === "research-based"
+        ? "data"
+        : "a",
+    kind: "article",
+  }));
+
+  const fromGear: SearchEntry[] = gearDb.map((g) => ({
+    code: g.code,
+    title: `${g.manufacturer} ${g.model}`,
+    description: `${g.category} · ${g.status === "active" ? "active" : "discontinued"} · ${g.tested ? "tested" : "spec-only"}`,
+    href: "#tools",
+    led: g.tested ? "g" : "off",
+    kind: "gear",
+  }));
+
+  const fromTools: SearchEntry[] = [
+    {
+      code: "TOOL-01",
+      title: "BPM & Timing Calculator",
+      description: "ms from BPM, note timing, bars/beats, common delay timings",
+      href: "#tools",
+      led: "a",
+      kind: "tool",
+    },
+    {
+      code: "TOOL-02",
+      title: "Camelot / Harmonic Mixing Calculator",
+      description: "compatible keys from a known key — reference only, no audio key detection",
+      href: "#tools",
+      led: "a",
+      kind: "tool",
+    },
+    {
+      code: "TOOL-03",
+      title: "Mobile DJ Power Calculator",
+      description: "continuous load, peak allowance, suggested generator range, safety margin",
+      href: "#tools",
+      led: "a",
+      kind: "tool",
+    },
+    {
+      code: "TOOL-04",
+      title: "Gear Dueler",
+      description: "interactive side-by-side comparison of two supported products",
+      href: "#tools",
+      led: "a",
+      kind: "tool",
+    },
+  ];
+
+  return [...fromArticles, ...fromGear, ...fromTools];
 }

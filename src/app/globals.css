@@ -635,3 +635,202 @@
 /* utility: hide native scrollbar but keep scroll */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ════════════════════════════════════════════════════════════════
+   PANEL VISUAL DETAIL LAYER (round 2 enhancements)
+   - CRT scanlines on electronics modules (subtle, mode-invariant)
+   - Screen-glow inner shadow on dark displays
+   - Enhanced screws with crosshead slot + bevel
+   - Brand wordmark amber glow
+   - Boot-up sequence on first paint (reduced-motion safe)
+   - Rivet pattern on spec plates
+   - Animated spectrum bars (decorative, paused under reduced motion)
+   - Knob/dial rendering for tool headers
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── CRT scanlines on electronics modules ───
+   Subtle 2px horizontal lines, opacity-faded. Mode-invariant because
+   the electronics layer is constant in both NIGHT and DAY. */
+.electronics {
+  position: relative;
+}
+.electronics::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0px,
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  border-radius: inherit;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+/* keep interactive children above the scanline overlay */
+.electronics > * { position: relative; z-index: 2; }
+
+/* ─── CRT screen glow (inner vignette on dark displays) ─── */
+.electronics {
+  box-shadow:
+    inset 0 0 24px rgba(255, 176, 0, 0.06),
+    inset 0 0 1px rgba(255, 176, 0, 0.3);
+}
+
+/* ─── Enhanced screws with crosshead slot + bevel ─── */
+.screw {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18) 0%, transparent 35%),
+    radial-gradient(circle at 35% 35%, var(--plate-b), var(--plate-b2));
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.4),
+    0 1px 1px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+.screw::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 60%, rgba(0, 0, 0, 0.25), transparent 50%);
+}
+.screw::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 1.2px;
+  background: linear-gradient(90deg, transparent, var(--plate-b2) 20%, var(--plate-b2) 80%, transparent);
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-radius: 1px;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ─── Brand wordmark amber glow ─── */
+.wordmark-glow {
+  text-shadow:
+    0 0 8px rgba(255, 176, 0, 0.5),
+    0 0 16px rgba(255, 176, 0, 0.25);
+}
+
+/* ─── Boot-up sequence (first paint only, reduced-motion safe) ───
+   Subtle fade-in + LED power-on flicker. Wrapped in a one-shot class
+   that the body gets on load; the animation self-removes via fill-mode. */
+@keyframes bg-boot {
+  0% { opacity: 0; }
+  8% { opacity: 0.4; }
+  12% { opacity: 0.7; }
+  18% { opacity: 0.5; }
+  30% { opacity: 1; }
+  100% { opacity: 1; }
+}
+.boot-on-load {
+  animation: bg-boot 600ms ease-out 1;
+}
+
+/* ─── Rivet pattern on spec plates (decorative corner studs) ─── */
+.rivet {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--plate-b), var(--plate-b2));
+  box-shadow: inset 0 0 0 0.5px var(--line), 0 1px 1px rgba(0, 0, 0, 0.3);
+  display: inline-block;
+}
+
+/* ─── Spectrum analyzer bars (decorative, animated) ───
+   Used in the hero signal-monitor. Paused under reduced-motion. */
+@keyframes spec-bar {
+  0%, 100% { height: 20%; }
+  50% { height: 90%; }
+}
+.spec-bar {
+  width: 3px;
+  background: linear-gradient(to top, var(--vu-g) 0%, var(--vu-g) 60%, var(--amber) 80%, var(--vu-r) 100%);
+  border-radius: 1px;
+  animation: spec-bar 900ms ease-in-out infinite;
+  box-shadow: 0 0 4px currentColor;
+}
+
+/* ─── Knob/dial rendering for tool headers ─── */
+.knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 40%),
+    linear-gradient(135deg, var(--plate-b) 0%, var(--plate-b2) 100%);
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.4);
+  position: relative;
+  flex-shrink: 0;
+}
+.knob::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  width: 1.5px;
+  height: 5px;
+  background: var(--amber);
+  transform: translateX(-50%);
+  border-radius: 1px;
+  box-shadow: 0 0 3px var(--amber);
+}
+
+/* ─── Subtle grid texture for plate backgrounds ─── */
+.grid-texture {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+  opacity: 0.4;
+}
+
+/* ─── Animated cursor blink for LCD readouts ─── */
+@keyframes lcd-cursor {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.lcd-cursor {
+  animation: lcd-cursor 1s steps(1) infinite;
+}
+
+/* ─── Fault-line pulse for ERR states ─── */
+@keyframes err-pulse {
+  0%, 100% { box-shadow: 0 0 6px var(--vu-r), 0 0 12px rgba(255, 68, 68, 0.5), inset 0 0 0 1px rgba(0, 0, 0, 0.4); }
+  50% { box-shadow: 0 0 3px var(--vu-r), 0 0 6px rgba(255, 68, 68, 0.3), inset 0 0 0 1px rgba(0, 0, 0, 0.4); }
+}
+.led-r-pulse { animation: err-pulse 1.2s ease-in-out infinite; }
+
+/* ─── Glow ring for winner cards ─── */
+@keyframes winner-glow {
+  0%, 100% { box-shadow: 0 0 0 1px var(--amber), 0 0 16px rgba(255, 176, 0, 0.25); }
+  50% { box-shadow: 0 0 0 1px var(--amber), 0 0 24px rgba(255, 176, 0, 0.45); }
+}
+.winner-glow { animation: winner-glow 2.4s ease-in-out infinite; }
+
+/* ─── Tabular number alignment for LCD digits ─── */
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* ─── Reduced motion: pause all the new animations ─── */
+@media (prefers-reduced-motion: reduce) {
+  .spec-bar { animation: none; height: 60% !important; }
+  .lcd-cursor { animation: none; opacity: 1; }
+  .led-r-pulse { animation: none; }
+  .winner-glow { animation: none; }
+  .boot-on-load { animation: none; opacity: 1; }
+}

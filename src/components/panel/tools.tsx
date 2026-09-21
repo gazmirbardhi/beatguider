@@ -356,3 +356,351 @@ export function PowerCalculator() {
     </RackFrame>
   );
 }
+
+/* ════════════════════════════════════════════════════════════════
+   GEAR DUELER (TOOL-04) — §13
+   Interactive comparison of two supported products (client-side state,
+   not indexed URLs). UI: two gear module cards + comparison table with
+   winner highlights + verdict plate. Only editorially approved comparisons
+   receive permanent routes (/compare/.../); this tool is the live editor.
+
+   Ratings render as VU meters and are emitted only from real test data.
+   Untested gear shows a "SPEC-ONLY" status — never a fabricated score. */
+type Duelist = "a" | "b" | "tie" | null;
+
+function parseSpec(specs: { label: string; value: string }[], label: string): string | undefined {
+  return specs.find((s) => s.label.toLowerCase() === label.toLowerCase())?.value;
+}
+
+// Heuristic winner detection for known spec dimensions.
+// Returns "a" | "b" | "tie" | null when not comparable.
+function judgeSpec(label: string, va: string, vb: string): Duelist {
+  const l = label.toLowerCase();
+  // numeric extraction (first number, possibly with decimals)
+  const num = (s: string): number | null => {
+    const m = s.match(/(\d+(?:\.\d+)?)/);
+    return m ? parseFloat(m[1]) : null;
+  };
+
+  // "lower is better" dims: weight, latency, price (no price fabricated here)
+  const lowerBetter = ["weight"];
+  // "higher is better" dims: sample rate (kHz), bit depth, channels, pads, year
+  const higherBetter = ["audio interface", "bit", "channel", "pad", "release"];
+
+  if (lowerBetter.some((k) => l.includes(k))) {
+    const a = num(va), b = num(vb);
+    if (a == null || b == null) return null;
+    if (Math.abs(a - b) < 0.05) return "tie";
+    return a < b ? "a" : "b";
+  }
+  if (higherBetter.some((k) => l.includes(k))) {
+    // bit depth: prefer 24 over 16; sample rate: prefer 48 over 44
+    const a = num(va), b = num(vb);
+    if (a == null || b == null) return null;
+    if (a === b) return "tie";
+    return a > b ? "a" : "b";
+  }
+  // string equality → tie; else null (not comparable)
+  if (va.trim().toLowerCase() === vb.trim().toLowerCase()) return "tie";
+  return null;
+}
+
+function avgRating(g: { rating?: { label: string; value: number }[] }): number | null {
+  if (!g.rating || g.rating.length === 0) return null;
+  return Math.round(g.rating.reduce((s, r) => s + r.value, 0) / g.rating.length);
+}
+
+function statusLed(g: { tested: boolean; status: string }): "g" | "a" | "off" {
+  if (!g.tested) return "off";
+  return g.status === "active" ? "g" : "a";
+}
+
+export function GearDueler({
+  gear,
+}: {
+  gear: import("@/lib/content/data").GearEntry[];
+}) {
+  // default: first two gear entries
+  const [aSlug, setASlug] = useState(gear[0]?.slug ?? "");
+  const [bSlug, setBSlug] = useState(gear[1]?.slug ?? "");
+
+  const a = gear.find((g) => g.slug === aSlug);
+  const b = gear.find((g) => g.slug === bSlug);
+
+  // union of all spec labels in display order
+  const specLabels = useMemo(() => {
+    const seen = new Set<string>();
+    const out: string[] = [];
+    [...(a?.majorSpecs ?? []), ...(b?.majorSpecs ?? [])].forEach((s) => {
+      if (!seen.has(s.label)) {
+        seen.add(s.label);
+        out.push(s.label);
+      }
+    });
+    return out;
+  }, [a, b]);
+
+  // tally wins
+  const tally = useMemo(() => {
+    if (!a || !b) return { a: 0, b: 0, tie: 0, judged: 0 };
+    let wa = 0, wb = 0, wt = 0, judged = 0;
+    specLabels.forEach((label) => {
+      const va = parseSpec(a.majorSpecs, label) ?? "—";
+      const vb = parseSpec(b.majorSpecs, label) ?? "—";
+      const w = judgeSpec(label, va, vb);
+      if (w) {
+        judged++;
+        if (w === "a") wa++;
+        else if (w === "b") wb++;
+        else wt++;
+      }
+    });
+    return { a: wa, b: wb, tie: wt, judged };
+  }, [a, b, specLabels]);
+
+  const overall: Duelist = !a || !b ? null : tally.judged === 0 ? null : tally.a === tally.b ? "tie" : tally.a > tally.b ? "a" : "b";
+
+  return (
+    <RackFrame
+      code="TOOL-04"
+      title="Gear Dueler"
+      foot="Client-side state — not indexed URLs. Editorially approved comparisons receive permanent /compare/ routes. Untested gear shows SPEC-ONLY status; VU ratings render only from real test data."
+    >
+      {/* selectors */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+        <DuelSelector label="A · contestant one" gear={gear} value={aSlug} onChange={setASlug} accent="var(--acc)" />
+        <DuelSelector label="B · contestant two" gear={gear} value={bSlug} onChange={setBSlug} accent="var(--vu-g)" />
+      </div>
+
+      {/* contestant cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+        {a && <DuelistCard g={a} side="a" winner={overall} />}
+        {b && <DuelistCard g={b} side="b" winner={overall} />}
+      </div>
+
+      {/* verdict plate */}
+      {a && b && (
+        <div className="electronics p-4 mb-4">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="led led-a led-breathe" aria-hidden="true" />
+            <span className="silk" style={{ color: "var(--amber)" }}>Verdict plate · auto-derived</span>
+          </div>
+          {overall === null ? (
+            <p className="lcd !text-sm !bg-transparent" style={{ color: "var(--amber)" }}>
+              &gt; no comparable numeric dimensions — pick two units with overlapping specs
+            </p>
+          ) : overall === "tie" ? (
+            <p className="lcd !text-sm !bg-transparent" style={{ color: "var(--amber)" }}>
+              &gt; TIE · {tally.a}–{tally.b} on {tally.judged} judged dimensions · {tally.tie} tie(s)
+            </p>
+          ) : (
+            <p className="lcd !text-sm !bg-transparent" style={{ color: "var(--amber)" }}>
+              &gt; WINNER · <span style={{ color: "var(--vu-g)" }}>{overall === "a" ? a.model : b.model}</span>
+              {" "}· {tally.a}–{tally.b} on {tally.judged} judged dimensions · {tally.tie} tie(s)
+            </p>
+          )}
+          <p className="lcd !text-[0.6875rem] !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+            &gt; heuristic judge · lower-better: weight · higher-better: bit-depth, channels, pads, release year · ties scored separately
+          </p>
+        </div>
+      )}
+
+      {/* comparison table */}
+      {a && b && (
+        <div className="electronics overflow-x-auto scroll-x">
+          <table className="w-full text-sm min-w-[560px]">
+            <thead>
+              <tr style={{ background: "#060606" }}>
+                <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>SPEC</th>
+                <th
+                  className="text-left px-3 sm:px-4 py-2 silk"
+                  style={{ color: "var(--amber)", borderLeft: overall === "a" ? "3px solid var(--amber)" : "1px solid var(--disp-b)" }}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {overall === "a" && <span className="led led-a" aria-hidden="true" />}
+                    {a.model}
+                  </span>
+                </th>
+                <th
+                  className="text-left px-3 sm:px-4 py-2 silk"
+                  style={{ color: "var(--amber)", borderLeft: overall === "b" ? "3px solid var(--amber)" : "1px solid var(--disp-b)" }}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {overall === "b" && <span className="led led-a" aria-hidden="true" />}
+                    {b.model}
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {specLabels.map((label, i) => {
+                const va = parseSpec(a.majorSpecs, label) ?? "—";
+                const vb = parseSpec(b.majorSpecs, label) ?? "—";
+                const w = judgeSpec(label, va, vb);
+                return (
+                  <tr key={label} className={i > 0 ? "border-t border-[var(--disp-b)]" : ""}>
+                    <th scope="row" className="text-left align-top px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>
+                      {label}
+                    </th>
+                    <td
+                      className="px-3 sm:px-4 py-2 mono align-top"
+                      style={{
+                        color: "var(--amber)",
+                        borderLeft: w === "a" ? "3px solid var(--amber)" : "1px solid var(--disp-b)",
+                        background: w === "a" ? "rgba(255,176,0,0.10)" : "transparent",
+                      }}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span>{va}</span>
+                        {w === "a" && <span className="led led-a" aria-hidden="true" />}
+                      </span>
+                    </td>
+                    <td
+                      className="px-3 sm:px-4 py-2 mono align-top"
+                      style={{
+                        color: "var(--amber)",
+                        borderLeft: w === "b" ? "3px solid var(--amber)" : "1px solid var(--disp-b)",
+                        background: w === "b" ? "rgba(255,176,0,0.10)" : "transparent",
+                      }}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span>{vb}</span>
+                        {w === "b" && <span className="led led-a" aria-hidden="true" />}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* swap button */}
+      {a && b && (
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            onClick={() => { setASlug(b.slug); setBSlug(a.slug); }}
+            className="hwbtn !text-[0.6875rem]"
+            aria-label="Swap contestant A and B"
+          >
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 5H12M12 5L9 2M12 5L9 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M12 11H4M4 11L7 8M4 11L7 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Swap A ↔ B
+          </button>
+        </div>
+      )}
+    </RackFrame>
+  );
+}
+
+function DuelSelector({
+  label,
+  gear,
+  value,
+  onChange,
+  accent,
+}: {
+  label: string;
+  gear: import("@/lib/content/data").GearEntry[];
+  value: string;
+  onChange: (v: string) => void;
+  accent: string;
+}) {
+  return (
+    <label className="flex flex-col gap-1">
+      <span className="silk flex items-center gap-1.5" style={{ color: "var(--mut)" }}>
+        <span className="inline-block w-2 h-2 rounded-full" style={{ background: accent, boxShadow: `0 0 6px ${accent}` }} aria-hidden="true" />
+        {label}
+      </span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="electronics px-3 py-2 lcd !bg-transparent !text-base font-semibold outline-none w-full"
+        style={{ color: "var(--amber)" }}
+        aria-label={label}
+      >
+        {gear.map((g) => (
+          <option key={g.code} value={g.slug} style={{ background: "#0A0A0A", color: "#FFB000" }}>
+            {g.code} · {g.manufacturer} {g.model} {g.status === "discontinued" ? "(disc.)" : ""}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function DuelistCard({
+  g,
+  side,
+  winner,
+}: {
+  g: import("@/lib/content/data").GearEntry;
+  side: "a" | "b";
+  winner: Duelist;
+}) {
+  const avg = avgRating(g);
+  const led = statusLed(g);
+  const ledCls = led === "g" ? "led led-g" : led === "a" ? "led led-a" : "led";
+  const isWinner = winner === side;
+  const accent = side === "a" ? "var(--amber)" : "var(--vu-g)";
+  return (
+    <div
+      className="modcard p-4 relative"
+      style={{
+        borderLeftColor: accent,
+        borderLeftWidth: 3,
+        boxShadow: isWinner ? `0 0 0 1px ${accent}, 0 0 16px ${accent}40` : undefined,
+      }}
+    >
+      {isWinner && (
+        <span className="absolute -top-2 right-3 codechip" style={{ background: "var(--amber)", color: "var(--disp)", borderColor: "#C88A00" }}>
+          ★ WINNER
+        </span>
+      )}
+      <div className="flex items-center gap-2 flex-wrap mb-2">
+        <span className="led led-a" aria-hidden="true" style={{ background: accent, boxShadow: `0 0 6px ${accent}` }} />
+        <span className="codechip">{g.code}</span>
+        <span className="silk" style={{ color: "var(--mut)" }}>{g.category}</span>
+      </div>
+      <h4 className="mono font-semibold text-sm" style={{ color: "var(--text2)" }}>
+        {g.manufacturer} {g.model}
+      </h4>
+      <p className="silk mt-1" style={{ color: "var(--mut)" }}>
+        Rel. {g.releaseYear ?? "—"} · {g.status === "active" ? "ACTIVE" : "DISCONTINUED"}
+      </p>
+      <div className="flex items-center gap-2 mt-2">
+        <span className={ledCls} aria-hidden="true" />
+        <span className="silk" style={{ color: g.tested ? "var(--ok)" : "var(--mut)" }}>
+          {g.tested ? "TESTED" : "SPEC-ONLY"}
+        </span>
+        {g.ownership === "owned" && (
+          <span className="silk" style={{ color: "var(--acc)" }}>· OWNED</span>
+        )}
+      </div>
+      {avg !== null && (
+        <div className="mt-3">
+          <div className="flex items-baseline justify-between mb-1">
+            <span className="silk" style={{ color: "var(--mut)" }}>Overall score</span>
+            <span className="lcd !text-sm !bg-transparent font-semibold tabular-nums">{String(avg).padStart(3, "0")}%</span>
+          </div>
+          <div className="flex items-center gap-px h-2" aria-hidden="true">
+            {Array.from({ length: 20 }).map((_, i) => {
+              const on = i < Math.round((avg / 100) * 20);
+              const cls = i < 12 ? "vu-seg-g" : i < 16 ? "vu-seg-a" : "vu-seg-r";
+              return <span key={i} className={`vu-seg flex-1 ${on ? cls : ""}`} />;
+            })}
+          </div>
+        </div>
+      )}
+      {avg === null && (
+        <p className="lcd !text-xs !bg-transparent mt-3" style={{ color: "rgba(255,176,0,0.55)" }}>
+          &gt; no test data · spec-only comparison
+        </p>
+      )}
+    </div>
+  );
+}

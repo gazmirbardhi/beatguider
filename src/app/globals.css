@@ -1551,3 +1551,94 @@
   .load-bar::before { animation: none; width: 60%; }
   .data-bus::before { animation: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   PANEL VISUAL DETAIL LAYER (round 10 enhancements)
+   - VU meter peak-hold marker (analog peak indicator)
+   - SYNC indicator on the theme toggle (animated when switching)
+   - SIGNAL waveform on the newsletter CTA (decorative audio wave)
+   - Subtle power-LED breathing on the scroll-to-top button
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── VU meter peak-hold marker ───
+   A small amber tick mark that holds the peak position briefly,
+   like the peak-hold indicator on a real analog VU meter. */
+@keyframes peak-decay {
+  0% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+.vu-peak {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--amber);
+  box-shadow: 0 0 4px var(--amber);
+  z-index: 4;
+  pointer-events: none;
+  animation: peak-decay 2s ease-out 1;
+}
+
+/* ─── SYNC indicator on theme toggle ───
+   A brief amber pulse when the theme switches, like a sync LED
+   on networking equipment during a link negotiation. */
+@keyframes sync-flash {
+  0% { opacity: 0; transform: scale(0.5); }
+  30% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(1); }
+}
+.sync-flash {
+  animation: sync-flash 500ms ease-out 1;
+}
+
+/* ─── SIGNAL waveform ───
+   A decorative audio-waveform line that animates, like a scope
+   trace. For the newsletter CTA. Paused under reduced-motion. */
+@keyframes wave-trace {
+  0% { background-position: 0 0; }
+  100% { background-position: -100px 0; }
+}
+.signal-wave {
+  height: 16px;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 9px,
+      var(--amber) 9px,
+      var(--amber) 10px,
+      transparent 10px,
+      transparent 19px,
+      var(--amber) 19px,
+      var(--amber) 20px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 4px,
+      rgba(255, 176, 0, 0.3) 4px,
+      rgba(255, 176, 0, 0.3) 5px
+    );
+  background-size: 100px 16px, 100px 16px;
+  opacity: 0.6;
+  animation: wave-trace 3s linear infinite;
+}
+
+/* ─── Power-LED breathing on scroll-to-top ───
+   The scroll-to-top button's LED breathes slowly while visible,
+   indicating it's "powered on" and ready. */
+@keyframes power-breathe {
+  0%, 100% { box-shadow: 0 0 6px var(--amber), 0 0 12px rgba(255,176,0,0.4); }
+  50% { box-shadow: 0 0 3px var(--amber), 0 0 6px rgba(255,176,0,0.2); }
+}
+.scroll-top-led {
+  animation: power-breathe 2.4s ease-in-out infinite;
+}
+
+/* ─── Reduced motion additions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .vu-peak { animation: none; opacity: 0.6; }
+  .sync-flash { animation: none; opacity: 0; }
+  .signal-wave { animation: none; }
+  .scroll-top-led { animation: none; }
+}

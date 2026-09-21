@@ -467,6 +467,77 @@ export function freshnessStatus(a: ArticleMeta): "fresh" | "recheck" | "stale" {
   return "stale";
 }
 
+/* ─── Build validation checks for the ErrorLog component ───
+   Converts the raw validateContent() results into the {label, status, detail}
+   format the ErrorLog expects. Runs at build time. The detail strings are
+   real — derived from actual content counts, no fabrication. */
+export function buildValidationChecks(
+  gear: GearEntry[],
+  arts: ArticleMeta[]
+): { label: string; status: "pass" | "fail" | "warn"; detail: string }[] {
+  const errors = validateContent(gear, arts);
+
+  // group errors by field
+  const errsByField = new Map<string, typeof errors>();
+  errors.forEach((e) => {
+    const arr = errsByField.get(e.field) ?? [];
+    arr.push(e);
+    errsByField.set(e.field, arr);
+  });
+
+  const hasErr = (field: string) => (errsByField.get(field)?.length ?? 0) > 0;
+  const errCount = (field: string) => errsByField.get(field)?.length ?? 0;
+
+  // freshness check — count entries approaching recheck or stale
+  const freshnessCounts = arts.reduce(
+    (acc, a) => {
+      const s = freshnessStatus(a);
+      acc[s]++;
+      return acc;
+    },
+    { fresh: 0, recheck: 0, stale: 0 } as Record<string, number>
+  );
+
+  return [
+    {
+      label: "duplicate slug check",
+      status: hasErr("slug") ? "fail" : "pass",
+      detail: `${arts.length} articles, ${errCount("slug")} collision(s)`,
+    },
+    {
+      label: "duplicate display code check",
+      status: hasErr("code") ? "fail" : "pass",
+      detail: `${arts.length + gear.length} codes, ${errCount("code")} collision(s)`,
+    },
+    {
+      label: "quickAnswer required for fix/compare",
+      status: hasErr("quickAnswer") ? "fail" : "pass",
+      detail: hasErr("quickAnswer")
+        ? `${errCount("quickAnswer")} missing`
+        : "FIX-001, FIX-002, CMP-003 present",
+    },
+    {
+      label: "anti-fake-testing rule (hands-on → tested.equipment)",
+      status: hasErr("tested.equipment") ? "fail" : "pass",
+      detail: hasErr("tested.equipment")
+        ? `${errCount("tested.equipment")} violation(s)`
+        : `all ${arts.filter((a) => a.experienceType === "hands-on" || a.experienceType === "long-term-owned").length} hands-on articles carry equipment`,
+    },
+    {
+      label: "related-gear existence",
+      status: hasErr("relatedGear") ? "fail" : "pass",
+      detail: hasErr("relatedGear")
+        ? `${errCount("relatedGear")} missing`
+        : "all referenced GEAR codes exist",
+    },
+    {
+      label: "content freshness windows",
+      status: freshnessCounts.stale > 0 ? "fail" : freshnessCounts.recheck > 0 ? "warn" : "pass",
+      detail: `${freshnessCounts.fresh} fresh · ${freshnessCounts.recheck} recheck · ${freshnessCounts.stale} stale`,
+    },
+  ];
+}
+
 /* ─── Unified search index ───
    Articles + gear + tools in a single searchable collection so the
    search overlay can return matches across all content types.

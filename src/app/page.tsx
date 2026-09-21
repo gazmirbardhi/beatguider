@@ -14,6 +14,7 @@ import {
   NewsletterCta,
   StyleGuideSection,
   Glossary,
+  EquipmentMatrix,
 } from "@/components/panel/sections";
 import { SpecimenArticle } from "@/components/panel/specimen-article";
 import { SiteFooter, SearchOverlay } from "@/components/panel/footer";
@@ -75,6 +76,7 @@ export default function HomePage() {
       <LatestLog />
       <MobileDjModule />
       <Glossary />
+      <EquipmentMatrix />
       <StyleGuideSection />
       <NewsletterCta />
     </HomePageClient>

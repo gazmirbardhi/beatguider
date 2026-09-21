@@ -34,7 +34,7 @@ import {
 } from "./components";
 import { BpmCalculator, CamelotCalculator, PowerCalculator, GearDueler } from "./tools";
 import { SpectrumAnalyzer, PhaseMeter, LabActivityFeed, Knob, RivetRow } from "./decorative";
-import { gearDb, articles, freshnessStatus, type ArticleMeta } from "@/lib/content/data";
+import { gearDb, articles, freshnessStatus, buildValidationChecks, type ArticleMeta } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
    BeatGuider homepage — panel sections (not a chronological wall).
@@ -415,10 +415,12 @@ export function NewsletterCta() {
           <span className="silk-lg" style={{ color: "var(--amber)" }}>Subscribe · field log</span>
           <span className="ml-auto codechip">SUB-01</span>
         </div>
-        <p className="lcd !text-sm !bg-transparent leading-relaxed mb-4" style={{ color: "var(--amber)" }}>
+        <p className="lcd !text-sm !bg-transparent leading-relaxed mb-3" style={{ color: "var(--amber)" }}>
           &gt; occasional dispatch with new gear tests, fix guides and the lab notes that don't make it
           into articles. No sponsored emails, no rented list. Unsubscribe any time.
         </p>
+        {/* SIGNAL waveform — decorative audio-wave scope trace */}
+        <div className="signal-wave w-full mb-4" aria-hidden="true" />
         <form
           className="flex flex-col sm:flex-row gap-2"
           onSubmit={(e) => {
@@ -481,17 +483,8 @@ export function StyleGuideSection() {
         </div>
       </div>
 
-      {/* error log — surfaces the anti-fake-testing rule status visually */}
-      <ErrorLog
-        checks={[
-          { label: "duplicate slug check", status: "pass", detail: "8 articles, 0 collisions" },
-          { label: "duplicate display code check", status: "pass", detail: "across articles + gear" },
-          { label: "quickAnswer required for fix/compare", status: "pass", detail: "FIX-001, FIX-002, CMP-003" },
-          { label: "anti-fake-testing rule (hands-on → tested.equipment)", status: "pass", detail: "all hands-on articles carry equipment" },
-          { label: "related-gear existence", status: "pass", detail: "all referenced GEAR codes exist" },
-          { label: "content freshness windows", status: "warn", detail: "1 entry approaching recheck" },
-        ]}
-      />
+      {/* error log — REAL build-time validation results (not hardcoded) */}
+      <ErrorLog checks={buildValidationChecks(gearDb, articles)} />
 
       {/* decorative hardware: knobs + rivets + spectrum + DIP + DB meter */}
       <div className="specplate brushed p-5 mb-6 relative">
@@ -699,6 +692,80 @@ export function Glossary() {
           ))}
         </dl>
       </div>
+    </SectionFrame>
+  );
+}
+
+/* ─── 12. EQUIPMENT MATRIX — build-time gear inventory ───
+   A dark LCD inventory table of all gear entries with status LEDs +
+   ownership + test state + release year. Complements the Build manifest
+   (which lists codes) with per-gear detail. No fabrication — reads
+   from gearDb. */
+export function EquipmentMatrix() {
+  return (
+    <SectionFrame id="equipment-matrix">
+      <SectionLabel code="SEC-10" title="Equipment matrix" kicker="gear inventory · all entries" />
+      <p className="text-sm mb-4 max-w-[68ch]" style={{ color: "var(--body)" }}>
+        Complete gear inventory with status LEDs (green = active · gray = discontinued),
+        ownership + test state. Build-time generated from the shared gear database.
+      </p>
+      <div className="electronics overflow-x-auto scroll-x">
+        <table className="w-full text-sm min-w-[680px]">
+          <thead>
+            <tr style={{ background: "#060606" }}>
+              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>CODE</th>
+              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>MODEL</th>
+              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>CATEGORY</th>
+              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>YEAR</th>
+              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>STATUS</th>
+              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>TESTED</th>
+              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>OWNED</th>
+            </tr>
+          </thead>
+          <tbody>
+            {gearDb.map((g, i) => (
+              <tr key={g.code} className={i > 0 ? "border-t border-[var(--disp-b)]" : ""}>
+                <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>{g.code}</td>
+                <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>
+                  {g.manufacturer} {g.model}
+                </td>
+                <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>{g.category}</td>
+                <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>{g.releaseYear ?? "—"}</td>
+                <td className="px-3 sm:px-4 py-2 mono">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className={g.status === "active" ? "led led-g" : "led"} aria-hidden="true" />
+                    <span style={{ color: g.status === "active" ? "var(--vu-g)" : "var(--mut)" }}>
+                      {g.status === "active" ? "ACTIVE" : "DISC."}
+                    </span>
+                  </span>
+                </td>
+                <td className="px-3 sm:px-4 py-2 mono">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className={g.tested ? "led led-g" : "led"} aria-hidden="true" />
+                    <span style={{ color: g.tested ? "var(--vu-g)" : "var(--mut)" }}>
+                      {g.tested ? "TESTED" : "SPEC"}
+                    </span>
+                  </span>
+                </td>
+                <td className="px-3 sm:px-4 py-2 mono">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span
+                      className={g.ownership === "owned" ? "led led-a" : g.ownership === "loaned" ? "led led-data" : "led"}
+                      aria-hidden="true"
+                    />
+                    <span style={{ color: g.ownership === "owned" ? "var(--amber)" : g.ownership === "loaned" ? "var(--data)" : "var(--mut)" }}>
+                      {g.ownership.toUpperCase()}
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="mono text-xs mt-3" style={{ color: "var(--mut)" }}>
+        {gearDb.length} entries · {gearDb.filter((g) => g.tested).length} tested · {gearDb.filter((g) => g.ownership === "owned").length} owned · {gearDb.filter((g) => g.status === "active").length} active
+      </p>
     </SectionFrame>
   );
 }

@@ -659,8 +659,16 @@ export function GearCard({
     <article className="modcard p-4" style={{ borderLeftColor: status === "active" ? "var(--ok)" : "var(--mut)" }}>
       <div className="flex items-start gap-3">
         {imageSlot && (
-          <div className="electronics w-16 h-16 flex-shrink-0 flex items-center justify-center overflow-hidden">
+          <div className="electronics w-16 h-16 flex-shrink-0 flex items-center justify-center overflow-hidden relative">
             {imageSlot}
+            {/* SPIN UP indicator — brief amber pulse on mount, like a platter spinning up */}
+            <span
+              className="spin-up-badge absolute top-1 right-1 silk !text-[0.5rem] px-1 py-0.5 rounded-sm"
+              style={{ background: "var(--amber)", color: "var(--disp)", opacity: 0 }}
+              aria-hidden="true"
+            >
+              ▶
+            </span>
           </div>
         )}
         <div className="min-w-0 flex-1">

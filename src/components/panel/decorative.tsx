@@ -417,7 +417,7 @@ export function ScrollToTopButton() {
       aria-label="Scroll to top of page"
       title="Back to top"
     >
-      <span className="led led-a" aria-hidden="true" />
+      <span className="led led-a scroll-top-led" aria-hidden="true" />
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M8 3L3 8M8 3L13 8M8 3V13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
       </svg>

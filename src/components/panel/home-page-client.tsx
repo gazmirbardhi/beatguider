@@ -2,17 +2,17 @@
 
 import { useState, type ReactNode } from "react";
 import { StickyNav } from "./chrome";
-import { SiteFooter, SearchOverlay } from "./footer";
-import { ThemeProvider } from "./theme-toggle";
+import { SiteFooter, SearchOverlay, ShortcutsHelp } from "./footer";
+import { ThemeProvider, useTheme } from "./theme-toggle";
 import { BootSplash, LedChase } from "./decorative";
 
 /**
  * HomePageClient — the client interactivity shell for the / route.
- * Holds the search overlay state and wires the SEARCH nav button to focus it.
- * Wraps everything in ThemeProvider so the faceplate rocker and the
- * reader-bar toggle stay in sync (single source of truth for mode).
- * Renders a one-shot BootSplash on first session load (reduced-motion safe).
- * Everything else is rendered as static Server Component output where possible.
+ * Holds the search overlay + shortcuts-help state and wires the SEARCH
+ * nav button + keyboard shortcuts. Wraps everything in ThemeProvider so
+ * the faceplate rocker and the reader-bar toggle stay in sync (single
+ * source of truth for mode). Renders a one-shot BootSplash on first
+ * session load (reduced-motion safe).
  */
 export function HomePageClient({
   faceplate,
@@ -28,6 +28,7 @@ export function HomePageClient({
   children: ReactNode;
 }) {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   return (
     <ThemeProvider>
@@ -57,7 +58,33 @@ export function HomePageClient({
         <SiteFooter serial={serial} />
 
         <SearchOverlay open={searchOpen} setOpen={setSearchOpen} />
+        <ShortcutsHelpRenderer
+          open={helpOpen}
+          setOpen={setHelpOpen}
+          onOpenSearch={() => { setHelpOpen(false); setSearchOpen(true); }}
+        />
       </div>
     </ThemeProvider>
+  );
+}
+
+/** Renders ShortcutsHelp with access to the theme context for the T shortcut. */
+function ShortcutsHelpRenderer({
+  open,
+  setOpen,
+  onOpenSearch,
+}: {
+  open: boolean;
+  setOpen: (v: boolean) => void;
+  onOpenSearch: () => void;
+}) {
+  const { toggle } = useTheme();
+  return (
+    <ShortcutsHelp
+      open={open}
+      setOpen={setOpen}
+      onOpenSearch={onOpenSearch}
+      onToggleTheme={toggle}
+    />
   );
 }

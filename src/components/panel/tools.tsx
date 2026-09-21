@@ -472,9 +472,21 @@ export function GearDueler({
         <DuelSelector label="B · contestant two" gear={gear} value={bSlug} onChange={setBSlug} accent="var(--vu-g)" />
       </div>
 
-      {/* contestant cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      {/* contestant cards + signal-flow connector */}
+      <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
         {a && <DuelistCard g={a} side="a" winner={overall} />}
+        {/* signal-flow connector — animated amber dot traveling A→B (desktop only) */}
+        {a && b && (
+          <div
+            className="signal-flow hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-6 z-10"
+            aria-hidden="true"
+            style={{ background: "var(--card)", borderRadius: "3px", border: "1px solid var(--plate-b)" }}
+          >
+            <div className="flex items-center justify-center h-full px-1">
+              <span className="silk !text-[0.5rem]" style={{ color: "var(--amber)" }}>VS</span>
+            </div>
+          </div>
+        )}
         {b && <DuelistCard g={b} side="b" winner={overall} />}
       </div>
 

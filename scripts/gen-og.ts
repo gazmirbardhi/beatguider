@@ -17,20 +17,37 @@
 */
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
-import { writeFileSync, existsSync } from "node:fs";
+import { writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const OUT_DIR = join(process.cwd(), "public", "og");
+const FONTS_DIR = join(process.cwd(), "public", "fonts");
 const W = 1200;
 const H = 630;
 
 // ─── Font loading (cached) ───
+// Vendored fonts in public/fonts/ take priority (offline-build capable).
+// Falls back to Google Fonts CDN if the local files are missing.
 let fontCache: { chakra: Buffer; inter: Buffer } | null = null;
 
 async function loadFonts(): Promise<{ chakra: Buffer; inter: Buffer }> {
   if (fontCache) return fontCache;
-  // Chakra Petch (silkscreen) + Inter (body) from Google Fonts static CDN.
-  // These are the same families the site loads via next/font.
+
+  // 1. Try vendored local fonts first (offline-build capable).
+  const localPaths = {
+    chakra: join(FONTS_DIR, "ChakraPetch-700.ttf"),
+    inter: join(FONTS_DIR, "Inter-400.ttf"),
+  };
+  if (existsSync(localPaths.chakra) && existsSync(localPaths.inter)) {
+    fontCache = {
+      chakra: readFileSync(localPaths.chakra),
+      inter: readFileSync(localPaths.inter),
+    };
+    console.log("✓ OG fonts loaded from vendored public/fonts/");
+    return fontCache;
+  }
+
+  // 2. Fall back to Google Fonts CDN.
   const fetchBuf = async (url: string): Promise<Buffer> => {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`font fetch failed: ${url} → ${res.status}`);

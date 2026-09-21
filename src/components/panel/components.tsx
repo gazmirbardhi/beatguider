@@ -918,7 +918,7 @@ export function Screws({ corners = "all" }: { corners?: "all" | "top" }) {
 /* ─── Spec plate (article spec plate wrapper) ─── */
 export function SpecPlate({ children }: { children: ReactNode }) {
   return (
-    <div className="specplate brushed p-5 sm:p-6 my-6 relative">
+    <div className="specplate brushed vent-grille p-5 sm:p-6 my-6 relative">
       <Screws />
       {children}
     </div>

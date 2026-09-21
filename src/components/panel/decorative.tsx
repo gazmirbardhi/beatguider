@@ -180,6 +180,13 @@ export function LabActivityFeed() {
       <div className="flex items-center gap-2 px-3 py-1.5 border-b border-[var(--disp-b)]" style={{ background: "#060606" }}>
         <span className={`led led-g ${reduced ? "" : "led-breathe"}`} aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>LAB · ACTIVITY</span>
+        {/* REC indicator — blinking red dot when live */}
+        {!paused && !reduced && (
+          <span className="rec-indicator" aria-hidden="true">
+            <span className="led led-r" />
+            <span className="silk !text-[0.5rem]" style={{ color: "var(--vu-r)" }}>REC</span>
+          </span>
+        )}
         <span className="silk ml-auto" style={{ color: "rgba(255,176,0,0.5)" }}>
           {paused ? "PAUSED" : reduced ? "STATIC" : "LIVE"}
         </span>

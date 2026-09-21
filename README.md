@@ -1,0 +1,214 @@
+# BeatGuider.com
+
+> Test. Fix. Mix. — an independent DJ gear, software, troubleshooting and education publication operated by a working DJ.
+
+BeatGuider presents itself as a piece of test equipment. The design language is the **PANEL** system: a hardware faceplate whose chassis has two finishes (**NIGHT** black / **DAY** brushed silver) while its backlit electronics — meters, readouts, displays — stay lit and identical in both. This is the "professional DJ testing laboratory" direction, made literal.
+
+## What this build delivers
+
+A production-grade Next.js 16 + TypeScript + Tailwind v4 single-route experience that demonstrates the full PANEL design system, the content-integrity enforcement (anti-fake-testing rule is structural, not editorial), and the freshness-as-trust-feature.
+
+### Architecture
+
+```
+src/
+├── app/
+│   ├── layout.tsx          # fonts (Chakra Petch / Inter / IBM Plex Mono) + no-flash theme script + Organization JSON-LD + metadata
+│   ├── page.tsx            # homepage orchestrator (server component) — runs build-time content validation
+│   ├── not-found.tsx       # ERR-404 · SIGNAL NOT FOUND fault report
+│   └── globals.css         # PANEL design tokens (NIGHT default + DAY via [data-mode="day"]) + all component classes
+├── components/
+│   ├── panel/
+│   │   ├── theme-toggle.tsx        # ThemeProvider context + ModeRocker + ModeIconButton (synced single source of truth)
+│   │   ├── chrome.tsx              # FaceplateHeader + StickyNav (IntersectionObserver active section) + ReaderBar (VU reading progress)
+│   │   ├── components.tsx           # every §5.4 signature component
+│   │   ├── tools.tsx               # BPM & Timing · Camelot · Power Calculator rack units (client-side)
+│   │   ├── sections.tsx            # all homepage sections (FaceplateHero · IntentPaths · FaultReport · TestedHardware · SoftwareLog · ToolModules · LatestLog · MobileDjModule · NewsletterCta · StyleGuideSection)
+│   │   ├── specimen-article.tsx    # FIX-001 fixture article exercising the FULL component set
+│   │   ├── footer.tsx              # SearchOverlay (⌘K) + SiteFooter (vent strip + serial line)
+│   │   ├── home-page-client.tsx    # client shell (ThemeProvider + search state + validation status line)
+│   │   └── not-found-client.tsx    # 404 client shell (ThemeProvider-wrapped)
+│   └── ui/                          # shadcn/ui (existing scaffold)
+└── lib/
+    └── content/
+        └── data.ts                  # typed content layer: ArticleMeta + GearEntry + validateContent() + freshnessStatus()
+public/
+├── robots.txt
+├── sitemap.xml
+└── favicon.svg
+```
+
+### Design system — "PANEL" language
+
+**Two layers, one device:**
+
+- **Chassis** (mode-dependent): page background, cards, nav, plates, switches, screws, vents
+  - **NIGHT** (`:root`, attribute-less default) — black, correct with JavaScript disabled
+  - **DAY** (`[data-mode="day"]`) — brushed silver
+- **Electronics** (mode-invariant): VU meters, LCD status lines, step numbers, data tables, code chips, score meters — always `#0A0A0A` modules with `#FFB000` amber digits
+
+Mode switching is a ~350ms cross-fade of chassis colors; LEDs flicker once like a device reboot. Both modes pass WCAG AA for body text.
+
+### Typography (via `next/font`, swap display)
+
+- **Chakra Petch** — silkscreen layer (brand, nav, headings, section labels, meta chips, codes, step numbers, LCD)
+- **Inter** — article body (16px / 1.7, ~68ch measure)
+- **IBM Plex Mono** — test data, specifications, model numbers, sources, tool readouts
+
+### Signature components (§5.4, all implemented)
+
+`PanelButton` · `ModuleCard` (3px left border + LED + code + chevron) · `TestedBadge`/`ResearchBadge`/`LongTermBadge` (LEDs only lit from validated frontmatter) · `QuickAnswer` (`>>` amber callout) · `CautionCallout` (`!!` red) · `NoteCallout` (`//` green) · `StepBlock` (dark display + glowing amber step number) · `Checklist` (toggle switches, green when on, strikethrough) · `SpecTable` (dark header + amber labels + Plex Mono cells) · `ComparisonTable` (winner column + mini VU) · `VUMeter` (26 segments, green→amber→red at 16/21) · `ScoreMeter` · `VerdictCard` (spec plate) · `ProsCons` · `AffiliateButton` (amber hwbtn + `rel="sponsored nofollow noopener"` + click-tracking + disclosure) · `GearCard` · `SourcesList` · `SegmentedTabs` · `TOCChips` (diagnostic map) · `SearchModule` (backlit display) · `Figure` (reserved-height photo bay, CLS-safe) · `AdSlot` (reserved-height module bay) · `Screws` · `SpecPlate` · `FreshnessIndicator` (fresh/recheck/stale LEDs)
+
+### Tools — "rack units" (client-side, per-route JS only)
+
+1. **BPM & Timing Calculator** — ms from BPM, note timing, bars/beats, common delay timings
+2. **Camelot / Harmonic Mixing Calculator** — compatible keys from a known key (explicit "does not detect audio key" disclaimer)
+3. **Mobile DJ Power Calculator** — continuous load, peak allowance, suggested generator, min breaker + `!! CAUTION` callouts about inrush
+
+### Content-integrity enforcement (the anti-fake-testing rule)
+
+`src/lib/content/data.ts` exports `validateContent(gear, articles)` which runs at request in dev (and would run pre-build in production). It fails on:
+
+- missing required frontmatter
+- missing `quickAnswer` when `contentType` is a fix/compare guide
+- **`experienceType: "hands-on"` without non-empty `tested.equipment`** ← this is the structural anti-fake-testing rule
+- duplicate slugs or display codes (across articles + gear)
+- invalid dates, content types, experience types
+- missing referenced gear / related-article slugs
+
+The `TestedBadge` component renders only when validated frontmatter permits — an author cannot light it by writing it into the article body.
+
+### Freshness as a user-visible trust feature
+
+`freshnessStatus()` returns `fresh` / `recheck` / `stale` per content class (short window for software roundups, medium for active reviews/comparisons, longer for evergreen technique guides). The `FreshnessIndicator` component shows a green/amber/red LED with `VERIFIED` / `RECHECK DUE` / `OVERDUE` labels on the spec plate. Freshness is never a hidden maintenance chore.
+
+### Theme system
+
+- `< 1KB` blocking inline script in `<head>` sets `data-mode` on `<html>` **before paint** — sets colors only, never geometry, so it cannot cause CLS.
+- `ThemeProvider` context (single source of truth) — `ModeRocker` (faceplate) and `ModeIconButton` (reader bar) stay in sync.
+- `MutationObserver` keeps all instances in sync if the DOM attribute changes from elsewhere.
+- Boot-flicker animation on LEDs during mode swap.
+- `prefers-reduced-motion` disables LED breathing, boot-flicker, and smooth-scroll; VU remains a static state.
+- Persistence: `localStorage["beatguider-mode"]` + `prefers-color-scheme` fallback.
+- Focus: `:focus-visible` 2px amber outline, 2px offset, visible on both chassis.
+- Skip-to-content link is the first focusable element.
+
+### Reader bar — VU reading progress
+
+Sticky `ReaderBar` (inside the specimen article): back · code+title · theme toggle · 26-segment VU reading progress + zero-padded `%`. Uses a **single passive scroll listener**, rAF-throttled.
+
+## Local development
+
+```bash
+bun install
+bun run dev      # http://localhost:3000
+bun run lint     # ESLint (clean)
+```
+
+The dev server runs Next.js 16.1.3 with Turbopack on port 3000.
+
+## Content authoring
+
+### Article frontmatter (typed — see `ArticleMeta` in `src/lib/content/data.ts`)
+
+```yaml
+title: description: slug:
+category:          # gear | software | fix | learn | mobile-dj | compare | tools
+topic: tags:
+publishedDate: updatedDate: lastVerified:
+author:            # default: BeatGuider Team
+contentType:       # guide | review | comparison | roundup | explainer | business
+experienceType:    # hands-on | long-term-owned | software-tested | research-based
+ownershipStatus:   # owned | loaned | n/a
+tested:
+  equipment:       # REQUIRED NON-EMPTY when experienceType is hands-on/long-term-owned
+  software: platforms: environment:
+quickAnswer:       # REQUIRED for fix + compare types
+relatedArticles:   # slugs
+relatedGear:       # gear codes
+sources:
+affiliateEligible:
+```
+
+Reading time is auto-computed (words ÷ 200), never hand-written.
+
+### Testing-status rules — what lights which LED
+
+| LED | Color | Lights when |
+|-----|-------|-------------|
+| Tested | green | `experienceType: hands-on` AND `tested.equipment` non-empty (validated) |
+| Long-term owned | amber | `experienceType: long-term-owned` AND `tested.equipment` non-empty |
+| Research-based | teal | `experienceType: research-based` |
+| Fresh | green | `freshnessStatus() === "fresh"` |
+| Recheck due | amber | `freshnessStatus() === "recheck"` |
+| Overdue | red | `freshnessStatus() === "stale"` |
+| ERR | red | genuine error / stale state (never decorative) |
+
+### Adding gear
+
+Add an entry to `gearDb` in `src/lib/content/data.ts` with a unique `GEAR-###` code, real specs, `tested: true` only if genuinely tested, `ownership` status, and optional `rating[]` (VU meters render only from real test data).
+
+### Affiliate links
+
+Use the centralized component — links are never hard-coded in article bodies:
+
+```tsx
+<AffiliateButton product="ddj-flx4" retailer="amazon" url="https://...">
+  Check current price
+</AffiliateButton>
+```
+
+Handles: URL lookup, `rel="sponsored nofollow noopener"` + `target="_blank"`, click-tracking hook, inline disclosure microcopy. **Never fabricate current prices.**
+
+## Deployment target — Cloudflare Workers Static Assets
+
+The architecture is structured for `output: "export"` + `trailingSlash: true` (avoids duplicate-path issues on Cloudflare). The dev sandbox uses the Node runtime; switching to static export is a one-line `next.config.ts` change. No request-time Node.js runtime.
+
+`wrangler.jsonc` (to be added at deployment):
+
+```jsonc
+{
+  "name": "beatguider",
+  "assets": {
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
+```
+
+Newsletter / contact forms use client-side requests to a third-party service or a dedicated Worker — **never a reason to convert the site to SSR**.
+
+## Quality gates (verified)
+
+- [x] Clean install · strict TS · lint · content validation all pass
+- [x] NIGHT/DAY toggle: persists, no flash on first load, contrast passes in BOTH modes
+- [x] Theme state synced between faceplate rocker and reader-bar button (single context)
+- [x] VU reading progress updates on scroll; diagnostic TOC chips jump with 112px offset
+- [x] `prefers-reduced-motion` honored; focus states visible in both modes
+- [x] BPM/Camelot/Power tools work end-to-end
+- [x] Search (⌘K) returns results; Esc closes
+- [x] Checklist toggles flip green + strikethrough
+- [x] 404 renders as ERR-404 fault report with red ERR LED
+- [x] No console errors; no horizontal overflow; responsive at mobile/tablet/desktop widths
+- [x] Single `<h1>` per page (specimen article title demoted to `<h2>` since embedded on homepage)
+- [x] Anti-fake-testing rule enforced structurally; validation passes for all fixture content
+- [x] Organization JSON-LD, robots.txt, sitemap.xml, favicon present
+
+## Known limitations
+
+- **No real original testing photos** — Figures use reserved "photo bay" placeholders (honest, CLS-safe) rather than fabricated images. The spec mandates original testing photos in production; this is a development build.
+- **OG image generation** (satori + resvg Node script → `public/og/`) not yet implemented — OG metadata references images that would 404 until the script is wired.
+- **Pagefind** static client-side search not yet wired — the search overlay currently indexes the in-memory article list (Pagefind-compatible contract; swap is a one-line change in `SearchOverlay`).
+- **MDX content pipeline** not yet wired — content lives in `src/lib/content/data.ts` as typed fixtures. The migration path to `content/*.mdx` + `gray-matter` is documented; `validateContent()` already mirrors the build-time validation contract.
+- **Static export** not yet switched on (dev sandbox needs the Node runtime). `next.config.ts` is structured for the one-line switch.
+- **Cloudflare `_headers`** security headers not yet added (CSP finalized when ads are decided).
+
+## Manual configuration remaining
+
+1. Wire `gray-matter` MDX loading from `content/*.mdx` (move fixtures out of `data.ts`).
+2. Add the satori + resvg OG image generation script (templates: article, troubleshooting, comparison, gear review, tool).
+3. Switch `next.config.ts` to `output: "export"` + `trailingSlash: true` for production builds.
+4. Add `wrangler.jsonc` + Cloudflare `_headers` for deployment.
+5. Configure Cloudflare Web Analytics + Google Search Console verification.
+6. Configure the affiliate URL lookup to read from `gearDb.retailers` instead of inline `url` props.

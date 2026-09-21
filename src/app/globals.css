@@ -1,0 +1,637 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  BeatGuider.com — PANEL DESIGN SYSTEM
+  Two layers, one device:
+    CHASSIS (page bg, cards, nav, plates, switches, screws, vents) — mode-dependent
+      NIGHT (black, default) or DAY (brushed silver)
+    ELECTRONICS (meters, LCD, step numbers, data tables, code chips) — mode-invariant
+      #0A0A0A modules with #FFB000 amber digits, backlit displays bolted to either chassis
+  Night is the attribute-less default. Day activates via [data-mode="day"].
+*/
+
+@theme inline {
+  /* chassis — map to tailwind utilities */
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-line2: var(--line2);
+  --color-text: var(--text);
+  --color-text2: var(--text2);
+  --color-mut: var(--mut);
+  --color-body: var(--body);
+  --color-acc: var(--acc);
+  --color-acc-b: var(--acc-b);
+  --color-acc-soft: var(--acc-soft);
+  --color-err: var(--err);
+  --color-err-b: var(--err-b);
+  --color-ok: var(--ok);
+  --color-ok-b: var(--ok-b);
+  --color-plate: var(--plate);
+  --color-plate-b: var(--plate-b);
+  --color-plate-b2: var(--plate-b2);
+  --color-sw-bg: var(--sw-bg);
+  --color-sw-b: var(--sw-b);
+  --color-vents: var(--vents);
+
+  /* electronics — constant */
+  --color-disp: var(--disp);
+  --color-disp-b: var(--disp-b);
+  --color-amber: var(--amber);
+  --color-vu-g: var(--vu-g);
+  --color-vu-a: var(--vu-a);
+  --color-vu-r: var(--vu-r);
+  --color-data: var(--data);
+
+  /* shadcn compatibility shims (kept so existing ui/* components still render) */
+  --color-background: var(--bg);
+  --color-foreground: var(--text2);
+  --color-card-foreground: var(--text2);
+  --color-popover: var(--card);
+  --color-popover-foreground: var(--text2);
+  --color-primary: var(--acc);
+  --color-primary-foreground: var(--disp);
+  --color-secondary: var(--plate);
+  --color-secondary-foreground: var(--text2);
+  --color-muted: var(--plate);
+  --color-muted-foreground: var(--mut);
+  --color-accent: var(--plate);
+  --color-accent-foreground: var(--text2);
+  --color-destructive: var(--err);
+  --color-border: var(--line);
+  --color-input: var(--line2);
+  --color-ring: var(--acc);
+  --color-sidebar: var(--card);
+  --color-sidebar-foreground: var(--text2);
+  --color-sidebar-primary: var(--acc);
+  --color-sidebar-primary-foreground: var(--disp);
+  --color-sidebar-accent: var(--plate);
+  --color-sidebar-accent-foreground: var(--text2);
+  --color-sidebar-border: var(--line);
+  --color-sidebar-ring: var(--acc);
+  --color-chart-1: var(--vu-g);
+  --color-chart-2: var(--vu-a);
+  --color-chart-3: var(--data);
+  --color-chart-4: var(--acc);
+  --color-chart-5: var(--err);
+
+  /* fonts */
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-chakra);
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+}
+
+/* ───────────────────────── NIGHT (default) ───────────────────────── */
+:root {
+  --bg: #0F0F0F;
+  --card: #161616;
+  --line: #262626;
+  --line2: #333333;
+  --text: #D8D8D8;
+  --text2: #F2F2F2;
+  --mut: #7E7E7E;
+  --body: #C6C6C6;
+  --acc: #FFB000;
+  --acc-b: rgba(255, 176, 0, 0.4);
+  --acc-soft: rgba(255, 176, 0, 0.12);
+  --err: #FF4444;
+  --err-b: rgba(255, 68, 68, 0.35);
+  --ok: #33FF66;
+  --ok-b: rgba(51, 255, 102, 0.4);
+  --plate: #1C1C1C;
+  --plate-b: #303030;
+  --plate-b2: #0A0A0A;
+  --sw-bg: #0A0A0A;
+  --sw-b: #2E2E2E;
+  --vents: #1E1E1E;
+  --led-r-off: #3A1212;
+
+  /* electronics — constant in both modes */
+  --disp: #0A0A0A;
+  --disp-b: #2E2E2E;
+  --amber: #FFB000;
+  --vu-g: #33FF66;
+  --vu-a: #FFB000;
+  --vu-r: #FF4444;
+  --data: #35D6C4;
+
+  --radius: 4px;
+}
+
+/* ───────────────────────── DAY (brushed silver) ───────────────────────── */
+[data-mode="day"] {
+  --bg: #E9E9E6;
+  --card: #F7F7F5;
+  --line: #D9D9D4;
+  --line2: #BDBDB8;
+  --text: #3A3A38;
+  --text2: #1F1F1E;
+  --mut: #7B7B74;
+  --body: #4A4A46;
+  --acc: #A67708;
+  --acc-b: rgba(166, 119, 8, 0.5);
+  --acc-soft: rgba(166, 119, 8, 0.10);
+  --err: #C73225;
+  --err-b: rgba(199, 50, 37, 0.35);
+  --ok: #1E9E52;
+  --ok-b: rgba(30, 158, 82, 0.4);
+  --plate: #EDEDEA;
+  --plate-b: #C2C2BC;
+  --plate-b2: #B4B4AE;
+  --sw-bg: #E2E2DC;
+  --sw-b: #C2C2BC;
+  --vents: #D2D2CC;
+  --led-r-off: #C9C9C4;
+
+  /* electronics unchanged */
+  --disp: #0A0A0A;
+  --disp-b: #2E2E2E;
+  --amber: #FFB000;
+  --vu-g: #33FF66;
+  --vu-a: #FFB000;
+  --vu-r: #FF4444;
+  --data: #35D6C4;
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 112px;
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--body);
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 350ms ease, color 350ms ease;
+  }
+  /* mode swap cross-fade for chassis surfaces */
+  body, .panel-surface {
+    transition: background-color 350ms ease, border-color 350ms ease, color 350ms ease;
+  }
+  /* electronics stay crisp — no transition on the lit modules */
+  .electronics, .electronics * {
+    transition: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-chakra), system-ui, sans-serif;
+    font-weight: 600;
+    color: var(--text2);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  code, pre, kbd, samp, .mono {
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--acc);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--acc-b);
+    color: var(--text2);
+  }
+}
+
+/* ───────────────────────── PANEL UTILITIES ───────────────────────── */
+
+/* silk screen label — all caps, tracked, small */
+.silk {
+  font-family: var(--font-chakra), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  line-height: 1;
+  color: var(--mut);
+}
+
+.silk-lg {
+  font-family: var(--font-chakra), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  line-height: 1;
+}
+
+/* lcd digit text — amber on dark, mono */
+.lcd {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  color: var(--amber);
+  background: var(--disp);
+  letter-spacing: 0.04em;
+  font-feature-settings: "tnum" 1;
+}
+
+/* brushed silver texture for DAY plates — 1px vertical highlight lines */
+[data-mode="day"] .brushed {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.5) 0px,
+      rgba(255, 255, 255, 0.5) 1px,
+      rgba(0, 0, 0, 0.04) 1px,
+      rgba(0, 0, 0, 0.04) 2px,
+      rgba(255, 255, 255, 0.28) 2px,
+      rgba(255, 255, 255, 0.28) 3px
+    );
+}
+/* night brushed = subtle noise via vertical lines */
+.brushed {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.015) 0px,
+    rgba(255, 255, 255, 0.015) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+/* vent strip — horizontal slits */
+.vents {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--vents) 0px,
+    var(--vents) 6px,
+    transparent 6px,
+    transparent 9px
+  );
+  background-size: 9px 100%;
+}
+
+/* corner screws */
+.screw {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--plate-b), var(--plate-b2));
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    inset 0 1px 1px rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+.screw::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 7px;
+  height: 1px;
+  background: var(--plate-b2);
+  transform: rotate(45deg);
+  top: 4.5px;
+  left: 1.5px;
+}
+
+/* ─── LED indicators ─── */
+.led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  background: var(--led-r-off);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
+}
+.led-g {
+  background: var(--vu-g);
+  box-shadow:
+    0 0 6px var(--vu-g),
+    0 0 12px rgba(51, 255, 102, 0.5),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+.led-a {
+  background: var(--amber);
+  box-shadow:
+    0 0 6px var(--amber),
+    0 0 12px rgba(255, 176, 0, 0.5),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+.led-r {
+  background: var(--vu-r);
+  box-shadow:
+    0 0 6px var(--vu-r),
+    0 0 12px rgba(255, 68, 68, 0.5),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+.led-data {
+  background: var(--data);
+  box-shadow:
+    0 0 6px var(--data),
+    0 0 12px rgba(53, 214, 196, 0.5),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+
+/* breathing animation for SIG amber LED — disabled under reduced motion */
+@keyframes led-breathe {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--amber), 0 0 12px rgba(255,176,0,0.5), inset 0 0 0 1px rgba(0,0,0,0.4); }
+  50% { opacity: 0.45; box-shadow: 0 0 3px var(--amber), inset 0 0 0 1px rgba(0,0,0,0.4); }
+}
+.led-breathe { animation: led-breathe 2.6s ease-in-out infinite; }
+
+/* boot flicker on mode swap */
+@keyframes boot-flicker {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  15% { opacity: 0.2; }
+  25% { opacity: 1; }
+  35% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.boot-flicker { animation: boot-flicker 380ms ease-out; }
+
+/* ─── VU meter segments ─── */
+.vu-seg {
+  flex: 1;
+  min-width: 0;
+  background: var(--disp-b);
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.7);
+}
+.vu-seg-g { background: var(--vu-g); box-shadow: 0 0 4px var(--vu-g); }
+.vu-seg-a { background: var(--vu-a); box-shadow: 0 0 4px var(--vu-a); }
+.vu-seg-r { background: var(--vu-r); box-shadow: 0 0 4px var(--vu-r); }
+
+/* ─── hardware button (inset, pressed state) ─── */
+.hwbtn {
+  font-family: var(--font-chakra), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  background: var(--plate);
+  color: var(--text2);
+  border: 1px solid var(--plate-b);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -2px 0 var(--plate-b2),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+  padding: 0.625rem 1rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 80ms ease, box-shadow 80ms ease, color 80ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  line-height: 1;
+}
+.hwbtn:hover { color: var(--text2); }
+.hwbtn:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    inset 0 -1px 0 var(--plate-b2),
+    0 0 0 transparent;
+}
+.hwbtn-amber {
+  background: var(--amber);
+  color: var(--disp);
+  border-color: #C88A00;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 0 #8A5E00,
+    0 0 10px rgba(255, 176, 0, 0.4);
+}
+.hwbtn-amber:hover { color: var(--disp); }
+.hwbtn-amber:active {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 #8A5E00,
+    0 0 4px rgba(255, 176, 0, 0.3);
+}
+
+/* ─── module card: 3px left border, status LED + title + code + chevron ─── */
+.modcard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: 4px;
+  position: relative;
+}
+
+/* ─── spec plate ─── */
+.specplate {
+  background: var(--plate);
+  border: 1px solid var(--plate-b);
+  border-radius: 4px;
+  position: relative;
+}
+[data-mode="day"] .specplate {
+  background:
+    var(--plate);
+}
+.specplate.brushed-day {
+  /* extra brushed emphasis on day */
+}
+
+/* ─── electronics module (constant in both modes) ─── */
+.electronics {
+  background: var(--disp);
+  color: var(--amber);
+  border: 1px solid var(--disp-b);
+  border-radius: 3px;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+/* display code chip */
+.codechip {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  background: var(--disp);
+  color: var(--amber);
+  border: 1px solid var(--disp-b);
+  padding: 2px 6px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ─── rocker switch (NIGHT/DAY) ─── */
+.rocker {
+  display: inline-flex;
+  background: var(--sw-bg);
+  border: 1px solid var(--sw-b);
+  border-radius: 3px;
+  padding: 2px;
+  position: relative;
+}
+.rocker-knob {
+  font-family: var(--font-chakra), system-ui, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 2px;
+  color: var(--mut);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  line-height: 1;
+  transition: all 150ms ease;
+}
+.rocker-knob[aria-pressed="true"] {
+  background: var(--plate);
+  color: var(--text2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ─── toggle switch (checklist) ─── */
+.togglesw {
+  width: 34px;
+  height: 18px;
+  background: var(--sw-bg);
+  border: 1px solid var(--sw-b);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 150ms ease;
+}
+.togglesw::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  background: var(--mut);
+  border-radius: 50%;
+  transition: transform 150ms ease, background 150ms ease;
+}
+.togglesw[data-on="true"] {
+  background: rgba(51, 255, 102, 0.18);
+  border-color: var(--vu-g);
+}
+.togglesw[data-on="true"]::after {
+  transform: translateX(16px);
+  background: var(--vu-g);
+  box-shadow: 0 0 6px var(--vu-g);
+}
+
+/* ─── diagnostic chip (TOC) ─── */
+.diagchip {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  background: var(--disp);
+  color: var(--amber);
+  border: 1px solid var(--disp-b);
+  padding: 6px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+.diagchip:hover { background: #161616; color: var(--amber); }
+
+/* ─── scrollbars (panel styled) ─── */
+.scroll-x {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--plate-b) transparent;
+}
+.scroll-x::-webkit-scrollbar { height: 6px; }
+.scroll-x::-webkit-scrollbar-track { background: transparent; }
+.scroll-x::-webkit-scrollbar-thumb { background: var(--plate-b); border-radius: 3px; }
+
+.scroll-y {
+  scrollbar-width: thin;
+  scrollbar-color: var(--plate-b) transparent;
+}
+.scroll-y::-webkit-scrollbar { width: 6px; }
+.scroll-y::-webkit-scrollbar-track { background: transparent; }
+.scroll-y::-webkit-scrollbar-thumb { background: var(--plate-b); border-radius: 3px; }
+
+/* ─── reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .led-breathe { animation: none; opacity: 1; }
+  .boot-flicker { animation: none; opacity: 1; }
+}
+
+/* ─── prose tweaks for article body (Inter, 68ch) ─── */
+.prose-panel {
+  max-width: 68ch;
+  color: var(--body);
+}
+.prose-panel p { margin: 0 0 1.25em; }
+.prose-panel h2 {
+  font-size: 1.5rem;
+  margin: 2.25em 0 0.75em;
+  padding-top: 1em;
+  border-top: 1px solid var(--line);
+}
+.prose-panel h2:first-child { border-top: none; padding-top: 0; }
+.prose-panel h3 {
+  font-size: 1.125rem;
+  margin: 1.5em 0 0.5em;
+  color: var(--text2);
+}
+.prose-panel a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
+.prose-panel a:hover { color: var(--text2); }
+.prose-panel strong { color: var(--text2); font-weight: 600; }
+.prose-panel ul { margin: 0 0 1.25em; padding-left: 1.25em; list-style: none; }
+.prose-panel ul li { position: relative; padding-left: 0.5em; margin-bottom: 0.4em; }
+.prose-panel ul li::before { content: "–"; position: absolute; left: -0.9em; color: var(--mut); }
+.prose-panel code {
+  background: var(--disp);
+  color: var(--amber);
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-size: 0.85em;
+  border: 1px solid var(--disp-b);
+}
+
+/* skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--amber);
+  color: var(--disp);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-chakra), sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+}
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+/* utility: hide native scrollbar but keep scroll */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

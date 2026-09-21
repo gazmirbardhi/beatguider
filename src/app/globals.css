@@ -1185,3 +1185,92 @@
   .rec-indicator .led { animation: none; opacity: 1; }
   .led-hum { animation: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   PANEL VISUAL DETAIL LAYER (round 6 enhancements)
+   - Amber data-bus indicator (flowing dots across footer serial line)
+   - Deeper LCD inset shadow
+   - Temperature readout (decorative, clearly illustrative)
+   - Subtle chassis seam line
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Amber data-bus indicator ───
+   A row of small dots flowing left→right, like data on a bus.
+   For the footer serial line. Paused under reduced-motion. */
+@keyframes bus-flow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.data-bus {
+  position: relative;
+  overflow: hidden;
+  height: 2px;
+  background: var(--disp-b);
+  border-radius: 1px;
+}
+.data-bus::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  animation: bus-flow 2.4s linear infinite;
+}
+
+/* ─── Deeper LCD inset shadow (round 6) ───
+   Even more pronounced recess for the most important displays. */
+.electronics-deep {
+  box-shadow:
+    inset 0 0 0 1px var(--disp-b),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.8),
+    inset 0 0 32px rgba(255, 176, 0, 0.08),
+    inset 0 2px 0 rgba(255, 176, 0, 0.1),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.6),
+    inset 12px 12px 20px -10px rgba(0, 0, 0, 0.7),
+    inset -12px -12px 20px -10px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* ─── Temperature readout (decorative, clearly illustrative) ───
+   A small LCD segment showing a temperature value, like equipment
+   thermal monitoring. Not a measurement — clearly decorative. */
+.temp-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: var(--disp);
+  border: 1px solid var(--disp-b);
+}
+.temp-readout .temp-bar {
+  width: 3px;
+  height: 8px;
+  background: var(--vu-g);
+  border-radius: 1px;
+  box-shadow: 0 0 3px var(--vu-g);
+}
+
+/* ─── Chassis seam line ───
+   A subtle horizontal line suggesting two chassis panels meeting.
+   For section dividers. */
+.chassis-seam {
+  position: relative;
+}
+.chassis-seam::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line2), transparent);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ─── Reduced motion additions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .data-bus::before { animation: none; opacity: 0.6; }
+}

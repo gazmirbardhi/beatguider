@@ -258,3 +258,38 @@ Unresolved / Risks for next round:
 - The T shortcut in ShortcutsHelp calls onToggleTheme (from useTheme context) but hasn't been live-tested via the overlay button — verified the overlay opens, but the T-key global handler isn't wired (only ? and Esc are). Could add a global T handler in HomePageClient.
 - Could add more generated photos for articles (e.g. rekordbox USB export) — but only for articles where a photo is genuinely illustrative, never fabricated test data.
 - The led-hum animation is defined but not applied to any element — could add to the faceplate LED row for subtle power-supply ripple effect.
+
+---
+Task ID: 20 (global T shortcut + led-hum + POST overlay + scroll-to-top + visual detail round 6)
+Agent: main (Z.ai Code) — recurring webDevReview round 6
+Task: QA pass via agent-browser in both modes, then wire the global T-key shortcut (flagged risk from round 5), apply led-hum to faceplate LEDs (CSS defined, not yet applied), add a POST (power-on self-test) overlay, add a scroll-to-top button, and continue raising visual detail (data-bus indicator, deeper LCD inset, temperature readout). Never fabricate content.
+
+Work Log:
+- Read worklog.md to understand prior state: round 5 delivered signal-flow connectors wired + vendored OG fonts + Build manifest + shortcuts help overlay + visual detail round 5 (vent grille, REC indicator, PS LED bank, CRT corner convergence, amber edge-glow, led-hum CSS). Flagged next: Pagefind, MDX pipeline, global T-key shortcut, apply led-hum, more article photos.
+- QA baseline (agent-browser DAY mode): 1 h1, 11 sections, 117 LEDs, 508 VU segments, 2 gear images, 1 signal-bars, 3 PS rails, 1 REC indicator, 1 signal-flow, 0 errors. Theme sync verified. Search "fix" → 2 results ✓. ? shortcut opens help overlay (1 dialog) ✓. Gear Dueler verdict ✓. 404 page intact ✓. No bugs found — proceeded to new features.
+- Wired global T-key shortcut: new GlobalKeyHandler component in home-page-client.tsx that listens for keydown "t"/"T" (toggles NIGHT/DAY via useTheme().toggle) and "/" (opens search overlay). Skips when typing in input/textarea/select. Resolves the flagged risk that T was listed in the shortcuts help but not actually wired globally. Verified: dispatched keydown "t" → data-mode flipped night→day ✓.
+- Applied led-hum animation to faceplate LED row: added `led-hum` class to both desktop + mobile `.faceplate-led-row` divs in chrome.tsx. The led-hum animation (defined in round 5 CSS, @keyframes led-hum — barely-perceptible 3.3s brightness shimmer 1→0.96→1) now gives the header LEDs a subtle power-supply ripple effect. Paused under prefers-reduced-motion.
+- New PostSequence component in decorative.tsx: a brief power-on self-test overlay on first session load. Shows 5 LED checks (PWR/SIG/ERR/BUS/READY) lighting in sequence at 280ms intervals, with a status readout ("checking PWR…" → "all systems nominal"), then fades. sessionStorage-gated ("beatguider-post" key, shows once per session). Reduced-motion: skipped entirely. VLM verified: "dark overlay with amber text BG-1 · POWER-ON SELF-TEST, LED indicators for PWR, SIG, ERR, BUS, READY clearly visible". Complements BootSplash.
+- New ScrollToTopButton component in decorative.tsx: appears fixed bottom-right after scrolling > 600px. Styled as a recessed chassis button with amber LED + up-arrow icon. Smooth-scrolls to top (instant under reduced-motion). Wired into HomePageClient. Verified: scrolled to 1500px → button appears → click → scrollY=0 ✓.
+- Visual detail round 6 in globals.css: data-bus indicator (.data-bus — 2px horizontal track with a 30%-width amber gradient that flows left→right via @keyframes bus-flow, 2.4s linear infinite — added to footer serial line, paused under reduced-motion), deeper LCD inset shadow (.electronics-deep — even more pronounced recess with 3px black inset + 32px amber glow + 12px corner vignette, available for the most important displays), temperature readout (.temp-readout — small LCD badge with green temp-bar + "34.2°C" value + "TEMP" label, clearly decorative/illustrative — added to footer), chassis-seam (.chassis-seam::after — subtle horizontal gradient line suggesting two chassis panels meeting, for section dividers).
+- Wired data-bus + temperature readout into SiteFooter: data-bus appears as a full-width animated line above the serial line, temperature readout badge sits between the serial text and the copyright. VLM verified: "flowing amber data-bus indicator visible as a horizontal animated line across the top of the footer, temperature readout badge displaying 34.2°C, power-supply rails clearly visible".
+- Lint clean throughout (0 errors, 0 warnings).
+- Final QA matrix (agent-browser DAY mode): 1 h1, 132 LEDs (+3 from round 5 for temp readout bars), 508 VU segments, 1 data-bus, 1 temperature readout, 3 PS rails, 1 REC indicator, 1 signal-flow, 2 led-hum, 2 gear images, 0 runtime errors. T shortcut works (night→day). ? shortcut works. Scroll-to-top works. VLM verified NIGHT hero (near-black, amber readable, spectrum + VU visible) + DAY footer (data-bus + temp + PS rails all visible) + POST overlay (PWR/SIG/ERR/BUS/READY checks) + DAY hero.
+
+Stage Summary:
+- Global T-key shortcut wired: press T anywhere (except inputs) to toggle NIGHT/DAY chassis. Resolves flagged risk. Verified.
+- led-hum applied: faceplate LED row now has subtle power-supply ripple (3.3s brightness shimmer). Reduced-motion safe.
+- POST overlay: power-on self-test sequence on first session load — 5 LED checks (PWR/SIG/ERR/BUS/READY) light in sequence, then fade. Complements BootSplash. sessionStorage-gated. VLM-verified.
+- Scroll-to-top button: recessed chassis button with amber LED, appears after 600px scroll, smooth-scrolls to top. Reduced-motion safe.
+- Visual detail round 6: data-bus indicator (flowing amber dots on footer), temperature readout (34.2°C decorative badge), deeper LCD inset shadow, chassis-seam divider. All reduced-motion safe.
+- All quality gates pass: clean lint, 0 runtime errors, theme sync (T shortcut + rocker + reader-bar), both modes readable, reduced-motion honored, 1 h1 per page, OG images served (offline-capable), content validation passes.
+- New files: none. Modified: src/components/panel/home-page-client.tsx (GlobalKeyHandler + PostSequence + ScrollToTopButton), src/components/panel/decorative.tsx (ScrollToTopButton + PostSequence), src/components/panel/chrome.tsx (led-hum on faceplate LED row), src/components/panel/footer.tsx (data-bus + temperature readout), src/app/globals.css (visual detail round 6).
+
+Unresolved / Risks for next round:
+- Pagefind static search still not wired (buildSearchIndex is the in-memory equivalent — contract is compatible). Could install pagefind and wire a build step.
+- MDX content pipeline not yet wired (fixtures live in data.ts).
+- Static export (output: "export") not yet switched on (dev sandbox needs Node runtime).
+- The POST overlay + BootSplash both fire on first session load — verify they don't visually conflict (BootSplash fades at 700ms, POST starts at 0 and runs ~1.4s; they overlap slightly but POST is z-90, BootSplash is z-100, so BootSplash sits on top initially). Current behavior is acceptable.
+- The .electronics-deep class is defined but not applied to any element — could apply to the most important displays (e.g. the verdict plate, the signal monitor) for extra visual depth.
+- The .chassis-seam class is defined but not applied — could add to section dividers for a subtle seam effect.
+- Could add more generated article photos (e.g. rekordbox USB export) — only where genuinely illustrative, never fabricated test data.

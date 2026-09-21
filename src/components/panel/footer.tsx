@@ -279,9 +279,17 @@ export function SiteFooter({ serial }: { serial: string }) {
             <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>STATUS</span>
             <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--vu-g)" }}>ONLINE</span>
           </div>
+          {/* data-bus indicator — flowing amber dots */}
+          <div className="data-bus w-full mb-2" aria-hidden="true" />
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="mono text-xs" style={{ color: "var(--mut)" }}>
               BEATGUIDER BG-1 — independent DJ test bench
+            </span>
+            {/* temperature readout — decorative, clearly illustrative */}
+            <span className="temp-readout" aria-hidden="true">
+              <span className="temp-bar" />
+              <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>34.2°C</span>
+              <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>TEMP</span>
             </span>
             <span className="mono text-xs" style={{ color: "var(--mut)" }}>
               © {new Date().getFullYear()} BeatGuider · Test. Fix. Mix.

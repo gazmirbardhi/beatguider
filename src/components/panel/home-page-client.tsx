@@ -1,18 +1,18 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { StickyNav } from "./chrome";
 import { SiteFooter, SearchOverlay, ShortcutsHelp } from "./footer";
 import { ThemeProvider, useTheme } from "./theme-toggle";
-import { BootSplash, LedChase } from "./decorative";
+import { BootSplash, LedChase, ScrollToTopButton, PostSequence } from "./decorative";
 
 /**
  * HomePageClient — the client interactivity shell for the / route.
  * Holds the search overlay + shortcuts-help state and wires the SEARCH
- * nav button + keyboard shortcuts. Wraps everything in ThemeProvider so
- * the faceplate rocker and the reader-bar toggle stay in sync (single
- * source of truth for mode). Renders a one-shot BootSplash on first
- * session load (reduced-motion safe).
+ * nav button + keyboard shortcuts (⌘K, ?, T, Esc, /). Wraps everything
+ * in ThemeProvider so the faceplate rocker and the reader-bar toggle
+ * stay in sync (single source of truth for mode). Renders a one-shot
+ * BootSplash on first session load (reduced-motion safe).
  */
 export function HomePageClient({
   faceplate,
@@ -33,7 +33,9 @@ export function HomePageClient({
   return (
     <ThemeProvider>
       <BootSplash />
+      <PostSequence />
       <LedChase />
+      <GlobalKeyHandler setHelpOpen={setHelpOpen} setSearchOpen={setSearchOpen} />
       <div className="min-h-screen flex flex-col panel-surface">
         {faceplate}
         <StickyNav items={nav} onSearchClick={() => setSearchOpen(true)} />
@@ -56,6 +58,7 @@ export function HomePageClient({
         )}
 
         <SiteFooter serial={serial} />
+        <ScrollToTopButton />
 
         <SearchOverlay open={searchOpen} setOpen={setSearchOpen} />
         <ShortcutsHelpRenderer
@@ -66,6 +69,45 @@ export function HomePageClient({
       </div>
     </ThemeProvider>
   );
+}
+
+/**
+ * GlobalKeyHandler — listens for the T (toggle theme) and / (focus search)
+ * global shortcuts. The ? and Esc handlers live in ShortcutsHelp itself.
+ * Skips when typing in an input/textarea/select.
+ */
+function GlobalKeyHandler({
+  setHelpOpen,
+  setSearchOpen,
+}: {
+  setHelpOpen: (v: boolean) => void;
+  setSearchOpen: (v: boolean) => void;
+}) {
+  const { toggle } = useTheme();
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      const inInput = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+      if (inInput) return;
+
+      // T → toggle NIGHT/DAY chassis
+      if (e.key === "t" || e.key === "T") {
+        e.preventDefault();
+        toggle();
+      }
+      // / → focus search (open the search overlay)
+      if (e.key === "/" && !e.shiftKey) {
+        e.preventDefault();
+        setHelpOpen(false);
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [toggle, setHelpOpen, setSearchOpen]);
+
+  return null;
 }
 
 /** Renders ShortcutsHelp with access to the theme context for the T shortcut. */

@@ -388,3 +388,119 @@ export function LedChase() {
   }, []);
   return null;
 }
+
+/* ─── Scroll-to-top hardware button ───
+   Appears after scrolling down > 600px. Styled as a recessed chassis
+   button with amber LED. Smooth-scrolls to top. Reduced-motion: instant. */
+export function ScrollToTopButton() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 600);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      }}
+      className="fixed bottom-4 right-4 z-30 hwbtn !p-2.5 !rounded-full"
+      aria-label="Scroll to top of page"
+      title="Back to top"
+    >
+      <span className="led led-a" aria-hidden="true" />
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 3L3 8M8 3L13 8M8 3V13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
+  );
+}
+
+/* ─── POST (power-on self-test) overlay ───
+   A brief diagnostic sequence on first load: shows LED checks
+   (PWR / SIG / ERR / signal bars) lighting in sequence, then fades.
+   Complements BootSplash. Reduced-motion: skipped. SessionStorage-gated
+   so it shows once per session. */
+export function PostSequence() {
+  const [step, setStep] = useState<number>(-1); // -1 = not started, 0..4 = checks, 5 = done
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) {
+      setStep(5);
+      return;
+    }
+    if (sessionStorage.getItem("beatguider-post")) {
+      setStep(5);
+      return;
+    }
+    sessionStorage.setItem("beatguider-post", "1");
+    setStep(0);
+    const steps = [0, 1, 2, 3, 4, 5];
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      if (i >= steps.length) {
+        clearInterval(interval);
+        setStep(5);
+      } else {
+        setStep(steps[i]);
+      }
+    }, 280);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (step === -1 || step === 5) return null;
+
+  const checks = [
+    { label: "PWR", led: "led led-g", on: step >= 0 },
+    { label: "SIG", led: "led led-a", on: step >= 1 },
+    { label: "ERR", led: step >= 2 ? "led" : "led led-r led-r-pulse", on: step >= 2 },
+    { label: "BUS", led: "led led-a", on: step >= 3 },
+    { label: "READY", led: "led led-g", on: step >= 4 },
+  ];
+
+  return (
+    <div
+      aria-hidden="true"
+      className="fixed inset-0 z-[90] pointer-events-none flex items-center justify-center"
+      style={{
+        background: "var(--disp)",
+        opacity: step >= 5 ? 0 : 1,
+        transition: "opacity 300ms ease-out",
+      }}
+    >
+      <div className="text-center">
+        <div className="silk-lg mb-4" style={{ color: "var(--amber)" }}>
+          BG-1 · POWER-ON SELF-TEST
+        </div>
+        <div className="flex items-center justify-center gap-4 mb-4">
+          {checks.map((c, i) => (
+            <div key={c.label} className="flex flex-col items-center gap-1.5">
+              <span
+                className={`led ${c.on ? c.led : ""}`}
+                style={{ width: 10, height: 10, opacity: c.on ? 1 : 0.2 }}
+              />
+              <span
+                className="silk !text-[0.5625rem]"
+                style={{ color: c.on ? "var(--amber)" : "rgba(255,176,0,0.3)" }}
+              >
+                {c.label}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="lcd !text-xs !bg-transparent" style={{ color: "rgba(255,176,0,0.6)" }}>
+          &gt; {step < 4 ? `checking ${checks[step]?.label}…` : "all systems nominal"}
+        </div>
+      </div>
+    </div>
+  );
+}

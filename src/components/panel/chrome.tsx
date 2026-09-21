@@ -43,13 +43,13 @@ export function FaceplateHeader({
 
           {/* LED row + mode switch */}
           <div className="flex items-center gap-4 sm:gap-6">
-            <div className="faceplate-led-row hidden sm:flex items-center gap-3" aria-hidden="true">
+            <div className="faceplate-led-row led-hum hidden sm:flex items-center gap-3" aria-hidden="true">
               <LedLabel color="g" label="PWR" />
               <LedLabel color="a-breathe" label="SIG" />
               <LedLabel color="r-off" label="ERR" />
             </div>
             {/* mobile: condensed LED row */}
-            <div className="faceplate-led-row flex sm:hidden items-center gap-2" aria-hidden="true">
+            <div className="faceplate-led-row led-hum flex sm:hidden items-center gap-2" aria-hidden="true">
               <span className="led led-g" />
               <span className="led led-a led-breathe" />
               <span className="led" />

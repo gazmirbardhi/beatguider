@@ -231,6 +231,13 @@ export function FaultReport() {
 /* ─── 4. TESTED HARDWARE ─── */
 export function TestedHardware() {
   const gear = gearDb;
+  // Generated stylized product photos for tested gear (clearly decorative —
+  // not measurements). Only tested gear gets a photo; untested gear shows
+  // the reserved photo bay (honest, no fabrication).
+  const photoForSlug: Record<string, string> = {
+    "ddj-flx4": "/gear/ddj-flx4.png",
+    "ddj-400": "/gear/ddj-400.png",
+  };
   return (
     <SectionFrame id="tested-hardware">
       <SectionLabel code="SEC-02" title="Tested hardware" kicker="hands-on gear" />
@@ -246,11 +253,25 @@ export function TestedHardware() {
             status={g.status}
             rating={g.rating ? Math.round(g.rating.reduce((s, r) => s + r.value, 0) / g.rating.length) : undefined}
             href={`#specimen`}
+            imageSlot={
+              g.tested && photoForSlug[g.slug] ? (
+                <img
+                  src={photoForSlug[g.slug]}
+                  alt={`${g.manufacturer} ${g.model} ${g.category.toLowerCase()} — stylized product photo`}
+                  width={64}
+                  height={64}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover"
+                  style={{ filter: "saturate(0.85) contrast(1.05)" }}
+                />
+              ) : undefined
+            }
           />
         ))}
       </div>
       <p className="mono text-xs mt-4" style={{ color: "var(--mut)" }}>
-        Active products show a green LED · discontinued gray · ratings render as VU meters and are emitted only from real test data.
+        Active products show a green LED · discontinued gray · ratings render as VU meters and are emitted only from real test data. Tested-gear photos are stylized illustrations — not measurements.
       </p>
     </SectionFrame>
   );

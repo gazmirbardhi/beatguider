@@ -124,7 +124,17 @@ export function LcdStatus({
         </div>
       ))}
       <div className="flex-1" />
-      <div className="hidden sm:flex items-center px-3 border-l border-[var(--disp-b)]">
+      {/* signal-strength indicator */}
+      <div className="hidden sm:flex flex-col justify-center items-center px-3 border-l border-[var(--disp-b)]">
+        <span className="silk !text-[0.5rem] mb-0.5" style={{ color: "rgba(255,176,0,0.55)" }}>SIG</span>
+        <span className="sig-bars" aria-hidden="true">
+          <span className="on" />
+          <span className="on" />
+          <span className="on" />
+          <span className="on" />
+        </span>
+      </div>
+      <div className="flex items-center px-3 border-l border-[var(--disp-b)]">
         <span className="led led-g led-breathe" aria-hidden="true" />
       </div>
     </div>

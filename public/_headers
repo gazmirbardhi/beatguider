@@ -1,0 +1,32 @@
+# BeatGuider BG-1 — Cloudflare Workers Static Assets headers
+# Security headers for a static-export publication. CSP is intentionally
+# permissive on script-src during the initial ad-free release and will be
+# tightened when advertising is decided (spec §22).
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-XSS-Protection: 1; mode=block
+
+# Static assets — long cache, immutable fingerprinted URLs
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# OG images — long cache, stable filenames
+/og/*
+  Cache-Control: public, max-age=86400
+
+# Generated gear/article photos — long cache
+/gear/*
+  Cache-Control: public, max-age=604800
+/articles/*
+  Cache-Control: public, max-age=604800
+
+# Fonts served from Google Fonts CDN — no local headers needed
+
+# HTML — short cache, must revalidate to pick up content updates
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

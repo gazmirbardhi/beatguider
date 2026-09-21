@@ -489,7 +489,16 @@ async function main() {
       a.category === "fix" ? "troubleshooting" :
       a.contentType === "review" ? "gear" :
       a.category === "tools" ? "tool" : "article";
-    const score = template === "gear" ? 85 : undefined; // placeholder — real score from test data
+    // Pull the real avg rating from gearDb when the article relates to gear
+    // (resolves the placeholder-score risk). Untested/research-based articles
+    // get no score (honest — no fabricated rating).
+    let score: number | undefined = undefined;
+    if (template === "gear" && a.relatedGear && a.relatedGear.length > 0) {
+      const gear = gearDb.find((g) => g.code === a.relatedGear![0]);
+      if (gear && gear.rating && gear.rating.length > 0) {
+        score = Math.round(gear.rating.reduce((s, r) => s + r.value, 0) / gear.rating.length);
+      }
+    }
     const brandA = template === "comparison" ? a.title.split(" vs ")[0] : undefined;
     const brandB = template === "comparison" ? a.title.split(" vs ")[1]?.split(" —")[0] : undefined;
     await renderOG(

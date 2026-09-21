@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   SpecPlate,
@@ -357,30 +358,81 @@ export function SpecimenArticle() {
 }
 
 function TOCInline() {
+  const [active, setActive] = useState<string>("");
+
+  useEffect(() => {
+    const items = [
+      { id: "why-this-happens", label: "Why", n: "01" },
+      { id: "step-1", label: "Physical", n: "02" },
+      { id: "step-2", label: "OS audio", n: "03" },
+      { id: "step-3", label: "App route", n: "04" },
+      { id: "step-4", label: "Driver/FW", n: "05" },
+      { id: "checklist", label: "Checklist", n: "06" },
+      { id: "spec-table", label: "Specs", n: "07" },
+      { id: "comparison", label: "Compare", n: "08" },
+      { id: "figure", label: "Photo", n: "09" },
+      { id: "methodology", label: "Method", n: "10" },
+      { id: "ad", label: "Sponsor", n: "11" },
+    ];
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-112px 0px -65% 0px", threshold: [0, 0.25, 0.5, 1] }
+    );
+    items.forEach((it) => {
+      const el = document.getElementById(it.id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  const items = [
+    { id: "why-this-happens", label: "Why", n: "01" },
+    { id: "step-1", label: "Physical", n: "02" },
+    { id: "step-2", label: "OS audio", n: "03" },
+    { id: "step-3", label: "App route", n: "04" },
+    { id: "step-4", label: "Driver/FW", n: "05" },
+    { id: "checklist", label: "Checklist", n: "06" },
+    { id: "spec-table", label: "Specs", n: "07" },
+    { id: "comparison", label: "Compare", n: "08" },
+    { id: "figure", label: "Photo", n: "09" },
+    { id: "methodology", label: "Method", n: "10" },
+    { id: "ad", label: "Sponsor", n: "11" },
+  ];
+
   return (
     <div className="mx-auto max-w-[1280px] mb-6">
       <nav aria-label="Diagnostic map" className="scroll-x -mx-4 sm:mx-0 px-4 sm:px-0">
         <ol className="flex items-center gap-2 no-scrollbar w-max pb-1">
-          {[
-            { id: "why-this-happens", label: "Why", n: "01" },
-            { id: "step-1", label: "Physical", n: "02" },
-            { id: "step-2", label: "OS audio", n: "03" },
-            { id: "step-3", label: "App route", n: "04" },
-            { id: "step-4", label: "Driver/FW", n: "05" },
-            { id: "checklist", label: "Checklist", n: "06" },
-            { id: "spec-table", label: "Specs", n: "07" },
-            { id: "comparison", label: "Compare", n: "08" },
-            { id: "figure", label: "Photo", n: "09" },
-            { id: "methodology", label: "Method", n: "10" },
-            { id: "ad", label: "Sponsor", n: "11" },
-          ].map((it) => (
-            <li key={it.id}>
-              <a href={`#${it.id}`} className="diagchip">
-                <span style={{ color: "var(--vu-g)" }}>{it.n}</span>
-                {it.label}
-              </a>
-            </li>
-          ))}
+          {items.map((it) => {
+            const isActive = active === it.id;
+            return (
+              <li key={it.id}>
+                <a
+                  href={`#${it.id}`}
+                  className="diagchip"
+                  style={
+                    isActive
+                      ? {
+                          background: "#161616",
+                          borderColor: "var(--amber)",
+                          boxShadow: "0 0 0 1px var(--amber), 0 0 8px rgba(255,176,0,0.25)",
+                        }
+                      : undefined
+                  }
+                  aria-current={isActive ? "true" : undefined}
+                >
+                  <span style={{ color: isActive ? "var(--amber)" : "var(--vu-g)" }}>{it.n}</span>
+                  {it.label}
+                  {isActive && <span className="led led-a" aria-hidden="true" style={{ width: 5, height: 5 }} />}
+                </a>
+              </li>
+            );
+          })}
         </ol>
       </nav>
     </div>

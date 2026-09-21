@@ -950,3 +950,127 @@
   .lcd-power-on { animation: none; opacity: 1; }
   .modcard:hover .modcard-scan { animation: none; opacity: 0; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   PANEL VISUAL DETAIL LAYER (round 4 enhancements)
+   - Recessed LCD bezel (double-border, inset)
+   - Signal-flow connectors (animated dots between Gear Dueler cards)
+   - Signal-strength indicator (WiFi-style bars on LCD status line)
+   - Pulse-line on active VU segments
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Recessed LCD bezel — double-border inset ───
+   Electronics modules get a recessed look: outer dark border + inner
+   amber-tinted inset, like the display is sunk into the faceplate. */
+.electronics {
+  box-shadow:
+    inset 0 0 0 1px var(--disp-b),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.6),
+    inset 0 0 24px rgba(255, 176, 0, 0.06),
+    inset 0 1px 0 rgba(255, 176, 0, 0.08);
+}
+
+/* ─── Signal-flow connectors ───
+   Animated amber dots that flow between the two Gear Dueler cards,
+   like a signal traveling from A to B. Pure CSS, paused under
+   reduced-motion. Apply to a connector element between two cards. */
+.signal-flow {
+  position: relative;
+  overflow: hidden;
+}
+.signal-flow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--disp-b) 0px,
+    var(--disp-b) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+.signal-flow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 6px var(--amber);
+  transform: translateY(-50%);
+  animation: signal-travel 2s linear infinite;
+}
+@keyframes signal-travel {
+  0% { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* ─── Signal-strength indicator (WiFi-style bars) ───
+   For the LCD status line. 4 vertical bars, amber when active. */
+.sig-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 10px;
+}
+.sig-bars span {
+  width: 2px;
+  background: var(--disp-b);
+  border-radius: 1px;
+}
+.sig-bars span:nth-child(1) { height: 30%; }
+.sig-bars span:nth-child(2) { height: 55%; }
+.sig-bars span:nth-child(3) { height: 80%; }
+.sig-bars span:nth-child(4) { height: 100%; }
+.sig-bars span.on {
+  background: var(--amber);
+  box-shadow: 0 0 3px var(--amber);
+}
+
+/* ─── Pulse-line on active VU segments ───
+   Adds a subtle brightness pulse to lit VU segments. */
+@keyframes vu-pulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.15); }
+}
+.vu-seg-g, .vu-seg-a, .vu-seg-r {
+  animation: vu-pulse 2.5s ease-in-out infinite;
+}
+
+/* ─── Recessed plate title (for spec-plate headings) ───
+   Deeper engraving effect with amber edge highlight. */
+.engraved-deep {
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.9),
+    0 -1px 0 rgba(255, 176, 0, 0.08),
+    0 0 8px rgba(255, 176, 0, 0.15);
+}
+
+/* ─── Glowing amber edge for active nav ─── */
+.nav-active-edge {
+  position: relative;
+}
+.nav-active-edge::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 8px;
+  right: 8px;
+  height: 1px;
+  background: var(--amber);
+  box-shadow: 0 0 6px var(--amber);
+}
+
+/* ─── Reduced motion additions ─── */
+@media (prefers-reduced-motion: reduce) {
+  .signal-flow::after { animation: none; opacity: 0.6; left: 50%; }
+  .vu-seg-g, .vu-seg-a, .vu-seg-r { animation: none; }
+}

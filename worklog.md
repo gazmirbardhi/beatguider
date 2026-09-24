@@ -513,3 +513,33 @@ Unresolved / Risks for next round:
 - The homepage still embeds the full SpecimenArticle section (from the single-page era) — could be slimmed to just a teaser + link to the real article route, further reducing page weight + improving nav clarity.
 - Could add per-article unique body content (currently all articles share the same body template with different frontmatter).
 - The dev server dies between Bash tool calls in this sandbox — the setsid/nohup approach doesn't persist. Tests must be run in a single command.
+
+---
+Task ID: 27 (homepage de-clutter + tools reorganization + 3 new tools + intuitive navigation)
+Agent: main (Z.ai Code)
+Task: User requested: simple clutter-free homepage, everything organized into dedicated pages, tools on a dedicated page, more useful tools that DJs actually use, intuitive navigation, audit for errors/incomplete code.
+
+Work Log:
+- CODE AUDIT: lint clean (0 errors). Dev log clean. No console errors found via agent-browser.
+- Fixed 1 runtime bug: tools.tsx missing `useCallback` + `useEffect` imports — caused 500 error on /tools page (BpmTapDetector used `useCallback` which wasn't imported). Fixed: added to the import line.
+- SIMPLIFIED HOMEPAGE: rewrote page.tsx to import only 3 sections (SimplifiedHero, LatestArticles, SimpleNewsletterCta) instead of 13 sections. Homepage went from 13 sections / 24KB text → 3 sections / 2.7KB text. Removed: FaultReport, TestedHardware, SoftwareLog, ToolModules, SpecimenArticle, MobileDjModule, Glossary, EquipmentMatrix, StyleGuideSection, SignalChain — all have dedicated pages already.
+- New home-sections.tsx: SimplifiedHero (hero + 3 intent cards + quick links to /tools /compare /mobile-dj), LatestArticles (6 article cards with reading time, linking to real /category/slug routes), SimpleNewsletterCta (compact email CTA).
+- Nav updated: Tools now links to /tools (was /#tools).
+- NEW /tools PAGE: rewrote src/app/tools/page.tsx to use new ToolCategoryPage component. Organized all 9 tools into 5 categories: Timing (BPM Tap Detector, BPM Calculator, Cue Point Calculator), Harmonic (Camelot Wheel, Key/BPM Matcher), Business (Set Planner, DJ Fee Calculator), Power (Power Calculator), Comparison (Gear Dueler). Clean category headers with LED + description.
+- 3 NEW TOOLS added to tools.tsx:
+  - TOOL-07 BPM Tap Detector: THE most-used DJ tool. Tap the spacebar or click to the beat → live BPM + stability indicator (stable/drifting/unstable based on tap variance). Keeps last 8 taps for averaging. Keyboard listener for Space/T. Reset button. This is the sticky tool that keeps DJs coming back.
+  - TOOL-08 DJ Fee Calculator: calculate gig fee from hours × base rate + equipment wear/rental + travel round-trip. Shows breakdown + total + per-hour. Business tool every working DJ needs.
+  - TOOL-09 Cue Point Calculator: converts BPM to time positions for phrase-locked cue points (1 beat, 4/8/16/32/64 bars). Shows section lengths (32-bar section in seconds, 64-bar in minutes). Educational — teaches phrase structure.
+- Updated search index (buildSearchIndex) with TOOL-07/08/09 — all with href: "/tools".
+- Updated BuildManifest footer with TOOL-07/08/09 (now shows 09 tools).
+- All tool hrefs in search index now point to /tools (real route, not #tools anchor).
+- VERIFICATION: all 14 audited routes pass (200 OK). Homepage: 3 sections, 2.7KB, VLM rated 9/10 simplicity. Tools page: all 9 tools render, BPM Tap Detector works (4 taps detected), organized into 5 categories. Lint clean.
+
+Stage Summary:
+- Homepage de-cluttered: 13 sections → 3 (hero + latest + newsletter). 24KB → 2.7KB. VLM rated 9/10 simplicity.
+- Tools page organized: 9 tools in 5 categories (Timing/Harmonic/Business/Power/Comparison). Clean headers, full-width rack units, mobile-friendly.
+- 3 new high-value tools: BPM Tap Detector (#1 most-used DJ tool — sticky), DJ Fee Calculator (business), Cue Point Calculator (educational).
+- Navigation: all nav links point to real routes (/gear, /software, /fix, /learn, /tools, /mobile-dj). Breadcrumbs on every page.
+- Bug fixed: missing useCallback/useEffect imports in tools.tsx (caused 500 on /tools).
+- Lint clean. All routes 200. 0 console errors.
+- Files: src/app/page.tsx (rewritten — clean), src/components/panel/home-sections.tsx (new), src/components/panel/tool-category.tsx (new), src/app/tools/page.tsx (rewritten), src/components/panel/tools.tsx (+3 tools, import fix), src/components/panel/footer.tsx (BuildManifest +3 tools), src/lib/content/data.ts (search index +3 tools).

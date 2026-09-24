@@ -624,6 +624,30 @@ export function buildSearchIndex(): SearchEntry[] {
       led: "a",
       kind: "tool",
     },
+    {
+      code: "TOOL-07",
+      title: "BPM Tap Detector",
+      description: "tap to the beat and get BPM — the #1 most-used DJ tool",
+      href: "/tools",
+      led: "a",
+      kind: "tool",
+    },
+    {
+      code: "TOOL-08",
+      title: "DJ Fee Calculator",
+      description: "calculate your gig fee based on hours, equipment, and travel",
+      href: "/tools",
+      led: "a",
+      kind: "tool",
+    },
+    {
+      code: "TOOL-09",
+      title: "Cue Point Calculator",
+      description: "calculate phrase-locked cue point positions from BPM",
+      href: "/tools",
+      led: "a",
+      kind: "tool",
+    },
   ];
 
   return [...fromArticles, ...fromGear, ...fromTools];

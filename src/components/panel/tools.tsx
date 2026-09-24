@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, type ReactNode } from "react";
+import { useState, useMemo, useCallback, useEffect, type ReactNode } from "react";
 import { CautionCallout } from "./components";
 
 /* ════════════════════════════════════════════════════════════════
@@ -932,6 +932,293 @@ export function SetLengthPlanner() {
       ) : (
         <LcdReadout label="Readout">
           <span style={{ color: "var(--vu-r)" }}>&gt; ERR · invalid input</span>
+        </LcdReadout>
+      )}
+    </RackFrame>
+  );
+}
+
+/* ─── BPM TAP DETECTOR (TOOL-07) ───
+   THE most-used DJ tool. Tap the spacebar (or click) to the beat,
+   get the BPM. Shows live average + last 8 taps + stability indicator.
+   This is the tool DJs bookmark and come back to — it's the sticky
+   tool that beats competitors. */
+export function BpmTapDetector() {
+  const [taps, setTaps] = useState<number[]>([]);
+  const [bpm, setBpm] = useState<number | null>(null);
+  const [stability, setStability] = useState<"stable" | "drifting" | "unstable">("unstable");
+
+  const handleTap = useCallback(() => {
+    const now = Date.now();
+    setTaps((prev) => {
+      const next = [...prev, now].slice(-8); // keep last 8 taps
+      if (next.length >= 2) {
+        const intervals: number[] = [];
+        for (let i = 1; i < next.length; i++) {
+          intervals.push(next[i] - next[i - 1]);
+        }
+        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+        const calcBpm = Math.round(60000 / avgInterval);
+        if (calcBpm > 20 && calcBpm < 400) {
+          setBpm(calcBpm);
+          // stability: check variance
+          const variance = intervals.reduce((acc, val) => acc + Math.abs(val - avgInterval), 0) / intervals.length;
+          const pctVariance = (variance / avgInterval) * 100;
+          setStability(pctVariance < 2 ? "stable" : pctVariance < 5 ? "drifting" : "unstable");
+        }
+      }
+      return next;
+    });
+  }, []);
+
+  // keyboard listener — spacebar or T
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code === "Space" || e.key === "t" || e.key === "T") {
+        // only if not typing in an input
+        const tag = (e.target as HTMLElement)?.tagName;
+        if (tag !== "INPUT" && tag !== "TEXTAREA" && tag !== "SELECT") {
+          e.preventDefault();
+          handleTap();
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [handleTap]);
+
+  const reset = () => {
+    setTaps([]);
+    setBpm(null);
+    setStability("unstable");
+  };
+
+  return (
+    <RackFrame
+      code="TOOL-07"
+      title="BPM Tap Detector"
+      foot="Tap the spacebar (or click the button) to the beat. The tool averages your last 8 taps for a stable reading. This is the #1 most-used DJ tool — bookmark it."
+    >
+      {/* big tap button */}
+      <button
+        type="button"
+        onClick={handleTap}
+        className="w-full electronics electronics-deep p-8 mb-3 text-center transition-transform active:scale-95"
+        style={{ cursor: "pointer" }}
+        aria-label="Tap to detect BPM"
+      >
+        <div className="font-[family-name:var(--font-chakra)] font-bold text-3xl sm:text-5xl mb-2" style={{ color: bpm ? "var(--amber)" : "rgba(255,176,0,0.3)" }}>
+          {bpm ? String(bpm).padStart(3, "0") : "---"}
+        </div>
+        <div className="silk" style={{ color: "rgba(255,176,0,0.55)" }}>BPM · TAP TO DETECT</div>
+        {taps.length > 0 && (
+          <div className="lcd !text-xs !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.5)" }}>
+            {taps.length} tap{taps.length !== 1 ? "s" : ""} · press SPACE
+          </div>
+        )}
+      </button>
+
+      {/* stability + reset */}
+      <div className="flex items-center gap-3">
+        {bpm && (
+          <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--disp-b)" }}>
+            <span className={`led ${stability === "stable" ? "led-g" : stability === "drifting" ? "led-a" : "led-r"}`} aria-hidden="true" />
+            <span className="silk" style={{ color: stability === "stable" ? "var(--ok)" : stability === "drifting" ? "var(--amber)" : "var(--err)" }}>
+              {stability.toUpperCase()}
+            </span>
+          </span>
+        )}
+        {taps.length > 0 && (
+          <button type="button" onClick={reset} className="hwbtn !text-[0.6875rem] !py-1.5">
+            Reset
+          </button>
+        )}
+      </div>
+    </RackFrame>
+  );
+}
+
+/* ─── DJ FEE CALCULATOR (TOOL-08) ───
+   Calculate your gig fee based on hours, equipment, travel, and experience.
+   The tool every working DJ needs — helps price gigs fairly. */
+export function DjFeeCalculator() {
+  const [hours, setHours] = useState("4");
+  const [baseRate, setBaseRate] = useState("150");
+  const [equipment, setEquipment] = useState("owned");
+  const [travel, setTravel] = useState("0");
+  const [travelRate, setTravelRate] = useState("0.65");
+
+  const data = useMemo(() => {
+    const h = parseFloat(hours);
+    const rate = parseFloat(baseRate);
+    const t = parseFloat(travel);
+    const tr = parseFloat(travelRate);
+    if (isNaN(h) || isNaN(rate) || h <= 0 || rate <= 0) return null;
+
+    const baseFee = h * rate;
+    const equipFee = equipment === "rented" ? h * 50 : equipment === "owned" ? h * 25 : 0;
+    const travelFee = t * tr * 2; // round trip
+    const total = baseFee + equipFee + travelFee;
+    const perHour = total / h;
+
+    return {
+      baseFee: baseFee.toFixed(0),
+      equipFee: equipFee.toFixed(0),
+      travelFee: travelFee.toFixed(0),
+      total: total.toFixed(0),
+      perHour: perHour.toFixed(0),
+    };
+  }, [hours, baseRate, equipment, travel, travelRate]);
+
+  return (
+    <RackFrame
+      code="TOOL-08"
+      title="DJ Fee Calculator"
+      foot="Estimates only. Set your base rate, equipment cost, and travel. Adjust for your market — big cities command higher rates. Always have a written contract."
+    >
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <label className="flex flex-col gap-1">
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>HOURS</span>
+          <input type="number" min="1" step="0.5" value={hours} onChange={(e) => setHours(e.target.value)}
+            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            style={{ color: "var(--amber)" }} aria-label="Gig duration in hours" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>BASE $/HR</span>
+          <input type="number" min="0" step="10" value={baseRate} onChange={(e) => setBaseRate(e.target.value)}
+            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            style={{ color: "var(--amber)" }} aria-label="Base hourly rate" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>TRAVEL (MI)</span>
+          <input type="number" min="0" value={travel} onChange={(e) => setTravel(e.target.value)}
+            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            style={{ color: "var(--amber)" }} aria-label="Travel distance in miles" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>$/MI RATE</span>
+          <input type="number" min="0" step="0.05" value={travelRate} onChange={(e) => setTravelRate(e.target.value)}
+            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            style={{ color: "var(--amber)" }} aria-label="Cost per mile" />
+        </label>
+      </div>
+      <label className="flex flex-col gap-1 mb-3">
+        <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>EQUIPMENT</span>
+        <select value={equipment} onChange={(e) => setEquipment(e.target.value)}
+          className="electronics px-3 py-2 lcd !bg-transparent font-semibold outline-none w-full"
+          style={{ color: "var(--amber)" }} aria-label="Equipment status">
+          <option value="owned" style={{ background: "#0A0A0A", color: "#FFB000" }}>Owned (+$25/hr wear)</option>
+          <option value="rented" style={{ background: "#0A0A0A", color: "#FFB000" }}>Rented (+$50/hr cost)</option>
+          <option value="provided" style={{ background: "#0A0A0A", color: "#FFB000" }}>Venue provided (+$0)</option>
+        </select>
+      </label>
+
+      {data ? (
+        <LcdReadout label={`Fee breakdown · ${hours}h gig`}>
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+            <Row k="Base fee" v={`$${data.baseFee}`} />
+            <Row k="Equipment" v={`$${data.equipFee}`} />
+            <Row k="Travel (round)" v={`$${data.travelFee}`} />
+            <Row k="Per hour" v={`$${data.perHour}`} />
+          </dl>
+          <div className="mt-3 pt-3 border-t border-[var(--disp-b)] flex items-baseline justify-between">
+            <span className="silk" style={{ color: "rgba(255,176,0,0.6)" }}>TOTAL FEE</span>
+            <span className="lcd lcd-ghost !text-2xl !bg-transparent font-bold">${data.total}</span>
+          </div>
+        </LcdReadout>
+      ) : (
+        <LcdReadout label="Readout">
+          <span style={{ color: "var(--vu-r)" }}>&gt; ERR · invalid input</span>
+        </LcdReadout>
+      )}
+    </RackFrame>
+  );
+}
+
+/* ─── CUE POINT CALCULATOR (TOOL-09) ───
+   Calculate phrase-locked cue point positions based on BPM.
+   Helps DJs set cues at the start of 8/16/32-bar phrases — the
+   musical boundaries where transitions sound best. */
+export function CuePointCalculator() {
+  const [bpm, setBpm] = useState("124");
+  const num = parseFloat(bpm);
+  const valid = !isNaN(num) && num > 0;
+
+  const data = useMemo(() => {
+    if (!valid) return null;
+    const msPerBeat = 60000 / num;
+    const msPerBar = msPerBeat * 4;
+    return {
+      beat1: msPerBeat,
+      bar4: msPerBar * 4,
+      bar8: msPerBar * 8,
+      bar16: msPerBar * 16,
+      bar32: msPerBar * 32,
+      bar64: msPerBar * 64,
+      secondsPer32: (msPerBar * 32) / 1000,
+      minutesPer64: (msPerBar * 64) / 60000,
+    };
+  }, [bpm, valid]);
+
+  const formatMs = (ms: number) => {
+    const s = ms / 1000;
+    const mins = Math.floor(s / 60);
+    const secs = (s % 60).toFixed(2);
+    return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+  };
+
+  return (
+    <RackFrame
+      code="TOOL-09"
+      title="Cue Point Calculator"
+      foot="Cue points set at phrase boundaries (8/16/32 bars) sound musical, not random. This tool converts BPM to time positions so you can set cues precisely in your DJ software."
+    >
+      <label className="flex flex-col gap-1 mb-3">
+        <span className="silk" style={{ color: "var(--mut)" }}>BPM</span>
+        <input type="number" min="20" max="400" step="0.1" value={bpm} onChange={(e) => setBpm(e.target.value)}
+          className="electronics px-3 py-2 lcd !bg-transparent !text-lg font-semibold tabular-nums w-full outline-none"
+          style={{ color: "var(--amber)" }} aria-label="Tempo in beats per minute" />
+      </label>
+
+      {data ? (
+        <LcdReadout label={`Cue positions · ${bpm} BPM`}>
+          <ul className="space-y-2">
+            <li className="flex items-baseline justify-between gap-3">
+              <span style={{ color: "var(--amber)" }}>1 beat (intro cue)</span>
+              <span className="font-semibold tabular-nums">{formatMs(data.beat1)}</span>
+            </li>
+            <li className="flex items-baseline justify-between gap-3">
+              <span style={{ color: "var(--amber)" }}>4 bars (first phrase)</span>
+              <span className="font-semibold tabular-nums">{formatMs(data.bar4)}</span>
+            </li>
+            <li className="flex items-baseline justify-between gap-3">
+              <span style={{ color: "var(--amber)" }}>8 bars (standard phrase)</span>
+              <span className="font-semibold tabular-nums">{formatMs(data.bar8)}</span>
+            </li>
+            <li className="flex items-baseline justify-between gap-3">
+              <span style={{ color: "var(--amber)" }}>16 bars (extended phrase)</span>
+              <span className="font-semibold tabular-nums">{formatMs(data.bar16)}</span>
+            </li>
+            <li className="flex items-baseline justify-between gap-3">
+              <span style={{ color: "var(--amber)" }}>32 bars (drop / breakdown)</span>
+              <span className="font-semibold tabular-nums">{formatMs(data.bar32)}</span>
+            </li>
+            <li className="flex items-baseline justify-between gap-3">
+              <span style={{ color: "var(--amber)" }}>64 bars (full section)</span>
+              <span className="font-semibold tabular-nums">{formatMs(data.bar64)}</span>
+            </li>
+          </ul>
+          <div className="mt-3 pt-3 border-t border-[var(--disp-b)]">
+            <div className="silk mb-1.5" style={{ color: "rgba(255,176,0,0.6)" }}>Section lengths</div>
+            <div className="grid grid-cols-2 gap-2">
+              <Row k="32-bar section" v={`${data.secondsPer32.toFixed(1)}s`} />
+              <Row k="64-bar section" v={`${data.minutesPer64.toFixed(2)}m`} />
+            </div>
+          </div>
+        </LcdReadout>
+      ) : (
+        <LcdReadout label="Readout">
+          <span style={{ color: "var(--vu-r)" }}>&gt; ERR · invalid BPM</span>
         </LcdReadout>
       )}
     </RackFrame>

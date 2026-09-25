@@ -27,11 +27,6 @@ const plexMono = IBM_Plex_Mono({
 // Sets colors only — never geometry — so it cannot cause CLS.
 const themeScript = `(function(){try{var k='beatguider-mode';var s=localStorage.getItem(k);var m=s||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'day':'night');document.documentElement.setAttribute('data-mode',m);var b=new Date();var z=function(n){return (n<10?'0':'')+n};var sn='2025-'+z(b.getMonth()+1)+z(b.getDate())+'-'+b.getHours()+z(b.getMinutes());localStorage.setItem('beatguider-sn',sn);}catch(e){document.documentElement.setAttribute('data-mode','night');}})();`;
 
-// Boot-up animation trigger (reduced-motion safe — CSS pauses the animation).
-// Adds the one-shot boot-on-load class to <body> after first paint so the
-// chassis fades in like a device powering up.
-const bootScript = `(function(){try{if(!window.matchMedia||!window.matchMedia('(prefers-reduced-motion: reduce)').matches){requestAnimationFrame(function(){document.body&&document.body.classList.add('boot-on-load');});}}catch(e){}})();`;
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://beatguider.com"),
   title: {
@@ -101,7 +96,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
@@ -109,6 +103,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${chakra.variable} ${inter.variable} ${plexMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         <a href="#main" className="skip-link">
           Skip to content

@@ -15,6 +15,7 @@
   in-memory. Falls back to a system monospace if the fetch fails (the image
   still renders, just with a different face — never fails the build).
 */
+import type { ReactNode } from "react";
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { writeFileSync, existsSync, readFileSync } from "node:fs";
@@ -178,7 +179,10 @@ function screw() {
 }
 
 // ─── Build the satori element tree for a given template ───
-function buildTree(input: OGInput) {
+// Returns a ReactNode-shaped element tree (type/props/key), which is what
+// satori's `element: ReactNode` parameter requires. The intermediate node
+// consts stay inferred; only the root element needs the ReactElement `key`.
+function buildTree(input: OGInput): ReactNode {
   const { template, code, title, subtitle, led = "a" } = input;
 
   // Common: faceplate top strip with wordmark + model tag + LED row
@@ -441,6 +445,7 @@ function buildTree(input: OGInput) {
 
   return {
     type: "div",
+    key: null,
     props: {
       style: {
         display: "flex",

@@ -345,7 +345,7 @@ export function ComparisonTable({
   columns,
   rows,
 }: {
-  columns: { key: string; label: string; winner?: boolean };
+  columns: { key: string; label: string; winner?: boolean }[];
   rows: { label: string; cells: Record<string, { value: ReactNode; winner?: boolean; score?: number }> }[];
 }) {
   return (

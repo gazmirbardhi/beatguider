@@ -188,18 +188,24 @@ export function personJsonLd(name: string, slug: string, articleCount: number) {
 /* ─── Sitemap manifest — every indexable route, derived from real data ───
    /style-guide is intentionally excluded (internal design reference,
    disallowed in robots.txt). */
-export function sitemapEntries(): {
+type SitemapFrequency = "daily" | "weekly" | "monthly" | "yearly";
+
+type SitemapEntry = {
   path: string;
   lastModified: Date;
-  changeFrequency: "daily" | "weekly" | "monthly" | "yearly";
+  changeFrequency: SitemapFrequency;
   priority: number;
-}[] {
+};
+
+export function sitemapEntries(): SitemapEntry[] {
   const latestArticle = [...articles]
     .map((a) => new Date(a.updatedDate ?? a.publishedDate))
     .sort((x, y) => y.getTime() - x.getTime())[0] ?? new Date();
 
-  const entries = [
-    { path: "/", lastModified: latestArticle, changeFrequency: "weekly" as const, priority: 1.0 },
+  // Annotated so entries added below may use any SitemapFrequency — without
+  // it, the array's element type would widen from the first literal only.
+  const entries: SitemapEntry[] = [
+    { path: "/", lastModified: latestArticle, changeFrequency: "weekly", priority: 1.0 },
   ];
 
   // category indexes

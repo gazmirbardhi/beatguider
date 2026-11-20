@@ -438,6 +438,9 @@
   border-radius: 4px;
   position: relative;
 }
+/* last module inside the plate (the spec table) never leaves a dead
+   margin band above the plate's bottom edge */
+.specplate > :last-child { margin-bottom: 0; }
 [data-mode="day"] .specplate {
   background:
     var(--plate);
@@ -588,17 +591,32 @@
   color: var(--body);
 }
 .prose-panel p { margin: 0 0 1.25em; }
+/* safeguard: MDX occasionally emits empty paragraphs around JSX
+   blocks (blank-line artifacts) — collapse them so they never add
+   phantom vertical gaps. */
+.prose-panel > p:empty,
+.prose-panel > div:empty { display: none; }
+.prose-panel > :last-child { margin-bottom: 0 !important; }
 .prose-panel h2 {
   font-size: 1.5rem;
-  margin: 2.25em 0 0.75em;
+  margin: 1.9em 0 0.75em;
   padding-top: 1em;
   border-top: 1px solid var(--line);
 }
 .prose-panel h2:first-child { border-top: none; padding-top: 0; }
 .prose-panel h3 {
   font-size: 1.125rem;
-  margin: 1.5em 0 0.5em;
+  margin: 1.6em 0 0.6em;
   color: var(--text2);
+}
+/* h3 carries a mono amber slash so sub-sections are easy to scan
+   while scrolling — matches the console callout language (// !! >>). */
+.prose-panel h3::before {
+  content: "/";
+  color: var(--amber);
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-weight: 600;
+  margin-right: 0.55em;
 }
 .prose-panel a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
 .prose-panel a:hover { color: var(--text2); }
@@ -606,6 +624,8 @@
 .prose-panel ul { margin: 0 0 1.25em; padding-left: 1.25em; list-style: none; }
 .prose-panel ul li { position: relative; padding-left: 0.5em; margin-bottom: 0.4em; }
 .prose-panel ul li::before { content: "–"; position: absolute; left: -0.9em; color: var(--mut); }
+.prose-panel ul ul { margin: 0.5em 0 0.2em; }
+.prose-panel ul ul li::before { content: "·"; }
 .prose-panel code {
   background: var(--disp);
   color: var(--amber);
@@ -619,12 +639,20 @@
    lists, blockquotes, hr, h4/h5, fenced code, del, images) ─── */
 
 /* h4/h5 — FAQ answers and sub-sub headings (site convention: FAQ first
-   question is h3, the rest h4). Keep the PANEL heading hierarchy. */
+   question is h3, the rest h4). FAQ questions get an amber chevron marker
+   and a touch more top margin so Q/A pairs separate clearly. */
 .prose-panel h4 {
   font-size: 1rem;
   font-weight: 600;
-  margin: 1.5em 0 0.5em;
+  margin: 1.6em 0 0.5em;
   color: var(--text2);
+}
+.prose-panel h4::before {
+  content: "»";
+  color: var(--amber);
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-weight: 600;
+  margin-right: 0.5em;
 }
 .prose-panel h5 {
   font-size: 0.9375rem;
@@ -632,6 +660,11 @@
   margin: 1.25em 0 0.4em;
   color: var(--text2);
 }
+
+/* anchor targets — html already carries scroll-padding-top: 112px
+   (site header + ReaderBar clearance), so heading anchors land below
+   the sticky chrome without any extra per-element scroll-margin. */
+html { scroll-behavior: smooth; }
 
 /* ordered lists — amber mono step numbers, matching the ul "–" marker */
 .prose-panel ol {
@@ -739,19 +772,22 @@
 /* ─── markdown tables (.mdx-table, mapped in mdx.tsx) ───
    Header row = dark electronics strip with amber silk labels (matches
    the SpecTable header). Body cells = plate background, zebra striping,
-   top-aligned. The wrapper scrolls horizontally on narrow screens. */
+   top-aligned. The wrapper scrolls horizontally on narrow screens.
+   `width: max-content; min-width: 100%` sizes columns to their content
+   (no more label column crushed to 3ch while the value column stretches
+   dead-wide); short tables still fill the reading column, wide tables
+   scroll instead of crushing text. */
 .mdx-table-wrap {
   margin: 0 0 1.5em;
-  overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 2px;
-  scrollbar-width: thin;
 }
 .mdx-table {
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 .mdx-table thead th {
   background: #060606;
@@ -762,24 +798,66 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: left;
-  padding: 0.55rem 0.75rem;
+  padding: 0.65rem 0.85rem;
   border-bottom: 1px solid var(--disp-b);
   border-right: 1px solid var(--disp-b);
   white-space: nowrap;
 }
 .mdx-table thead th:last-child { border-right: none; }
 .mdx-table tbody td {
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.85rem;
   border-bottom: 1px solid var(--line);
   border-right: 1px solid var(--line);
   vertical-align: top;
   color: var(--body);
 }
+.mdx-table tbody td:first-child { color: var(--text2); }
 .mdx-table tbody td:last-child { border-right: none; }
-.mdx-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--plate) 55%, transparent); }
+.mdx-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--plate) 75%, transparent); }
+.mdx-table tbody tr:hover td { background: rgba(255,176,0,0.05); }
 .mdx-table tbody tr:last-child td { border-bottom: none; }
 /* keep wide tables scrollable instead of crushing the text */
-.mdx-table td, .mdx-table th { min-width: 7ch; }
+.mdx-table td, .mdx-table th { min-width: 5ch; }
+/* tighter cell padding on phones so small tables fit without scrolling */
+@media (max-width: 640px) {
+  .mdx-table thead th { padding: 0.55rem 0.6rem; }
+  .mdx-table tbody td { padding: 0.5rem 0.6rem; }
+}
+
+/* ─── scroll affordance (ScrollFade, components.tsx) ───
+   Outer wrapper (position:relative) carries edge fades; the inner
+   .scrollfade-scroll div does the actual horizontal scrolling. A fade
+   appears on any side that still has content beyond the edge, and
+   never renders when everything fits. Wider on phones so truncated
+   table text clearly reads as "swipe" rather than "broken". */
+.scrollfade { position: relative; }
+.scrollfade-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  border-radius: inherit;
+}
+.scrollfade[data-scroll]:not([data-end])::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 2.25rem;
+  background: linear-gradient(270deg, var(--bg), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+.scrollfade[data-scroll]:not([data-start])::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 2.25rem;
+  background: linear-gradient(90deg, var(--bg), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+@media (max-width: 640px) {
+  .scrollfade[data-scroll]:not([data-end])::after,
+  .scrollfade[data-scroll]:not([data-start])::before { width: 3rem; }
+}
 
 /* skip link */
 .skip-link {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Link from "next/link";
 import { ModeRocker, ModeIconButton } from "./theme-toggle";
 
@@ -236,14 +236,45 @@ export function ReaderBar({
   code,
   title,
   backHref = "#top",
+  sections = [],
 }: {
   code: string;
   title: string;
   backHref?: string;
+  /* the article's real body sections ({id,label}) — drives the chapter
+     chip so readers see which section they're in while scrolling.
+     Falls back to the legacy fix-article ids when not provided. */
+  sections?: { id: string; label: string }[];
 }) {
   const [progress, setProgress] = useState(0);
   const [chapter, setChapter] = useState("");
   const raf = useRef<number | null>(null);
+
+  // chapter sources — the article's real TOC sections when provided,
+  // else the legacy hardcoded fix-article sequence. Memoized so the
+  // scroll effect doesn't resubscribe on every render.
+  const chapters = useMemo(
+    () =>
+      sections.length > 0
+        ? sections.map((s, i) => ({
+            id: s.id,
+            label: `${String(i + 1).padStart(2, "0")} · ${s.label.toUpperCase()}`,
+          }))
+        : [
+            { id: "why-this-happens", label: "01 · WHY" },
+            { id: "step-1", label: "02 · PHYSICAL" },
+            { id: "step-2", label: "03 · OS AUDIO" },
+            { id: "step-3", label: "04 · APP ROUTE" },
+            { id: "step-4", label: "05 · DRIVER" },
+            { id: "checklist", label: "06 · CHECKLIST" },
+            { id: "spec-table", label: "07 · SPECS" },
+            { id: "comparison", label: "08 · COMPARE" },
+            { id: "figure", label: "09 · PHOTO" },
+            { id: "methodology", label: "10 · METHOD" },
+            { id: "ad", label: "11 · VERDICT" },
+          ],
+    [sections]
+  );
 
   useEffect(() => {
     // single passive scroll listener; rAF-throttled
@@ -262,20 +293,8 @@ export function ReaderBar({
         const scrolled = Math.min(Math.max(-rect.top + 80, 0), Math.max(total, 1));
         setProgress(total > 0 ? Math.round((scrolled / total) * 100) : 0);
 
-        // determine the active chapter (diagnostic step) from which section is in view
-        const chapters = [
-          { id: "why-this-happens", label: "01 · WHY" },
-          { id: "step-1", label: "02 · PHYSICAL" },
-          { id: "step-2", label: "03 · OS AUDIO" },
-          { id: "step-3", label: "04 · APP ROUTE" },
-          { id: "step-4", label: "05 · DRIVER" },
-          { id: "checklist", label: "06 · CHECKLIST" },
-          { id: "spec-table", label: "07 · SPECS" },
-          { id: "comparison", label: "08 · COMPARE" },
-          { id: "figure", label: "09 · PHOTO" },
-          { id: "methodology", label: "10 · METHOD" },
-          { id: "ad", label: "11 · VERDICT" },
-        ];
+        // determine the active chapter from which section is in view
+        // (chapters captured from props — see above)
         let active = "";
         for (const c of chapters) {
           const el = document.getElementById(c.id);
@@ -293,7 +312,7 @@ export function ReaderBar({
       window.removeEventListener("scroll", onScroll);
       if (raf.current) cancelAnimationFrame(raf.current);
     };
-  }, []);
+  }, [chapters]);
 
   // active segment count for a 26-seg VU
   const segs = Math.round((progress / 100) * 26);
@@ -347,11 +366,14 @@ export function ReaderBar({
                 {String(progress).padStart(3, "0")}%
               </span>
             </div>
-            {/* chapter indicator — which diagnostic step the reader is in */}
+            {/* chapter indicator — which section the reader is in */}
             {chapter && (
-              <span className="hidden md:inline-flex codechip" aria-label={`Current chapter: ${chapter}`}>
-                <span className="led led-a" aria-hidden="true" />
-                {chapter}
+              <span
+                className="hidden md:inline-flex codechip max-w-[280px]"
+                aria-label={`Current section: ${chapter}`}
+              >
+                <span className="led led-a flex-shrink-0" aria-hidden="true" />
+                <span className="truncate">{chapter}</span>
               </span>
             )}
             {/* mobile compact percent */}

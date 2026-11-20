@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /* ════════════════════════════════════════════════════════════════
    BeatGuider PANEL signature components (§5.4)
@@ -10,6 +10,59 @@ import { useState, type ReactNode } from "react";
      - electronics (mode-invariant) = LEDs, LCD, meters, code chips, tables
    All components are composition-friendly and accessible.
    ════════════════════════════════════════════════════════════════ */
+
+/* ─── ScrollFade — horizontal scroll affordance for overflow boxes ───
+   Two-layer wrapper: the OUTER div (position:relative) carries the
+   edge-fade pseudos, the INNER div does the actual scrolling. The
+   layers must be separate — absolutely-positioned fades inside a
+   scroll container scroll away with the content, so the fade would
+   never stay pinned to the visible edge. While content extends past
+   an edge a fade hints there is more; it vanishes when that edge is
+   reached, and neither renders when everything fits. */
+export function ScrollFade({
+  className = "",
+  children,
+}: {
+  className?: string;
+  children: ReactNode;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [state, setState] = useState({ scrollable: false, atStart: true, atEnd: true });
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const update = () => {
+      const overflow = el.scrollWidth - el.clientWidth;
+      setState({
+        scrollable: overflow > 1,
+        atStart: el.scrollLeft <= 1,
+        atEnd: el.scrollLeft >= overflow - 1,
+      });
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
+  }, []);
+
+  return (
+    <div
+      className={`scrollfade ${className}`}
+      data-scroll={state.scrollable ? "" : undefined}
+      data-start={state.atStart ? "" : undefined}
+      data-end={state.atEnd ? "" : undefined}
+    >
+      <div className="scrollfade-scroll" ref={scrollRef}>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 /* ─── PanelButton — hardware button, inset shadow, pressed state, amber active ─── */
 export function PanelButton({
@@ -305,14 +358,18 @@ export function SpecTable({
   caption?: string;
 }) {
   return (
-    <div className="electronics my-5 overflow-hidden">
+    <div className="electronics my-4 overflow-hidden rounded-sm">
       {caption && (
         <div className="px-4 py-2 border-b border-[var(--disp-b)] flex items-center gap-2" style={{ background: "#060606" }}>
           <span className="led led-a" aria-hidden="true" />
           <span className="silk" style={{ color: "var(--amber)" }}>{caption}</span>
         </div>
       )}
-      <table className="w-full text-sm">
+      <table className="w-full text-sm" style={{ tableLayout: "fixed" }}>
+        <colgroup>
+          <col className="w-[34%] sm:w-[30%]" />
+          <col />
+        </colgroup>
         <tbody>
           {rows.map((r, i) => (
             <tr
@@ -321,13 +378,13 @@ export function SpecTable({
             >
               <th
                 scope="row"
-                className="text-left align-top px-3 sm:px-4 py-2 w-[42%] silk"
+                className="text-left align-top px-3 sm:px-4 py-2 silk"
                 style={{ color: "var(--amber)" }}
               >
                 {r.label}
               </th>
               <td
-                className={`px-3 sm:px-4 py-2 ${r.mono === false ? "" : "mono"}`}
+                className={`px-3 sm:px-4 py-2 break-words ${r.mono === false ? "" : "mono"}`}
                 style={{ color: "var(--amber)" }}
               >
                 {r.value}

@@ -8,7 +8,6 @@ import {
   SpecTable,
   VerdictCard,
   SourcesList,
-  AdSlot,
   TestedBadge,
   ResearchBadge,
   LongTermBadge,
@@ -82,11 +81,28 @@ export function ArticleView({
     .map((slug) => articles.find((a) => a.slug === slug))
     .filter(Boolean);
 
+  // Spec-plate rows — only rows backed by real article data render.
+  // Articles without tested/difficulty/time frontmatter show no spec
+  // table at all, never an all-dash placeholder table.
+  const specRows = [
+    { label: "Applies to", value: article.tested?.equipment?.[0] ?? "" },
+    { label: "Software", value: article.tested?.software?.join(", ") || "" },
+    { label: "Platforms", value: article.tested?.platforms?.join(", ") || "" },
+    { label: "Environment", value: article.tested?.environment ?? "" },
+    { label: "Difficulty", value: article.difficulty ?? "" },
+    { label: "Time", value: article.estimatedTime ?? "" },
+  ].filter((r) => r.value !== "");
+
   return (
     <>
-      <ReaderBar code={article.code} title={article.title} backHref={`/${article.category}`} />
+      <ReaderBar
+        code={article.code}
+        title={article.title}
+        backHref={`/${article.category}`}
+        sections={tocItems}
+      />
 
-      <article id="specimen-article" className="mx-auto max-w-[1280px] px-4 sm:px-6 py-8 sm:py-12">
+      <article id="specimen-article" className="mx-auto max-w-[1280px] px-4 sm:px-6 py-8 sm:py-10">
         {/* breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 text-xs" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>HOME</Link>
@@ -142,21 +158,12 @@ export function ArticleView({
             <span>·</span>
             <ReadingTimeChip minutes={readingTime} />
           </div>
-          <SpecTable
-            caption="Spec plate"
-            rows={[
-              { label: "Applies to", value: article.tested?.equipment?.[0] ?? "—" },
-              /* [].join(", ") yields "" — a truthy fallback (not ??) is required
-                 so empty arrays render an em dash, never a blank cell (MOB-004). */
-              { label: "Software", value: article.tested?.software?.join(", ") || "—" },
-              { label: "Platforms", value: article.tested?.platforms?.join(", ") || "—" },
-              { label: "Environment", value: article.tested?.environment ?? "—" },
-              // Difficulty + time are per-article data — shown only when the
-              // article explicitly provides them, never as template defaults.
-              ...(article.difficulty ? [{ label: "Difficulty", value: article.difficulty }] : []),
-              ...(article.estimatedTime ? [{ label: "Time", value: article.estimatedTime }] : []),
-            ]}
-          />
+          {specRows.length > 0 && (
+            <SpecTable
+              caption="Spec plate"
+              rows={specRows}
+            />
+          )}
         </SpecPlate>
 
         {/* Quick answer */}
@@ -169,14 +176,13 @@ export function ArticleView({
         {/* Article body — MDX compiled at build time, unique per article */}
         <div className="max-w-[68ch] mx-auto prose-panel mt-6">
           {body}
-          <AdSlot height={120} label="Ad slot · disabled in initial release" />
         </div>
 
         {/* Verdict — rendered only when the article carries verified,
             article-specific verdict data (article.verdict). No article
             data → no verdict card. Never a template default. */}
-        <div className="max-w-[860px] mx-auto mt-8">
-          <div className="flex justify-end mb-2">
+        <div className="max-w-[860px] mx-auto mt-6">
+          <div className="flex justify-end mb-3">
             <ShareButton label="Share article" />
           </div>
           {article.verdict && (
@@ -215,7 +221,17 @@ export function ArticleView({
             <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl mb-4" style={{ color: "var(--text2)" }}>
               Related modules
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* columns adapt to the card count — 2 cards never leave a
+                third-column hole in the grid */}
+            <div
+              className={`grid grid-cols-1 gap-4 ${
+                relatedArticles.length === 1
+                  ? "max-w-[640px]"
+                  : relatedArticles.length === 2
+                    ? "sm:grid-cols-2"
+                    : "sm:grid-cols-2 lg:grid-cols-3"
+              }`}
+            >
               {relatedArticles.map((r) => (
                 <ModuleCard
                   key={r!.code}

@@ -34,6 +34,7 @@ import {
   NoteCallout,
   CautionCallout,
   Checklist,
+  ScrollFade,
 } from "@/components/panel/components";
 
 /* Section — renders exactly like the old BodyRenderer section heading:
@@ -95,18 +96,22 @@ function elementsOfType(children: ReactNode, type: string): ReactElement<{ child
    Instead of a cramped side-by-side grid, this renders the site's
    verdict panel: a green "PROS" card and a red "CONS" card, each item
    with a check/cross glyph — matching the Note/Caution callout design.
-   Cell content (links, bold, code) is preserved — the original cell
-   nodes are re-rendered, never flattened to plain text. */
+   Cell content (links, bold, code) is preserved — each cell's CHILDREN
+   are re-rendered (never the <td> element itself, which would be
+   invalid HTML nesting inside the <span> and break hydration). Cards
+   are top-aligned (items-start) so a short column doesn't stretch to
+   match the tall one. */
 function ProsConsPanel({ children }: { children: ReactNode }) {
   const cellsPerRow = elementsOfType(children, "tr").map((tr) =>
     elementsOfType(tr.props.children, "td")
   );
   const hasText = (cell: ReactNode) => nodeText(cell).trim().length > 0;
+  const cellContent = (cell: ReactElement<{ children?: ReactNode }>) => cell.props.children;
   const pros = cellsPerRow.map((r) => r[0]).filter((c) => c !== undefined && hasText(c));
   const cons = cellsPerRow.map((r) => r[1]).filter((c) => c !== undefined && hasText(c));
 
   return (
-    <div className="my-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="my-6 grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
       <aside
         className="p-4 sm:p-5 border-l-[3px] rounded-sm"
         style={{ borderColor: "var(--ok)", background: "rgba(51,255,102,0.05)" }}
@@ -125,7 +130,7 @@ function ProsConsPanel({ children }: { children: ReactNode }) {
           {pros.map((cell, i) => (
             <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed" style={{ color: "var(--body)" }}>
               <CheckGlyph />
-              <span className="min-w-0">{cell}</span>
+              <span className="min-w-0">{cellContent(cell)}</span>
             </li>
           ))}
         </ul>
@@ -148,7 +153,7 @@ function ProsConsPanel({ children }: { children: ReactNode }) {
           {cons.map((cell, i) => (
             <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed" style={{ color: "var(--body)" }}>
               <CrossGlyph />
-              <span className="min-w-0">{cell}</span>
+              <span className="min-w-0">{cellContent(cell)}</span>
             </li>
           ))}
         </ul>
@@ -202,9 +207,9 @@ function MdxTable({ children }: { children: ReactNode }) {
     }
   }
   return (
-    <div className="mdx-table-wrap">
+    <ScrollFade className="mdx-table-wrap">
       <table className="mdx-table">{children}</table>
-    </div>
+    </ScrollFade>
   );
 }
 

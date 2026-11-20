@@ -120,11 +120,11 @@ export function validateCrossReferences(
    document order. */
 export type TocEntry = { id: string; title: string };
 
-const SECTION_TAG_RE = /<Section\s+id="([^"]+)"\s+title="([^"]+)"\s*\/>/g;
-/* All markdown heading levels, in document order — the slugger must see
-   every heading (like rehype-slug does) so duplicate-text disambiguation
-   stays in sync; only level-2 headings become TOC entries. */
-const MD_HEADING_RE = /^(#{2,6})\s+(.+?)\s*$/gm;
+/* <Section/> markers and markdown headings (all levels) are matched by
+   the combined TOKEN_RE inside extractToc — see the notes there. The
+   slugger must see every heading (like rehype-slug does) so
+   duplicate-text disambiguation stays in sync; only level-2 headings
+   become TOC entries. */
 
 /* Markdown emphasis/inline-markup stripping so the slug input matches
    the heading's rendered text content (what rehype-slug slugs):
@@ -140,19 +140,24 @@ function headingText(mdHeading: string): string {
 
 export function extractToc(mdxBody: string): TocEntry[] {
   const out: TocEntry[] = [];
-  for (const m of mdxBody.matchAll(SECTION_TAG_RE)) {
-    out.push({ id: m[1], title: m[2] });
-  }
-  if (out.length > 0) return out;
-
-  // fallback: plain `## ` headings, anchored by rehype-slug. Every
-  // markdown heading feeds the slugger in document order (matching
-  // rehype-slug's behavior); only h2s are emitted as TOC entries.
   const slugger = new GithubSlugger();
-  for (const m of mdxBody.matchAll(MD_HEADING_RE)) {
-    const title = headingText(m[2]);
+
+  /* Walk the body linearly so explicit <Section/> markers and plain
+     `##` headings interleave in true document order — imported articles
+     mix both styles, and the old early-return dropped every markdown
+     heading as soon as one <Section> existed. The slugger sees every
+     markdown heading (like rehype-slug) so duplicate-text disambiguation
+     stays in sync; <Section> h2s carry explicit ids and never feed it. */
+  const TOKEN_RE =
+    /<Section\s+id="([^"]+)"\s+title="([^"]+)"\s*\/>|^(#{2,6})[ \t]+(.+?)[ \t]*$/gm;
+  for (const m of mdxBody.matchAll(TOKEN_RE)) {
+    if (m[1] !== undefined) {
+      out.push({ id: m[1], title: m[2] });
+      continue;
+    }
+    const title = headingText(m[4]);
     const id = slugger.slug(title);
-    if (m[1] === "##" && title.length > 0) {
+    if (m[3] === "##" && title.length > 0) {
       out.push({ id, title });
     }
   }

@@ -564,8 +564,8 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Compare the best DJ software in 2026: Serato vs Rekordbox vs Traktor vs Virtual DJ vs Djay Pro. Find the perfect software for your setup and budget.",
-    "wordCount": 3325,
-    "readingTime": 17
+    "wordCount": 2966,
+    "readingTime": 15
   },
   {
     "code": "GEAR-025",
@@ -1913,8 +1913,8 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4458,
-    "readingTime": 22
+    "wordCount": 4173,
+    "readingTime": 21
   },
   {
     "code": "CMP-012",

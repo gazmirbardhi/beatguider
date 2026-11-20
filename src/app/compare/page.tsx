@@ -2,22 +2,24 @@ import { SiteShell } from "@/components/panel/site-shell";
 import { CategoryIndex } from "@/components/panel/category-index";
 import { JsonLd } from "@/components/json-ld";
 import { pageMetadata, collectionJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { getCategory } from "@/lib/content/categories";
 
-const DESCRIPTION =
-  "Side-by-side DJ gear comparisons with real verdicts. Unique analysis per comparison — no auto-generated thin pages.";
+/* Category page content derives from the category registry
+   (src/lib/content/categories.ts) — edit metadata there. */
+const cat = getCategory("compare")!;
 
 export const metadata = pageMetadata({
-  title: "Compare — DJ gear comparisons",
-  description: DESCRIPTION,
-  path: "/compare",
+  title: cat.metaTitle,
+  description: cat.metaDescription,
+  path: `/${cat.id}`,
 });
 
 export default function Page() {
   return (
     <SiteShell>
-      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Compare", path: "/compare" }])} />
-      <JsonLd data={collectionJsonLd("compare", DESCRIPTION)} />
-      <CategoryIndex category="compare" title="Compare" kicker="comparisons" description="Side-by-side DJ gear comparisons. Each comparison has unique analysis and a real verdict — no auto-generated thin pages." />
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: cat.name, path: `/${cat.id}` }])} />
+      <JsonLd data={collectionJsonLd(cat.id, cat.metaDescription)} />
+      <CategoryIndex category={cat.id} title={cat.name} kicker={cat.kicker} description={cat.description} />
     </SiteShell>
   );
 }

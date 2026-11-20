@@ -686,3 +686,66 @@ Stage Summary:
 - All intended posts now published or explicitly held: 79 ZIP sources = 76 published (75 prior + FIX-005) + 3 true merged duplicates held with documented reasons; +8 original articles = 84 published.
 - RSS cap lifted; every published post is in sitemap, feed, search, and its category index.
 - Git working tree carries this stage's changes only (24 link restorations, new article + OG image, gen-rss cap lift, regenerated artifacts); nothing committed/pushed by the agent. NOTE: `.staging/` drafts + `upload/posts.zip` remain retrievable in LOCAL git history (commits 4b7e901 add, 0238c72 remove) — flag to owner before any push; no history rewrite performed.
+
+---
+Task ID: 85-categories + element pipeline + sitemap/link audit
+Agent: main (Z.ai Code)
+Task: Add categories to the blog with articles grouped by category (add/remove categories via a central registry), fix post element rendering (tables, pros/cons, bullet/ordered lists, task lists, blockquotes, hr, h4, code), and verify every post is in the sitemap with all links resolving.
+
+Work Log:
+
+[ROOT CAUSE — broken elements]
+- MDX pipeline had NO remark-gfm: markdown tables (28 files) rendered as literal pipe-text paragraphs, task lists (3 files) as literal "[ ]" text. Confirmed live in browser before fixing.
+
+[MDX pipeline fixes]
+- Installed remark-gfm@4.0.1; wired into renderMdxBody (src/lib/content/mdx.tsx).
+- Installed rehype-slug@6 + github-slugger@2: markdown headings now get anchor ids (explicit <Section> h2 ids never overwritten).
+- MdxTable component override: every markdown table routes through it →
+  - "| Pros | Cons |" two-column tables (10 files) detected at render time and rendered as the ProsConsPanel: green PROS card + red CONS card (Note/Caution callout design vocabulary), check/cross SVG glyphs, original cell ReactNodes preserved (links/bold/code survive).
+  - all other tables: responsive .mdx-table-wrap (overflow-x auto) + .mdx-table (dark electronics header row with amber silk labels matching SpecTable, plate body cells, zebra striping, thin scrollbar).
+- TOC fallback (validate.ts extractToc): articles with zero <Section> markers (8 imported articles) now derive TOC from plain "## " headings; github-slugger fed ALL heading levels in document order on BOTH sides (extract + rehype-slug) so ids match exactly, including duplicate disambiguation. Emits only h2 entries.
+
+[prose CSS (globals.css) — GFM element coverage]
+- ol: amber mono counter markers (matches ul "–" aesthetic)
+- blockquote: amber accent rail on plate bg
+- hr: engraved chassis seam gradient
+- h4/h5: PANEL heading hierarchy (FAQ answers)
+- pre: dark electronics display, amber digits
+- del: muted
+- img: bordered, rounded (future-proof)
+- task-list checkboxes: appearance-none panel checkbox, amber when checked with check glyph; "–" bullet suppressed for checkbox items
+- .proscons-list: suppresses "–" bullet (items carry check/cross glyphs)
+- font vars: --font-mono is a @theme inline alias that does NOT resolve in raw CSS — used var(--font-plex-mono) directly (established pattern)
+
+[Content fix]
+- content/articles/75-ultimate-guide-to-beatmatching.mdx: replaced the only raw-HTML block in the corpus (foreign Tailwind classes bg-blue-50 etc., emoji h4s, invisible in NIGHT mode) with a site-convention markdown table. Content preserved verbatim, no prose loss.
+
+[Category registry — single source of truth]
+- NEW src/lib/content/categories.ts: CategoryDef registry (id, name, kicker, short, description, metaTitle, metaDescription, ogImage, navOrder) + CATEGORY_IDS + getCategory/categoryName/navCategories. Header comment documents exactly how to ADD or REMOVE a category. Pure data — client-safe.
+- Derived from the registry (hardcoded copies eliminated):
+  - schema.ts: frontmatter category z.enum now derives from CATEGORY_IDS (add/remove a category → validator follows)
+  - seo.ts: sitemap category loop, CollectionPage/TechArticle names, ogImageForPath (category cards)
+  - render-article.tsx: breadcrumb + OG section names
+  - 6 category page.tsx files: rewritten to ~20-line registry-driven files (identical structure)
+  - page.tsx nav: navCategories() + Tools (nav now includes Compare — was missing)
+  - footer.tsx: NEW "Categories" column (grid now 5 cols)
+  - article-view.tsx + category-index.tsx breadcrumbs: display names (MOBILE-DJ → MOBILE DJ)
+- Homepage (home-sections.tsx): NEW CategoryBrowser section (SEC-02) — every article grouped under its category in scrollable lists (max-h-96, panel scrollbar, per UI rules); groups = registry ∩ articles (empty categories auto-hidden = auto add/remove); each row: LED + code chip + title + date + reading time.
+
+[Verification — all green]
+- content:gen: 84 articles, 0 issues; RSS regenerated: 84 items.
+- lint clean; tsc --noEmit: 0 errors in src (only pre-existing skills/image-edit script error, untracked, not project code).
+- Sitemap: 100 URLs (84 articles + 6 categories + home + tools + author + 7 static) — all 100 return 200.
+- Link audit: all 447 internal article links resolve to real routes.
+- TOC anchor audit: all 84 articles, 171 TOC chips, 0 dead anchors (incl. the 8 fallback articles).
+- Browser E2E (agent-browser): tables styled (day+night, IBM Plex Mono headers, zebra, mobile in-wrapper scroll, no page overflow at 390px); ProsCons panel verified (8 pros/4 cons on GEAR-032); 12 task checkboxes render as squares (no literal brackets); blockquote/hr/h4/ol verified; homepage 6 groups with counts 5/26/1/40/2/10 = 84 links; nav 7 items; footer Categories column; search dialog + result click-through navigates; 0 console/hydration errors on every page type; sticky-footer mechanism intact (footerBottom == pageH, no gap).
+- VLM visual checks: table (day), pros/cons (day+night), category browser, checkboxes, night-mode table — all confirmed clean, no defects.
+
+[Dev-server note]
+- The sandbox reaps processes that remain children of a finished Bash tool call. The dev server must be started double-forked: `( setsid bash -c 'cd /home/z/my-project && exec bun run dev' < /dev/null > /dev/null 2>&1 & )` — it then reparents to PID 1 and persists (current instance PID 4987-era chain). Also: Turbopack served a stale compiled CSS chunk after in-place edits; cleared by rm -rf .next + restart.
+
+Stage Summary:
+- Element pipeline complete: tables, pros/cons, task lists, ordered lists, blockquotes, hr, h4/h5, code blocks all render in PANEL design; TOC now works on all 84 articles.
+- Categories: single registry drives nav, footer, homepage grouping, sitemap, breadcrumbs, JSON-LD, OG, validation — adding/removing a category is one documented edit.
+- Discoverability: every post in sitemap (100 URLs), feed (84), search, category indexes, AND now the homepage category browser; 0 broken internal links.
+- Nothing committed/pushed by the agent (working tree only).

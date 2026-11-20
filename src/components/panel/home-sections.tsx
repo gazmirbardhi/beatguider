@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { articles, gearDb, freshnessStatus } from "@/lib/content/data";
+import { CATEGORIES } from "@/lib/content/categories";
 
 /* ════════════════════════════════════════════════════════════════
    Clean homepage sections — clutter-free.
-   Just 3 sections: Hero + Latest Articles + Newsletter CTA.
-   Everything else lives on dedicated pages.
+   Hero + Latest Articles + Category Browser (articles grouped by
+   category) + Newsletter CTA. Everything else lives on dedicated pages.
    ════════════════════════════════════════════════════════════════ */
 
 /* ─── 1. SIMPLIFIED HERO ─── */
@@ -123,7 +124,105 @@ export function LatestArticles() {
   );
 }
 
-/* ─── 3. SIMPLE NEWSLETTER CTA ─── */
+/* ─── 3. CATEGORY BROWSER — every article grouped by its category ───
+   Groups derive from the category registry (categories.ts) ∩ real
+   articles: a category with zero articles never renders, and a new
+   category appears here automatically once it has content. Long lists
+   scroll inside a capped, panel-styled scroll area. */
+export function CategoryBrowser() {
+  const groups = CATEGORIES.map((def) => ({
+    def,
+    items: articles.filter((a) => a.category === def.id),
+  })).filter((g) => g.items.length > 0);
+
+  return (
+    <section id="categories" className="chassis-seam py-10 sm:py-14">
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="flex items-baseline gap-3 mb-6 flex-wrap">
+          <span className="codechip">SEC-02</span>
+          <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-2xl sm:text-3xl" style={{ color: "var(--text2)" }}>
+            Categories
+          </h2>
+          <span className="silk" style={{ color: "var(--mut)" }}>— every article, grouped by category</span>
+          <div className="flex-1 h-px ml-2" style={{ background: "var(--line)" }} />
+        </div>
+
+        <div className="space-y-5">
+          {groups.map((g) => (
+            <article key={g.def.id} className="modcard overflow-hidden">
+              {/* group header — category name, live count, kicker, open link */}
+              <div
+                className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 sm:px-5 py-3 border-b border-[var(--line)]"
+                style={{ background: "var(--plate)" }}
+              >
+                <span className="led led-a" aria-hidden="true" />
+                <Link
+                  href={`/${g.def.id}`}
+                  className="font-[family-name:var(--font-chakra)] font-semibold text-lg tracking-tight hover:text-[var(--amber)] transition-colors"
+                  style={{ color: "var(--text2)" }}
+                >
+                  {g.def.name}
+                </Link>
+                <span className="silk" style={{ color: "var(--mut)" }}>
+                  {g.items.length} {g.items.length === 1 ? "article" : "articles"} · {g.def.kicker}
+                </span>
+                <Link
+                  href={`/${g.def.id}`}
+                  className="ml-auto hwbtn !text-[0.6875rem] !py-1.5"
+                  aria-label={`Open all ${g.def.name} articles`}
+                >
+                  <span>Open {g.def.name}</span>
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+              </div>
+
+              {/* grouped article rows — capped height, panel scrollbar */}
+              <div className="max-h-96 overflow-y-auto scroll-y">
+                <ul>
+                  {g.items.map((a) => {
+                    const led =
+                      a.experienceType === "hands-on" || a.experienceType === "long-term-owned"
+                        ? "led led-g"
+                        : a.experienceType === "research-based"
+                        ? "led led-data"
+                        : "led led-a";
+                    return (
+                      <li key={a.code}>
+                        <Link
+                          href={`/${a.category}/${a.slug}`}
+                          className="flex items-center gap-3 px-4 sm:px-5 py-2.5 border-b border-[var(--line)] last:border-b-0 transition-colors hover:bg-[var(--plate)] group/row"
+                        >
+                          <span className={led} aria-hidden="true" />
+                          <span className="codechip flex-shrink-0">{a.code}</span>
+                          <span
+                            className="flex-1 min-w-0 truncate text-sm font-medium group-hover/row:text-[var(--text2)] transition-colors"
+                            style={{ color: "var(--body)" }}
+                          >
+                            {a.title}
+                          </span>
+                          <span className="silk hidden md:inline flex-shrink-0" style={{ color: "var(--mut)" }}>
+                            {a.publishedDate}
+                          </span>
+                          <span className="silk flex-shrink-0 tabular-nums" style={{ color: "var(--mut)" }}>
+                            {a.readingTime} min
+                          </span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── 4. SIMPLE NEWSLETTER CTA ─── */
 export function SimpleNewsletterCta() {
   return (
     <section id="newsletter" className="chassis-seam py-10 sm:py-14">

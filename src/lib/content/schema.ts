@@ -15,6 +15,7 @@
 import matter from "gray-matter";
 import { z } from "zod";
 import type { ArticleMeta } from "./types";
+import { CATEGORY_IDS } from "./categories";
 import { CODE_RE, ISO_DATE_RE, SLUG_RE, extractToc } from "./validate";
 
 export type FileIssue = { file: string; field: string; message: string };
@@ -49,7 +50,9 @@ const frontmatterSchema = z.strictObject({
     .regex(SLUG_RE, "lowercase letters, digits and single hyphens only"),
   title: z.string().min(1, "required"),
   description: z.string().min(1, "required"),
-  category: z.enum(["gear", "software", "fix", "learn", "mobile-dj", "compare"]),
+  /* Category enum derives from the category registry (categories.ts) —
+     add/remove a category there and the validator follows automatically. */
+  category: z.enum(CATEGORY_IDS),
   topic: z.string().min(1, "required"),
   tags: z.array(z.string().min(1)).min(1, "at least one tag required"),
   publishedDate: isoDate,

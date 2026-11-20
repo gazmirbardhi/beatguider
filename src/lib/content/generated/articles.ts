@@ -1913,7 +1913,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4471,
+    "wordCount": 4458,
     "readingTime": 22
   },
   {

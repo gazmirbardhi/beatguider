@@ -19,6 +19,7 @@ import {
 } from "./components";
 import { ReaderBar } from "./chrome";
 import { freshnessStatus, gearDb, articles, type ArticleMeta } from "@/lib/content/data";
+import { categoryName } from "@/lib/content/categories";
 
 /* ════════════════════════════════════════════════════════════════
    ArticleView — shared article page template.
@@ -91,7 +92,7 @@ export function ArticleView({
           <Link href="/" className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>HOME</Link>
           <span style={{ color: "var(--mut)" }}>/</span>
           <Link href={`/${article.category}`} className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>
-            {article.category.toUpperCase()}
+            {categoryName(article.category).toUpperCase()}
           </Link>
           <span style={{ color: "var(--mut)" }}>/</span>
           <span className="mono" style={{ color: "var(--amber)" }}>{article.code}</span>

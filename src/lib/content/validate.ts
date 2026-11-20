@@ -9,6 +9,7 @@
   3. Honest word counting for reading time (computed, never hand-written).
 */
 
+import GithubSlugger from "github-slugger";
 import type { ArticleMeta, GearEntry, ValidationError } from "./types";
 
 /* ─── Slug / code shapes ─── */
@@ -108,15 +109,52 @@ export function validateCrossReferences(
    Article bodies mark sections with the MDX <Section> component:
      <Section id="step-1" title="Step 1 — physical chain" />
    The same ids anchor the rendered <h2> elements (see mdx.tsx), so every
-   TOC chip resolves to a real element on the page — no dead anchors. */
+   TOC chip resolves to a real element on the page — no dead anchors.
+
+   Fallback: articles that use plain markdown `## Heading` lines instead
+   of <Section> markers (the 8 imported articles without Section tags)
+   get their TOC from those headings. rehype-slug (mdx.tsx) anchors them
+   with github-slugger ids at render time; the SAME slugger produces the
+   TOC ids here, so anchors always match — including duplicate-heading
+   disambiguation (-1, -2 …), because both sides feed the slugger in
+   document order. */
 export type TocEntry = { id: string; title: string };
 
 const SECTION_TAG_RE = /<Section\s+id="([^"]+)"\s+title="([^"]+)"\s*\/>/g;
+/* All markdown heading levels, in document order — the slugger must see
+   every heading (like rehype-slug does) so duplicate-text disambiguation
+   stays in sync; only level-2 headings become TOC entries. */
+const MD_HEADING_RE = /^(#{2,6})\s+(.+?)\s*$/gm;
+
+/* Markdown emphasis/inline-markup stripping so the slug input matches
+   the heading's rendered text content (what rehype-slug slugs):
+   **bold**, `code`, [text](url) → text. (Emphasis chars are stripped
+   pairwise; plain-word underscores are left alone because CommonMark
+   does not treat intraword _ as emphasis.) */
+function headingText(mdHeading: string): string {
+  return mdHeading
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/\*\*|__|`/g, "")
+    .trim();
+}
 
 export function extractToc(mdxBody: string): TocEntry[] {
   const out: TocEntry[] = [];
   for (const m of mdxBody.matchAll(SECTION_TAG_RE)) {
     out.push({ id: m[1], title: m[2] });
+  }
+  if (out.length > 0) return out;
+
+  // fallback: plain `## ` headings, anchored by rehype-slug. Every
+  // markdown heading feeds the slugger in document order (matching
+  // rehype-slug's behavior); only h2s are emitted as TOC entries.
+  const slugger = new GithubSlugger();
+  for (const m of mdxBody.matchAll(MD_HEADING_RE)) {
+    const title = headingText(m[2]);
+    const id = slugger.slug(title);
+    if (m[1] === "##" && title.length > 0) {
+      out.push({ id, title });
+    }
   }
   return out;
 }

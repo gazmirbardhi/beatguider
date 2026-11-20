@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ModuleCard } from "./components";
 import { Screws, TapeEdgeLabel } from "./components";
 import { articles, gearDb, gearHref, freshnessStatus } from "@/lib/content/data";
+import { categoryName } from "@/lib/content/categories";
 
 /* ════════════════════════════════════════════════════════════════
    CategoryIndex — shared category listing page.
@@ -34,7 +35,7 @@ export function CategoryIndex({
           <nav className="flex items-center gap-2 mb-4 text-xs" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>HOME</Link>
             <span style={{ color: "var(--mut)" }}>/</span>
-            <span className="mono" style={{ color: "var(--amber)" }}>{category.toUpperCase()}</span>
+            <span className="mono" style={{ color: "var(--amber)" }}>{categoryName(category).toUpperCase()}</span>
           </nav>
           <h1
             className="font-[family-name:var(--font-chakra)] font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3"

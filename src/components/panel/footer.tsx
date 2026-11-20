@@ -6,6 +6,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { SearchModule } from "./components";
 import { LiveClock } from "./decorative";
 import { buildSearchIndex, articles, gearDb, GENERATED_AT } from "@/lib/content/data";
+import { CATEGORIES } from "@/lib/content/categories";
 
 /* ───────────────────────── SEARCH MODAL ─────────────────────────
    Static client-side search. UI is the backlit display module.
@@ -221,7 +222,7 @@ export function SiteFooter({ serial }: { serial: string }) {
       <div className="vents h-3 border-b border-[var(--line)]" aria-hidden="true" />
 
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-8">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 sm:gap-8">
           <div className="col-span-2 sm:col-span-2">
             <div className="flex items-baseline gap-1 mb-2">
               <span className="font-[family-name:var(--font-chakra)] font-bold text-lg" style={{ color: "var(--text2)" }}>
@@ -241,6 +242,12 @@ export function SiteFooter({ serial }: { serial: string }) {
             </div>
           </div>
 
+          {/* Categories — derived from the category registry (categories.ts):
+              adding/removing a category updates this column automatically. */}
+          <FooterCol
+            title="Categories"
+            links={CATEGORIES.map((c) => ({ label: c.name, href: `/${c.id}` }))}
+          />
           <FooterCol
             title="Publication"
             links={[

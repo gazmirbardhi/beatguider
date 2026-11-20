@@ -15,17 +15,9 @@ import {
   SITE_NAME,
 } from "@/lib/seo";
 import type { ArticleMeta } from "@/lib/content/types";
+import { categoryName, type CategoryId } from "@/lib/content/categories";
 
-type Category = "fix" | "gear" | "software" | "learn" | "mobile-dj" | "compare";
-
-const CATEGORY_NAMES: Record<Category, string> = {
-  gear: "Gear",
-  fix: "Fix",
-  software: "Software",
-  learn: "Learn",
-  "mobile-dj": "Mobile DJ",
-  compare: "Compare",
-};
+type Category = CategoryId;
 
 /* Shared article-page logic for all dynamic routes.
    Each route file calls renderArticlePage(category, params.slug).
@@ -46,7 +38,7 @@ export async function renderArticlePage(category: Category, slug: string) {
   const articleLd = techArticleJsonLd(article);
   const breadcrumbLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
-    { name: CATEGORY_NAMES[category] ?? category, path: `/${category}` },
+    { name: categoryName(category), path: `/${category}` },
     { name: article.title, path: `/${category}/${slug}` },
   ]);
 
@@ -103,7 +95,7 @@ function metadataFor(article: ArticleMeta) {
       publishedTime: article.publishedDate,
       modifiedTime: article.updatedDate ?? article.publishedDate,
       authors: [article.author],
-      section: CATEGORY_NAMES[article.category as Category] ?? article.category,
+      section: categoryName(article.category),
       tags: article.tags,
       images: [
         {

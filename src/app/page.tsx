@@ -3,8 +3,9 @@ import {
   StickyNav,
 } from "@/components/panel/chrome";
 import { HomePageClient } from "@/components/panel/home-page-client";
-import { SimplifiedHero, LatestArticles, SimpleNewsletterCta } from "@/components/panel/home-sections";
+import { SimplifiedHero, LatestArticles, CategoryBrowser, SimpleNewsletterCta } from "@/components/panel/home-sections";
 import { articles, validateContent, gearDb } from "@/lib/content/data";
+import { navCategories } from "@/lib/content/categories";
 import { pageMetadata, websiteJsonLd } from "@/lib/seo";
 
 // Homepage canonical + social card — defined here (not in the layout) so
@@ -26,14 +27,10 @@ export default function HomePage() {
   const entryCount = articles.length + gearDb.length;
   const lastPublish = [...articles].sort((a, b) => (b.publishedDate > a.publishedDate ? 1 : -1))[0]?.publishedDate ?? "—";
 
-  const navItems = [
-    { label: "Gear", href: "/gear" },
-    { label: "Software", href: "/software" },
-    { label: "Fix", href: "/fix" },
-    { label: "Learn", href: "/learn" },
-    { label: "Tools", href: "/tools" },
-    { label: "Mobile DJ", href: "/mobile-dj" },
-  ];
+  // Nav derives from the category registry (categories.ts) — categories
+  // without a navOrder stay off the sticky nav; Tools is appended as a
+  // non-content destination.
+  const navItems = [...navCategories(), { label: "Tools", href: "/tools" }];
 
   return (
     <HomePageClient
@@ -48,6 +45,7 @@ export default function HomePage() {
       />
       <SimplifiedHero entryCount={entryCount} lastPublish={lastPublish} />
       <LatestArticles />
+      <CategoryBrowser />
       <SimpleNewsletterCta />
     </HomePageClient>
   );

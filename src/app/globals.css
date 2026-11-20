@@ -615,6 +615,172 @@
   border: 1px solid var(--disp-b);
 }
 
+/* ─── article body element styles (GFM: tables, task lists, ordered
+   lists, blockquotes, hr, h4/h5, fenced code, del, images) ─── */
+
+/* h4/h5 — FAQ answers and sub-sub headings (site convention: FAQ first
+   question is h3, the rest h4). Keep the PANEL heading hierarchy. */
+.prose-panel h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.5em 0 0.5em;
+  color: var(--text2);
+}
+.prose-panel h5 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin: 1.25em 0 0.4em;
+  color: var(--text2);
+}
+
+/* ordered lists — amber mono step numbers, matching the ul "–" marker */
+.prose-panel ol {
+  margin: 0 0 1.25em;
+  padding-left: 1.75em;
+  list-style: none;
+}
+.prose-panel ol > li {
+  position: relative;
+  padding-left: 0.35em;
+  margin-bottom: 0.4em;
+}
+.prose-panel ol > li::before {
+  content: counter(list-item) ".";
+  position: absolute;
+  left: -1.75em;
+  width: 1.4em;
+  text-align: right;
+  color: var(--amber);
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.8125em;
+  font-weight: 600;
+}
+
+/* blockquotes — amber accent rail on plate background */
+.prose-panel blockquote {
+  margin: 0 0 1.25em;
+  padding: 0.75em 1em;
+  border-left: 3px solid var(--acc);
+  background: var(--plate);
+  border-radius: 0 2px 2px 0;
+}
+.prose-panel blockquote p:last-child { margin-bottom: 0; }
+.prose-panel blockquote p:first-child { margin-top: 0; }
+
+/* horizontal rule — engraved chassis seam */
+.prose-panel hr {
+  border: none;
+  height: 1px;
+  margin: 2em 0;
+  background: linear-gradient(90deg, transparent, var(--line2) 20%, var(--line2) 80%, transparent);
+}
+
+/* fenced code blocks — dark electronics display, amber digits */
+.prose-panel pre {
+  margin: 0 0 1.25em;
+  padding: 0.9em 1.1em;
+  background: #060606;
+  color: var(--amber);
+  border: 1px solid var(--disp-b);
+  border-radius: 2px;
+  overflow-x: auto;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+}
+.prose-panel pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* strikethrough (GFM ~~text~~) */
+.prose-panel del { color: var(--mut); }
+
+/* body images (future-proof) */
+.prose-panel img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+/* GFM task lists (- [ ] item) — panel checkbox instead of "[ ]" text.
+   The "–" bullet marker is suppressed for checkbox items. */
+.prose-panel ul li:has(> input[type="checkbox"])::before { content: none; }
+.prose-panel ul li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 0.55em;
+  border: 1px solid var(--mut);
+  border-radius: 2px;
+  background: var(--plate);
+  vertical-align: -0.125em;
+}
+.prose-panel ul li > input[type="checkbox"]:checked {
+  background-color: var(--amber);
+  border-color: var(--amber);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' fill='none' stroke='%231a1204' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 82%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ProsCons panel lists (mdx.tsx) — items carry their own check/cross
+   glyph, so the "–" bullet marker and indent are suppressed. */
+.prose-panel ul.proscons-list { margin: 0; padding-left: 0; }
+.prose-panel ul.proscons-list li::before { content: none; }
+
+/* ─── markdown tables (.mdx-table, mapped in mdx.tsx) ───
+   Header row = dark electronics strip with amber silk labels (matches
+   the SpecTable header). Body cells = plate background, zebra striping,
+   top-aligned. The wrapper scrolls horizontally on narrow screens. */
+.mdx-table-wrap {
+  margin: 0 0 1.5em;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  scrollbar-width: thin;
+}
+.mdx-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.mdx-table thead th {
+  background: #060606;
+  color: var(--amber);
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--disp-b);
+  border-right: 1px solid var(--disp-b);
+  white-space: nowrap;
+}
+.mdx-table thead th:last-child { border-right: none; }
+.mdx-table tbody td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  vertical-align: top;
+  color: var(--body);
+}
+.mdx-table tbody td:last-child { border-right: none; }
+.mdx-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--plate) 55%, transparent); }
+.mdx-table tbody tr:last-child td { border-bottom: none; }
+/* keep wide tables scrollable instead of crushing the text */
+.mdx-table td, .mdx-table th { min-width: 7ch; }
+
 /* skip link */
 .skip-link {
   position: absolute;

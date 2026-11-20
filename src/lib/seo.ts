@@ -12,6 +12,11 @@
 
 import type { Metadata } from "next";
 import { articles, type ArticleMeta } from "@/lib/content/data";
+import {
+  CATEGORIES,
+  categoryName,
+  getCategory,
+} from "@/lib/content/categories";
 
 export const SITE_URL = "https://beatguider.com";
 export const SITE_NAME = "BeatGuider";
@@ -23,22 +28,16 @@ export function absoluteUrl(path: string): string {
 
 /* ─── OG image assets (public/og/) ───
    Every article slug has a matching 1200×630 card in /og/.
-   Category + tool pages use their own dedicated cards. */
+   Category cards live in the category registry (categories.ts);
+   tools keeps its own dedicated card. */
 export const OG_BRAND = "/og/brand.png";
-
-const CATEGORY_OG: Record<string, string> = {
-  gear: "/og/gear-ddj-flx4.png",
-  fix: "/og/ddj-flx4-no-sound.png",
-  software: "/og/rekordbox-export-usb.png",
-  learn: "/og/first-30-minutes.png",
-  "mobile-dj": "/og/mobile-dj-power-checklist.png",
-  compare: "/og/ddj-flx2-vs-ddj-flx4.png",
-  tools: "/og/tool-bpm.png",
-};
+const TOOLS_OG = "/og/tool-bpm.png";
 
 export function ogImageForPath(path: string): string {
   // normalize "/fix/" → "fix" before the category lookup
-  return CATEGORY_OG[path.replace(/^\/+|\/+$/g, "")] ?? OG_BRAND;
+  const key = path.replace(/^\/+|\/+$/g, "");
+  if (key === "tools") return TOOLS_OG;
+  return getCategory(key)?.ogImage ?? OG_BRAND;
 }
 
 /* ─── pageMetadata — factory for static pages ───
@@ -96,15 +95,6 @@ export function websiteJsonLd() {
   };
 }
 
-const CATEGORY_NAMES: Record<string, string> = {
-  gear: "Gear",
-  fix: "Fix",
-  software: "Software",
-  learn: "Learn",
-  "mobile-dj": "Mobile DJ",
-  compare: "Compare",
-};
-
 export function breadcrumbJsonLd(trail: { name: string; path: string }[]) {
   return {
     "@context": "https://schema.org",
@@ -119,7 +109,7 @@ export function breadcrumbJsonLd(trail: { name: string; path: string }[]) {
 }
 
 export function collectionJsonLd(category: string, description: string) {
-  const name = CATEGORY_NAMES[category] ?? category;
+  const name = categoryName(category);
   const items = articles
     .filter((a) => a.category === category)
     .map((a, i) => ({
@@ -157,7 +147,7 @@ export function techArticleJsonLd(a: ArticleMeta) {
        (scripts/gen-content.ts) — honest, like everything else here. */
     wordCount: a.wordCount,
     keywords: a.tags.join(", "),
-    articleSection: CATEGORY_NAMES[a.category] ?? a.category,
+    articleSection: categoryName(a.category),
     author: {
       "@type": "Organization",
       name: a.author,
@@ -209,14 +199,13 @@ export function sitemapEntries(): SitemapEntry[] {
     { path: "/", lastModified: latestArticle, changeFrequency: "weekly", priority: 1.0 },
   ];
 
-  // category indexes
-  const categories = ["fix", "gear", "software", "learn", "mobile-dj", "compare"];
-  for (const c of categories) {
+  // category indexes — derived from the category registry (categories.ts)
+  for (const c of CATEGORIES) {
     const catLatest =
-      [...articles.filter((a) => a.category === c)]
+      [...articles.filter((a) => a.category === c.id)]
         .map((a) => new Date(a.updatedDate ?? a.publishedDate))
         .sort((x, y) => y.getTime() - x.getTime())[0] ?? latestArticle;
-    entries.push({ path: `/${c}`, lastModified: catLatest, changeFrequency: "weekly", priority: 0.9 });
+    entries.push({ path: `/${c.id}`, lastModified: catLatest, changeFrequency: "weekly", priority: 0.9 });
   }
 
   // tools

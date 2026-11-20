@@ -1,0 +1,59 @@
+---
+code: "FIX-002"
+slug: "rekordbox-crash-on-export"
+title: "rekordbox crashes mid-export — diagnose in 5 steps"
+description: "The five failure modes that cause rekordbox to die during USB export, and the order to rule them out."
+category: "fix"
+topic: "rekordbox"
+tags: ["rekordbox", "crash", "export", "troubleshooting"]
+publishedDate: "2025-01-11"
+lastVerified: "2025-01-14"
+author: "BeatGuider Team"
+contentType: "guide"
+experienceType: "software-tested"
+tested:
+  equipment:
+    - "MacBook Pro M2 (test bench)"
+  software:
+    - "rekordbox 6.8.x"
+  platforms:
+    - "macOS 14"
+  environment: "Reproducible crash lab"
+quickAnswer: "rekordbox export crashes almost always trace back to a corrupt track in the playlist, a USB drive with the wrong file system, or a permissions issue after a macOS upgrade. Rule these out in this order before reinstalling anything."
+---
+
+<Section id="why-this-happens" title="Why this happens" />
+
+rekordbox export crashes almost always trace back to a corrupt track in the playlist, a USB drive with the wrong file system, or a permissions issue after a macOS upgrade. The crash is often silent — no error dialog, just rekordbox quitting mid-export.
+
+<Note title="Rule these out first">A corrupt track is the #1 cause. If rekordbox consistently crashes at the same percentage, note which track it was exporting — that's your culprit.</Note>
+
+<Section id="step-1" title="Step 1 — check the USB drive format" />
+
+<Step n={1} title="Verify USB drive file system">
+
+<StepList items={["FAT32 is the most compatible format for CDJ/XDJ players", "exFAT works on newer Pioneer players but can cause issues on older CDJs", "HFS+ (macOS only) will not work in CDJs — must be reformatted", "Use Pioneer's rekordbox format tool or Disk Utility to reformat as FAT32"]} />
+
+</Step>
+
+<Caution title="Reformatting erases data">Reformatting the USB drive erases everything on it. Back up any existing exports before reformatting.</Caution>
+
+<Section id="step-2" title="Step 2 — isolate the corrupt track" />
+
+<Step n={2} title="Find the corrupt track">
+
+Export in batches. If rekordbox crashes at the same percentage every time, divide the playlist in half and export each half. Binary-search until you find the specific track that causes the crash. Remove or re-analyze that track.
+
+</Step>
+
+<Section id="step-3" title="Step 3 — check permissions (macOS)" />
+
+<Step n={3} title="Fix macOS permissions">
+
+After a macOS upgrade, rekordbox may lose Full Disk Access. Go to System Settings → Privacy & Security → Full Disk Access and make sure rekordbox is enabled. Without this, rekordbox can crash when reading files from protected directories.
+
+</Step>
+
+<Section id="verdict" title="Verdict" />
+
+In most cases the fix is one of: reformat the drive as FAT32, remove a corrupt track, or grant Full Disk Access on macOS. Only reinstall rekordbox as a last resort — it rarely fixes the underlying issue.

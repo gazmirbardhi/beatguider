@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { articles, gearDb, computeReadingTime, freshnessStatus } from "@/lib/content/data";
-import { countBodyWords } from "@/lib/content/article-bodies";
+import { articles, gearDb, freshnessStatus } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
    Clean homepage sections — clutter-free.
@@ -113,7 +112,7 @@ export function LatestArticles() {
                 <div className="flex items-center gap-2 mt-3">
                   <span className="silk" style={{ color: "var(--mut)" }}>{a.publishedDate}</span>
                   <span style={{ color: "var(--mut)" }}>·</span>
-                  <span className="silk" style={{ color: "var(--mut)" }}>{computeReadingTime(Math.max(countBodyWords(a.slug), 1))} min read</span>
+                  <span className="silk" style={{ color: "var(--mut)" }}>{a.readingTime} min read</span>
                 </div>
               </Link>
             );

@@ -27,8 +27,7 @@ import {
   LabNotesStrip,
 } from "./components";
 import { ReaderBar } from "./chrome";
-import { articles, gearDb, computeReadingTime } from "@/lib/content/data";
-import { countBodyWords } from "@/lib/content/article-bodies";
+import { articles, gearDb } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
    Specimen article — the one fixture article that exercises the full
@@ -75,7 +74,7 @@ export function SpecimenArticle() {
             <span>·</span>
             <span>Verified {a.lastVerified}</span>
             <span>·</span>
-            <ReadingTimeChip minutes={computeReadingTime(Math.max(countBodyWords(a.slug), 1))} />
+            <ReadingTimeChip minutes={a.readingTime} />
           </div>
           <SpecTable
             caption="Spec plate"

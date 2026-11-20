@@ -12,7 +12,6 @@
 
 import type { Metadata } from "next";
 import { articles, type ArticleMeta } from "@/lib/content/data";
-import { countBodyWords } from "@/lib/content/article-bodies";
 
 export const SITE_URL = "https://beatguider.com";
 export const SITE_NAME = "BeatGuider";
@@ -154,7 +153,9 @@ export function techArticleJsonLd(a: ArticleMeta) {
     datePublished: a.publishedDate,
     dateModified: a.updatedDate ?? a.publishedDate,
     inLanguage: "en",
-    wordCount: countBodyWords(a.slug),
+    /* wordCount is computed from the article's MDX body at build time
+       (scripts/gen-content.ts) — honest, like everything else here. */
+    wordCount: a.wordCount,
     keywords: a.tags.join(", "),
     articleSection: CATEGORY_NAMES[a.category] ?? a.category,
     author: {

@@ -1,0 +1,153 @@
+/*
+  BeatGuider content validation + MDX body analysis — PURE functions only.
+  No fs, no zod, no React: safe to import from client code (data.ts)
+  and from Bun build scripts (scripts/gen-content.ts).
+
+  Three responsibilities:
+  1. Cross-article validation (duplicates, references, anti-fake-testing).
+  2. TOC extraction from MDX bodies (<Section id="…" title="…" /> tags).
+  3. Honest word counting for reading time (computed, never hand-written).
+*/
+
+import type { ArticleMeta, GearEntry, ValidationError } from "./types";
+
+/* ─── Slug / code shapes ─── */
+export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+export const CODE_RE = /^[A-Z]+-\d{3}$/;
+export const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/* ─── Cross-article validation (anti-fake-testing rule + integrity checks) ───
+   Runs at build time from scripts/gen-content.ts AND at render time from
+   src/lib/content/loader.ts — violations fail the build with the errors
+   listed below. data.ts re-exports this via validateContent() for the
+   style-guide ErrorLog display. */
+export function validateCrossReferences(
+  arts: ArticleMeta[],
+  gear: GearEntry[]
+): ValidationError[] {
+  const errs: ValidationError[] = [];
+
+  // duplicate slug check
+  const slugs = new Set<string>();
+  arts.forEach((a) => {
+    if (slugs.has(a.slug))
+      errs.push({
+        code: a.code,
+        field: "slug",
+        message: `Duplicate slug: ${a.slug}`,
+      });
+    slugs.add(a.slug);
+  });
+
+  // duplicate display-code check
+  const codes = new Set<string>();
+  [...arts, ...gear].forEach((a) => {
+    if (codes.has(a.code))
+      errs.push({
+        code: a.code,
+        field: "code",
+        message: `Duplicate display code: ${a.code}`,
+      });
+    codes.add(a.code);
+  });
+
+  arts.forEach((a) => {
+    // quickAnswer required for fix + compare types
+    if (
+      (a.contentType === "guide" && a.category === "fix") ||
+      a.contentType === "comparison"
+    ) {
+      if (!a.quickAnswer || a.quickAnswer.trim().length === 0) {
+        errs.push({
+          code: a.code,
+          field: "quickAnswer",
+          message: "Required for fix/compare types",
+        });
+      }
+    }
+    // anti-fake-testing rule: hands-on MUST have non-empty tested.equipment
+    if (
+      a.experienceType === "hands-on" ||
+      a.experienceType === "long-term-owned"
+    ) {
+      if (!a.tested || !a.tested.equipment || a.tested.equipment.length === 0) {
+        errs.push({
+          code: a.code,
+          field: "tested.equipment",
+          message:
+            "Anti-fake-testing rule: hands-on experienceType requires non-empty tested.equipment",
+        });
+      }
+    }
+    // related gear must exist
+    (a.relatedGear ?? []).forEach((g) => {
+      if (!gear.find((x) => x.code === g)) {
+        errs.push({
+          code: a.code,
+          field: "relatedGear",
+          message: `Missing referenced gear: ${g}`,
+        });
+      }
+    });
+    // related articles must exist (slugs)
+    (a.relatedArticles ?? []).forEach((slug) => {
+      if (!arts.find((x) => x.slug === slug)) {
+        errs.push({
+          code: a.code,
+          field: "relatedArticles",
+          message: `Missing referenced article slug: ${slug}`,
+        });
+      }
+    });
+  });
+
+  return errs;
+}
+
+/* ─── TOC extraction ───
+   Article bodies mark sections with the MDX <Section> component:
+     <Section id="step-1" title="Step 1 — physical chain" />
+   The same ids anchor the rendered <h2> elements (see mdx.tsx), so every
+   TOC chip resolves to a real element on the page — no dead anchors. */
+export type TocEntry = { id: string; title: string };
+
+const SECTION_TAG_RE = /<Section\s+id="([^"]+)"\s+title="([^"]+)"\s*\/>/g;
+
+export function extractToc(mdxBody: string): TocEntry[] {
+  const out: TocEntry[] = [];
+  for (const m of mdxBody.matchAll(SECTION_TAG_RE)) {
+    out.push({ id: m[1], title: m[2] });
+  }
+  return out;
+}
+
+/* ─── Word counting — the honest way ───
+   Reading time derives from the MDX body's actual words. The counter
+   walks the raw MDX source: text outside JSX tags, plus quoted attribute
+   values inside tags (component titles, step/checklist item strings).
+   Anchor ids and urls are skipped — they are markup, not prose.
+   Markdown list markers are stripped so they never count as words.
+   Mirrors the guarantees of the old countBodyWords(): headings, prose,
+   callout titles, step titles/items and checklist items all count. */
+export function countMdxWords(mdxBody: string): number {
+  // 1. strip markdown list markers (- / *) at line starts
+  const noBullets = mdxBody.replace(/^[\t ]*[-*][\t ]+/gm, "");
+
+  // 2. pull JSX tags out, keeping their quoted attribute strings
+  //    (id/url values — anchors and links, not prose — are dropped first;
+  //    this covers both attr="…" and { key: "…" } object styles)
+  const attrStrings: string[] = [];
+  const textOnly = noBullets.replace(/<[^>]*>/g, (tag) => {
+    const cleaned = tag.replace(/(\b(?:id|url)\s*[:=]\s*)"[^"]*"/g, '$1""');
+    for (const m of cleaned.matchAll(/"([^"]*)"/g)) attrStrings.push(m[1]);
+    return " ";
+  });
+
+  const text = `${textOnly} ${attrStrings.join(" ")}`;
+  return text.split(/\s+/).filter(Boolean).length;
+}
+
+/* reading-time auto-compute — words ÷ 200 (never hand-written) */
+export function computeReadingTime(words: number): number {
+  return Math.max(1, Math.round(words / 200));
+}

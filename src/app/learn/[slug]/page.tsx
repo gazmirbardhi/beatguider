@@ -10,6 +10,6 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { element } = renderArticlePage("learn", slug);
+  const { element } = await renderArticlePage("learn", slug);
   return element;
 }

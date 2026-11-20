@@ -1,0 +1,51 @@
+---
+code: "SW-008"
+slug: "rekordbox-export-usb"
+title: "rekordbox USB export — the correct way (and the silent failures)"
+description: "Why your rekordbox export sometimes works on one CDJ and stalls on another, and how to export once correctly."
+category: "software"
+topic: "rekordbox"
+tags: ["rekordbox", "usb", "export"]
+publishedDate: "2025-01-10"
+lastVerified: "2025-01-14"
+author: "BeatGuider Team"
+contentType: "guide"
+experienceType: "software-tested"
+tested:
+  equipment:
+    - "Pioneer CDJ-3000 (loaned, gig venue)"
+  software:
+    - "rekordbox 6.8.x"
+  platforms:
+    - "macOS 14"
+  environment: "USB export verification at venue"
+relatedGear: ["GEAR-014"]
+---
+
+<Section id="correct-way" title="The correct way" />
+
+rekordbox USB export is not a file copy — it's a database build. When you export, rekordbox writes the analyzed track data, beatgrids, hot cues, and playlist structure to the USB in a format that CDJ players understand. Getting this right matters.
+
+<Step n={1} title="Format the USB drive">
+
+Format as FAT32 using Pioneer's rekordbox format tool or your OS disk utility. FAT32 has a 4GB per-file limit, but audio files are smaller than that. exFAT works on newer players but FAT32 is the safest bet.
+
+</Step>
+
+<Step n={2} title="Build your playlist first">
+
+Organize tracks into playlists before exporting. Exporting a playlist is much faster than exporting individual tracks, and the playlist structure carries over to the CDJ's browse view.
+
+</Step>
+
+<Step n={3} title="Export via the device panel">
+
+Connect the USB, open the device panel in rekordbox, and sync your playlists. Don't drag-and-drop files directly to the USB — that bypasses rekordbox's database and the CDJ won't see your beatgrids or cues.
+
+</Step>
+
+<Section id="silent-failures" title="Silent failures" />
+
+<Caution title="The silent failure">If you drag files directly to the USB instead of using the export function, the CDJ will play the audio but won't show your beatgrids, hot cues, or playlists. This is the #1 mistake DJs make with rekordbox.</Caution>
+
+Other silent failures: USB drives formatted as HFS+ (won't work in CDJs), export interrupted by sleep mode, and playlists that reference tracks on an external drive that wasn't mounted during export.

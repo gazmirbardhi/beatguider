@@ -1,58 +1,52 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import {
   SpecPlate,
-  Screws,
   QuickAnswer,
-  CautionCallout,
-  NoteCallout,
-  StepBlock,
-  Checklist,
   SpecTable,
-  ComparisonTable,
-  VUMeter,
   VerdictCard,
-  ProsCons,
-  AffiliateButton,
   SourcesList,
-  Figure,
   AdSlot,
   TestedBadge,
   ResearchBadge,
   LongTermBadge,
   FreshnessIndicator,
-  DiagnosticSequence,
   ReadingTimeChip,
   ShareButton,
-  LabNotesStrip,
   ModuleCard,
 } from "./components";
 import { ReaderBar } from "./chrome";
-import { computeReadingTime, freshnessStatus, gearDb, articles, type ArticleMeta, type BodySection, type BodyBlock } from "@/lib/content/data";
-import { articleBodies, countBodyWords } from "@/lib/content/article-bodies";
+import { freshnessStatus, gearDb, articles, type ArticleMeta } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
    ArticleView — shared article page template.
    Renders any article from its ArticleMeta. Used by all article
    dynamic routes (/fix/[slug], /gear/[slug], etc.).
 
-   The article body is MDX-like prose rendered from structured content.
-   For the fixture articles, the body is the same rich content as the
-   specimen article — steps, callouts, checklists, spec tables, etc.
+   The article body arrives as a pre-compiled MDX node (built at
+   page-prerender time by src/lib/content/mdx.tsx from
+   content/articles/<slug>.mdx) — the PANEL body components (steps,
+   callouts, the interactive checklist) hydrate on the client exactly
+   as before. TOC entries + reading time are computed from the same
+   MDX source at build time and passed in as props.
    ════════════════════════════════════════════════════════════════ */
 
-export function ArticleView({ article }: { article: ArticleMeta }) {
+export function ArticleView({
+  article,
+  body,
+  toc,
+}: {
+  article: ArticleMeta;
+  body: ReactNode;
+  toc: { id: string; label: string; n: string }[];
+}) {
   const [active, setActive] = useState<string>("");
 
-  // TOC entries derive from the article's real body sections — anchors
-  // always exist on the page (no dead in-page links).
-  const tocItems = (articleBodies[article.slug] ?? []).map((s, i) => ({
-    id: s.id,
-    label: s.heading.replace(/^Step \d+ — /, ""),
-    n: String(i + 1).padStart(2, "0"),
-  }));
+  // TOC entries derive from the article's real <Section> markers in its
+  // MDX body — anchors always exist on the page (no dead in-page links).
+  const tocItems = toc;
 
   // TOC active-section tracking — observes the real section ids
   useEffect(() => {
@@ -73,9 +67,9 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
     return () => obs.disconnect();
   }, [article.slug]);
 
-  // compute reading time from the real body word count (auto, never hand-written per spec §8)
-  const wordCount = countBodyWords(article.slug);
-  const readingTime = computeReadingTime(Math.max(wordCount, 1));
+  // reading time — computed from the MDX body's real word count at build
+  // time (scripts/gen-content.ts), never hand-written per spec §8
+  const readingTime = article.readingTime;
 
   // find related gear
   const relatedGear = (article.relatedGear ?? [])
@@ -171,9 +165,9 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
           </div>
         )}
 
-        {/* Article body — unique per-article content */}
+        {/* Article body — MDX compiled at build time, unique per article */}
         <div className="max-w-[68ch] mx-auto prose-panel mt-6">
-          <BodyRenderer slug={article.slug} />
+          {body}
           <AdSlot height={120} label="Ad slot · disabled in initial release" />
         </div>
 
@@ -314,70 +308,4 @@ function TOCChips({ active, items }: { active: string; items: { id: string; labe
       </nav>
     </div>
   );
-}
-
-/* ─── BodyRenderer — renders per-article unique body content ─── */
-function BodyRenderer({ slug }: { slug: string }) {
-  const sections = articleBodies[slug];
-  if (!sections || sections.length === 0) {
-    return (
-      <p style={{ color: "var(--mut)" }}>
-        &gt; no body content yet for this article slug: {slug}
-      </p>
-    );
-  }
-  return (
-    <>
-      {sections.map((section) => (
-        <div key={section.id}>
-          <h2 id={section.id}>{section.heading}</h2>
-          {section.blocks.map((block, i) => (
-            <BlockRenderer key={i} block={block} />
-          ))}
-        </div>
-      ))}
-    </>
-  );
-}
-
-function BlockRenderer({ block }: { block: BodyBlock }) {
-  switch (block.type) {
-    case "paragraph":
-      return <p>{block.text}</p>;
-    case "callout":
-      if (block.variant === "caution") {
-        return <CautionCallout title={block.title}>{block.text}</CautionCallout>;
-      }
-      if (block.variant === "note") {
-        return <NoteCallout title={block.title}>{block.text}</NoteCallout>;
-      }
-      return <NoteCallout title={block.title ?? "Note"}>{block.text}</NoteCallout>;
-    case "step":
-      return (
-        <StepBlock n={block.n} title={block.title}>
-          {block.text && <p>{block.text}</p>}
-          {block.items && (
-            <ul className="space-y-1">
-              {block.items.map((item, j) => (
-                <li key={j}>· {item}</li>
-              ))}
-            </ul>
-          )}
-        </StepBlock>
-      );
-    case "checklist":
-      return <Checklist items={block.items} />;
-    case "list":
-      return (
-        <ul>
-          {block.items.map((item, i) => (
-            <li key={i}>{item}</li>
-          ))}
-        </ul>
-      );
-    case "code":
-      return <code>{block.text}</code>;
-    default:
-      return null;
-  }
 }

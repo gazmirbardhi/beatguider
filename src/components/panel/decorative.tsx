@@ -27,7 +27,17 @@ export function SpectrumAnalyzer({
   label?: string;
 }) {
   const [levels, setLevels] = useState<number[]>(() =>
-    Array.from({ length: bars }, () => 0.3 + Math.random() * 0.4)
+    // Deterministic initial bar heights (smooth sine arch) — must NOT
+    // use Math.random() here: this useState initializer runs during SSR
+    // and again during hydration, so random values would make the
+    // server-rendered `height` style on each bar disagree with the
+    // client and trigger a React hydration mismatch. The rAF effect
+    // below replaces these with a live random walk on the client after
+    // mount, so the animated spectrum behavior is fully preserved.
+    Array.from({ length: bars }, (_, i) => {
+      const x = (i + 0.5) / bars; // 0..1 across the row
+      return 0.4 + Math.sin(x * Math.PI) * 0.25; // 0.4 → 0.65 → 0.4 arch
+    })
   );
   const [reduced, setReduced] = useState(false);
   const [visible, setVisible] = useState(false);

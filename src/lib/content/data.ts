@@ -12,6 +12,23 @@
 export type ContentType = "guide" | "review" | "comparison" | "roundup" | "explainer" | "business";
 export type ExperienceType = "hands-on" | "long-term-owned" | "software-tested" | "research-based";
 
+/* ─── Per-article structured body content ───
+   Each article gets its own unique body — no shared templates.
+   Blocks are typed: paragraph, callout, step, checklist, tip, caution, note. */
+export type BodyBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "callout"; variant: "quick" | "caution" | "note" | "tip"; title?: string; text: string }
+  | { type: "step"; n: number; title: string; items?: string[]; text?: string }
+  | { type: "checklist"; items: { id: string; text: string }[] }
+  | { type: "list"; items: string[] }
+  | { type: "code"; text: string };
+
+export type BodySection = {
+  id: string; // for TOC anchor
+  heading: string;
+  blocks: BodyBlock[];
+};
+
 export type ArticleMeta = {
   code: string; // FIX-001, GEAR-014, SW-008, LEARN-021, CMP-003, TOOL-##
   slug: string;
@@ -35,6 +52,7 @@ export type ArticleMeta = {
   };
   quickAnswer?: string; // REQUIRED for fix + compare types
   readingTime?: number; // auto-computed
+  body?: BodySection[]; // per-article unique body content
   relatedArticles?: string[]; // slugs
   relatedGear?: string[]; // gear codes
   sources?: { title: string; url?: string; date?: string }[];

@@ -20,7 +20,7 @@ export function SiteShell({
     { label: "Software", href: "/software" },
     { label: "Fix", href: "/fix" },
     { label: "Learn", href: "/learn" },
-    { label: "Tools", href: "/#tools" },
+    { label: "Tools", href: "/tools" },
     { label: "Mobile DJ", href: "/mobile-dj" },
   ],
   searchDisabled = false,

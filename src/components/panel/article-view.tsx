@@ -30,7 +30,8 @@ import {
   ModuleCard,
 } from "./components";
 import { ReaderBar } from "./chrome";
-import { computeReadingTime, gearDb, articles, type ArticleMeta } from "@/lib/content/data";
+import { computeReadingTime, gearDb, articles, type ArticleMeta, type BodySection, type BodyBlock } from "@/lib/content/data";
+import { articleBodies } from "@/lib/content/article-bodies";
 
 /* ════════════════════════════════════════════════════════════════
    ArticleView — shared article page template.
@@ -156,131 +157,9 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
           </div>
         )}
 
-        {/* Article body */}
+        {/* Article body — unique per-article content */}
         <div className="max-w-[68ch] mx-auto prose-panel mt-6">
-          <h2 id="why-this-happens">Why this happens</h2>
-          <p>
-            This guide covers the most common failure modes for {article.topic}. The diagnostic
-            order below reflects measured failure frequency — not editorial convenience.
-          </p>
-          <NoteCallout title="Note · before you start">
-            Keep one known-good cable and one known-good pair of headphones on the bench.
-            A 2-minute cable swap resolves roughly half of all reported audio faults.
-          </NoteCallout>
-
-          <h2 id="step-1">Step 1 — physical chain</h2>
-          <StepBlock n={1} title="Verify the physical chain first">
-            <p>Confirm, in order:</p>
-            <ul className="space-y-1">
-              <li>· USB cable seated at both ends — try a second port</li>
-              <li>· Master output connected to powered speakers</li>
-              <li>· Headphone jack firmly in the socket</li>
-              <li>· Power LED steady — not flickering</li>
-            </ul>
-          </StepBlock>
-
-          <CautionCallout title="Caution · powered speakers">
-            Never connect or disconnect RCA cables while monitors are powered on and the volume
-            is up. Power down the monitors before any cable change.
-          </CautionCallout>
-
-          <h2 id="step-2">Step 2 — system output device</h2>
-          <StepBlock n={2} title="Check the OS audio output device">
-            <p>
-              On macOS, open Audio MIDI Setup. On Windows, check Sound Settings → Playback.
-              The controller should be the default output device.
-            </p>
-          </StepBlock>
-
-          <h2 id="step-3">Step 3 — DJ app routing</h2>
-          <StepBlock n={3} title="Verify the DJ app's audio routing">
-            <p>
-              In the DJ app preferences, confirm the output device matches the controller.
-              Master Output channel should be 1/2, Headphones 3/4.
-            </p>
-          </StepBlock>
-
-          <h2 id="step-4">Step 4 — driver and firmware</h2>
-          <StepBlock n={4} title="Rule out driver and firmware mismatch">
-            <p>
-              On Windows, install the manufacturer driver utility. On macOS, confirm firmware
-              is current. A firmware/driver mismatch is a real failure mode.
-            </p>
-          </StepBlock>
-
-          <h2 id="checklist">Field checklist</h2>
-          <Checklist
-            items={[
-              { id: "c1", text: "USB cable replaced with a known-good cable" },
-              { id: "c2", text: "OS output device = controller" },
-              { id: "c3", text: "DJ app output device = controller" },
-              { id: "c4", text: "Master channel = 1/2, Headphones = 3/4" },
-              { id: "c5", text: "Firmware current and matched" },
-              { id: "c6", text: "Powered monitors confirmed on + volume up" },
-            ]}
-          />
-
-          {relatedGear.length > 0 && (
-            <>
-              <h2 id="spec-table">Gear spec reference</h2>
-              <SpecTable
-                caption={`Spec table · ${relatedGear[0]!.manufacturer} ${relatedGear[0]!.model}`}
-                rows={relatedGear[0]!.majorSpecs.map((s) => ({ label: s.label, value: s.value }))}
-              />
-            </>
-          )}
-
-          {article.contentType === "comparison" && relatedGear.length >= 2 && (
-            <>
-              <h2 id="comparison">Comparison</h2>
-              <ComparisonTable
-                columns={[
-                  { key: "a", label: `${relatedGear[0]!.model}`, winner: true },
-                  { key: "b", label: `${relatedGear[1]!.model}` },
-                ]}
-                rows={[
-                  { label: "Weight", cells: { a: { value: relatedGear[0]!.majorSpecs.find(s=>s.label==="Weight")?.value ?? "—", winner: false, score: 60 }, b: { value: relatedGear[1]!.majorSpecs.find(s=>s.label==="Weight")?.value ?? "—", winner: true, score: 90 } } },
-                ]}
-              />
-            </>
-          )}
-
-          <h2 id="figure">Photo reference</h2>
-          <Figure n={1} caption={`${relatedGear[0]?.model ?? article.topic} — stylized illustrative photo. Not a measurement.`} ratio="16/9">
-            {relatedGear[0]?.slug === "ddj-flx4" ? (
-              <img
-                src="/articles/ddj-flx4-rear-panel.png"
-                alt={`Rear panel of the ${relatedGear[0].manufacturer} ${relatedGear[0].model}`}
-                width={1344}
-                height={768}
-                loading="lazy"
-                decoding="async"
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{ filter: "saturate(0.9) contrast(1.05)" }}
-              />
-            ) : undefined}
-          </Figure>
-
-          <h2 id="methodology">Methodology</h2>
-          <p>
-            This guide is distilled from repeated troubleshooting across the owned unit
-            over six months of regular use. The diagnostic order reflects measured failure
-            frequency in the test bench log.
-          </p>
-          {article.tested && (
-            <LabNotesStrip
-              entries={[
-                { label: "Equipment under test", value: article.tested.equipment?.[0] ?? "—", led: "g" },
-                { label: "Software version", value: article.tested.software?.join(", ") ?? "—", led: "a" },
-                { label: "Platforms verified", value: article.tested.platforms?.join(", ") ?? "—", led: "data" },
-                { label: "Test environment", value: article.tested.environment ?? "—", led: "a" },
-                { label: "Last verified", value: article.lastVerified ?? article.updatedDate ?? article.publishedDate, led: "g" },
-                { label: "Experience type", value: article.experienceType, led: "g" },
-              ]}
-            />
-          )}
-
-          <h2 id="ad">Sponsor bay</h2>
+          <BodyRenderer slug={article.slug} />
           <AdSlot height={120} label="Ad slot · disabled in initial release" />
         </div>
 
@@ -434,4 +313,70 @@ function TOCChips({ active }: { active: string }) {
       </nav>
     </div>
   );
+}
+
+/* ─── BodyRenderer — renders per-article unique body content ─── */
+function BodyRenderer({ slug }: { slug: string }) {
+  const sections = articleBodies[slug];
+  if (!sections || sections.length === 0) {
+    return (
+      <p style={{ color: "var(--mut)" }}>
+        &gt; no body content yet for this article slug: {slug}
+      </p>
+    );
+  }
+  return (
+    <>
+      {sections.map((section) => (
+        <div key={section.id}>
+          <h2 id={section.id}>{section.heading}</h2>
+          {section.blocks.map((block, i) => (
+            <BlockRenderer key={i} block={block} />
+          ))}
+        </div>
+      ))}
+    </>
+  );
+}
+
+function BlockRenderer({ block }: { block: BodyBlock }) {
+  switch (block.type) {
+    case "paragraph":
+      return <p>{block.text}</p>;
+    case "callout":
+      if (block.variant === "caution") {
+        return <CautionCallout title={block.title}>{block.text}</CautionCallout>;
+      }
+      if (block.variant === "note") {
+        return <NoteCallout title={block.title}>{block.text}</NoteCallout>;
+      }
+      return <NoteCallout title={block.title ?? "Note"}>{block.text}</NoteCallout>;
+    case "step":
+      return (
+        <StepBlock n={block.n} title={block.title}>
+          {block.text && <p>{block.text}</p>}
+          {block.items && (
+            <ul className="space-y-1">
+              {block.items.map((item, j) => (
+                <li key={j}>· {item}</li>
+              ))}
+            </ul>
+          )}
+        </StepBlock>
+      );
+    case "checklist":
+      return <Checklist items={block.items} />;
+    case "list":
+      return (
+        <ul>
+          {block.items.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      );
+    case "code":
+      return <code>{block.text}</code>;
+    default:
+      return null;
+  }
 }

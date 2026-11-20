@@ -6,7 +6,7 @@ import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Tools — free DJ rack units",
   description:
-    "Free DJ tools that run instantly in your browser: BPM tap detector, BPM-to-ms calculator, Camelot wheel, key matcher, cue point calculator, set planner, DJ fee calculator, power calculator and gear comparison.",
+    "Free browser DJ tools: BPM tap detector, BPM-to-ms calculator, Camelot key matcher, cue point calculator, set planner, DJ fee calculator, power calculator and gear comparison.",
   path: "/tools",
 });
 

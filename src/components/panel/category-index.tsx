@@ -33,7 +33,7 @@ export function CategoryIndex({
       <section className="panel-surface border-b border-[var(--line)]">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-12 sm:py-16">
           <nav className="flex items-center gap-2 mb-4 text-xs" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>HOME</Link>
+            <Link href="/" className="hover:text-[var(--amber)] tap" style={{ color: "var(--mut)" }}>HOME</Link>
             <span style={{ color: "var(--mut)" }}>/</span>
             <span className="mono" style={{ color: "var(--amber)" }}>{categoryName(category).toUpperCase()}</span>
           </nav>
@@ -65,6 +65,10 @@ export function CategoryIndex({
                 code={a.code}
                 title={a.title}
                 subtitle={a.description}
+                /* h2 — on category index pages the cards are the main
+                   content directly under the page h1 (no section h2
+                   between), so h3 would skip a heading level. */
+                as="h2"
                 led={
                   a.experienceType === "hands-on" || a.experienceType === "long-term-owned"
                     ? "g"
@@ -91,6 +95,7 @@ export function CategoryIndex({
                 code={g.code}
                 title={`${g.manufacturer} ${g.model}`}
                 subtitle={`${g.category} · ${g.status === "active" ? "active" : "discontinued"}`}
+                as="h2"
                 led={g.tested ? "g" : "off"}
                 accent={g.tested ? "g" : "amber"}
                 href={gearHref(g)}

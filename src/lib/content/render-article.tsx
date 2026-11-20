@@ -73,7 +73,14 @@ function metadataFor(article: ArticleMeta) {
   const image = `/og/${article.slug}.png`;
 
   return {
-    title: article.title,
+    /* Long titles drop the " · BeatGuider" suffix instead of getting
+       truncated — the full accurate title beats a cut-off one, and the
+       site name adds 13 chars that push long titles past display
+       length. Titles that fit keep the branded template. */
+    title:
+      article.title.length > 57
+        ? { absolute: article.title }
+        : article.title,
     description: article.description,
     keywords: article.tags,
     alternates: {

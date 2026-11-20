@@ -110,6 +110,7 @@ export function ModuleCard({
   href,
   meta,
   accent = "amber",
+  as = "h3",
 }: {
   code?: string;
   title: string;
@@ -118,11 +119,17 @@ export function ModuleCard({
   href?: string;
   meta?: string;
   accent?: "amber" | "g" | "r" | "data";
+  /* Heading level for the card title. Default h3 (cards under a section
+     h2 — homepage "Latest", author page, article "Related"). Category
+     index pages pass as="h2" because the cards ARE the page's main
+     content directly under the page h1 — an h3 there skips a level. */
+  as?: "h2" | "h3";
 }) {
   const ledCls =
     led === "g" ? "led led-g" : led === "a" ? "led led-a" : led === "r" ? "led led-r" : led === "data" ? "led led-data" : "led";
   const borderClr =
     accent === "g" ? "var(--ok)" : accent === "r" ? "var(--err)" : accent === "data" ? "var(--data)" : "var(--acc)";
+  const Heading = as;
 
   const content = (
     <>
@@ -130,12 +137,12 @@ export function ModuleCard({
       <div className="flex items-start justify-between gap-3 p-4">
         <div className="min-w-0">
           {code && <span className="codechip mb-2">{code}</span>}
-          <h3
+          <Heading
             className="font-[family-name:var(--font-chakra)] font-semibold text-base sm:text-lg leading-tight mt-1 engraved"
             style={{ color: "var(--text2)" }}
           >
             {title}
-          </h3>
+          </Heading>
           {subtitle && (
             <p className="mt-1.5 text-sm" style={{ color: "var(--body)" }}>
               {subtitle}
@@ -297,12 +304,15 @@ export function StepBlock({
           </span>
         </div>
         <div className="flex-1 p-4 sm:p-5 min-w-0">
-          <h4
+          {/* h3 — a Step is always a subsection of an <h2> section
+              (every article opens its steps under a Section marker);
+              h4 here would skip a heading level (h2 → h4). */}
+          <h3
             className="font-[family-name:var(--font-chakra)] font-semibold text-sm sm:text-base mb-2"
             style={{ color: "var(--amber)" }}
           >
             {title}
-          </h4>
+          </h3>
           <div className="lcd !text-sm !bg-transparent leading-relaxed" style={{ color: "var(--amber)" }}>
             {children}
           </div>

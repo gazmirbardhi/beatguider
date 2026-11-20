@@ -2,7 +2,14 @@ import { SiteShell } from "@/components/panel/site-shell";
 import { StaticPage } from "@/components/panel/static-page";
 import { StyleGuideSection } from "@/components/panel/sections";
 
-export const metadata = { title: "Style guide", description: "BeatGuider PANEL design system — living component reference." };
+/* Internal design reference — intentionally excluded from search indexes.
+   Also disallowed in robots.txt; the meta noindex is the stronger guard
+   (a robots.txt Disallow alone can leave a URL-only index entry). */
+export const metadata = {
+  title: "Style guide",
+  description: "BeatGuider PANEL design system — living component reference.",
+  robots: { index: false, follow: false },
+};
 
 export default function Page() {
   return (

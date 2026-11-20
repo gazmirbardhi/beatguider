@@ -91,7 +91,7 @@ export function ModeRocker() {
     >
       <button
         type="button"
-        className="rocker-knob"
+        className="rocker-knob tap"
         aria-pressed={mounted ? mode === "night" : true}
         aria-label="Night mode (black chassis)"
         onClick={() => {
@@ -108,7 +108,7 @@ export function ModeRocker() {
       </button>
       <button
         type="button"
-        className="rocker-knob"
+        className="rocker-knob tap"
         aria-pressed={mounted ? mode === "day" : false}
         aria-label="Day mode (brushed silver chassis)"
         onClick={() => {

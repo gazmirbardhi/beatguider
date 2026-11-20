@@ -28,7 +28,7 @@ export function AuthorPage({ authorSlug }: { authorSlug: string }) {
       <section className="panel-surface border-b border-[var(--line)]">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-12 sm:py-16">
           <nav className="flex items-center gap-2 mb-4 text-xs" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>HOME</Link>
+            <Link href="/" className="hover:text-[var(--amber)] tap" style={{ color: "var(--mut)" }}>HOME</Link>
             <span style={{ color: "var(--mut)" }}>/</span>
             <span className="mono" style={{ color: "var(--amber)" }}>AUTHOR</span>
           </nav>

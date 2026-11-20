@@ -105,9 +105,9 @@ export function ArticleView({
       <article id="specimen-article" className="mx-auto max-w-[1280px] px-4 sm:px-6 py-8 sm:py-10">
         {/* breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 text-xs" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>HOME</Link>
+          <Link href="/" className="hover:text-[var(--amber)] tap" style={{ color: "var(--mut)" }}>HOME</Link>
           <span style={{ color: "var(--mut)" }}>/</span>
-          <Link href={`/${article.category}`} className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>
+          <Link href={`/${article.category}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--mut)" }}>
             {categoryName(article.category).toUpperCase()}
           </Link>
           <span style={{ color: "var(--mut)" }}>/</span>
@@ -140,7 +140,7 @@ export function ArticleView({
           </h1>
           <p className="text-base mb-4" style={{ color: "var(--body)" }}>{article.description}</p>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs mono mb-5" style={{ color: "var(--mut)" }}>
-            <span>By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-[var(--amber)]" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
+            <span>By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
             <span>·</span>
             <span>Published {article.publishedDate}</span>
             {article.updatedDate && (

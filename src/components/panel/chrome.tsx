@@ -326,7 +326,7 @@ export function ReaderBar({
         <div className="flex items-center gap-3 h-12">
           <a
             href={backHref}
-            className="flex items-center gap-1.5 text-[var(--mut)] hover:text-[var(--amber)] transition-colors flex-shrink-0"
+            className="flex items-center gap-1.5 text-[var(--mut)] hover:text-[var(--amber)] transition-colors flex-shrink-0 tap"
             aria-label="Back to top"
           >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">

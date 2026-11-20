@@ -1980,3 +1980,17 @@ html { scroll-behavior: smooth; }
   gap: 1.5rem;
   flex-wrap: wrap;
 }
+
+/* ─── Tap-target expansion (WCAG 2.2 §2.5.8 — 24px minimum) ───
+   Small header/breadcrumb/byline controls keep their compact visual
+   size but get a larger tappable area via a transparent pseudo-
+   element that extends past the element bounds. Pointer events on
+   the overlay hit the control itself; layout and visuals unchanged. */
+.tap {
+  position: relative;
+}
+.tap::after {
+  content: "";
+  position: absolute;
+  inset: -5px -3px;
+}

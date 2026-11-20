@@ -1,7 +1,7 @@
-# BeatGuider BG-1 — Cloudflare Workers Static Assets headers
-# Security headers for a static-export publication. CSP is intentionally
-# permissive on script-src during the initial ad-free release and will be
-# tightened when advertising is decided (spec §22).
+# BeatGuider BG-1 — Cloudflare static-asset headers (Pages / Workers
+# Static Assets). Serves the ./out static export. No Content-Security-Policy
+# header is set for the initial ad-free release; one will be added when
+# advertising / analytics is decided (spec §22).
 
 /*
   X-Content-Type-Options: nosniff
@@ -15,9 +15,10 @@
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
 
-# OG images — long cache, stable filenames
+# OG images — long cache (7 days, same TTL as gear/article photos in
+# next.config.ts dev headers), stable filenames
 /og/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=604800
 
 # Generated gear/article photos — long cache
 /gear/*
@@ -25,7 +26,8 @@
 /articles/*
   Cache-Control: public, max-age=604800
 
-# Fonts served from Google Fonts CDN — no local headers needed
+# Fonts are self-hosted — bundled at build time by next/font (and vendored
+# in public/fonts/ for OG generation). No third-party font CDN requests.
 
 # HTML — short cache, must revalidate to pick up content updates
 /*.html

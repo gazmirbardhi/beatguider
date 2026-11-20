@@ -4,7 +4,7 @@
 
 User-agent: *
 Allow: /
-Disallow: /style-guide/
+Disallow: /style-guide
 Disallow: /api/
 
 # No fake reviews, no AI-SEO gimmicks. Real content only.

@@ -1,10 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* Static-exportable architecture target (BeatGuider §3):
-     output: "export", trailingSlash: true. Disabled in dev sandbox
-     (dev server needs the Node runtime). The build pipeline below is
-     structured so that switching to `output: "export"` is a one-line change. */
+  /* Static export for Cloudflare Pages (BeatGuider §3): `next build` emits
+     ./out. `next dev` works normally under output: "export" (it only
+     forbids request-time server features, which this site does not use).
+     trailingSlash is intentionally left unset — Cloudflare's
+     html_handling: "auto-trailing-slash" (wrangler.jsonc) normalizes URLs. */
+  output: "export",
   reactStrictMode: false,
   // Allow preview origin in dev sandbox only
   allowedDevOrigins:
@@ -15,7 +17,9 @@ const nextConfig: NextConfig = {
     // Strict TS — never ignore build errors in production.
     ignoreBuildErrors: false,
   },
-  /* Security headers — served in dev and production.
+  /* Security headers — applied by the dev server. Under output: "export"
+     Next.js does not emit these into out/ (build warns); public/_headers
+     is the production mechanism on Cloudflare Pages.
      HTTPS enforcement: every canonical/OG/sitemap URL is https://
      (see src/lib/seo.ts) and HSTS is set for the production host in
      public/_headers (Cloudflare). X-Frame-Options and CSP are

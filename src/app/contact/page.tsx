@@ -21,7 +21,7 @@ export default function Page() {
         <p>BeatGuider does not use server-side contact forms — the site is fully static-exportable. Email is the channel. This keeps the architecture simple and the site fast.</p>
         
         <h2>Newsletter</h2>
-        <p>The field-log dispatch (newsletter) uses client-side requests to a third-party service or a dedicated Worker. It is never a reason to convert the site to SSR.</p>
+        <p>The field-log dispatch (newsletter) is not connected yet — launching soon. Nothing submitted through the site is transmitted or stored. When it launches it will use client-side requests to a third-party service or a dedicated Worker — never a reason to convert the site to SSR.</p>
       </StaticPage>
     </SiteShell>
   );

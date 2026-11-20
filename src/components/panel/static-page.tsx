@@ -7,7 +7,7 @@ import { SpecPlate, Screws, SpecTable, SourcesList } from "./components";
    StaticPage — shared template for editorial / policy pages.
    Renders a title + body prose in the PANEL aesthetic. Used by
    /about/, /how-we-test/, /editorial-policy/, /corrections-policy/,
-   /affiliate-disclosure/, /contact/, /style-guide/.
+   /affiliate-disclosure/, /privacy/, /contact/, /style-guide/.
    ════════════════════════════════════════════════════════════════ */
 
 export function StaticPage({

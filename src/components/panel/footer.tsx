@@ -254,6 +254,7 @@ export function SiteFooter({ serial }: { serial: string }) {
             title="Site"
             links={[
               { label: "Affiliate disclosure", href: "/affiliate-disclosure" },
+              { label: "Privacy", href: "/privacy" },
               { label: "Contact", href: "/contact" },
               { label: "Style guide", href: "/style-guide" },
               { label: "RSS feed", href: "/feed.xml" },

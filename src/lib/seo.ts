@@ -244,6 +244,7 @@ export function sitemapEntries(): SitemapEntry[] {
     ["/editorial-policy", 0.4],
     ["/corrections-policy", 0.4],
     ["/affiliate-disclosure", 0.4],
+    ["/privacy", 0.4],
     ["/contact", 0.4],
   ];
   for (const [path, priority] of staticPages) {

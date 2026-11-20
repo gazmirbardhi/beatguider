@@ -30,7 +30,7 @@ import {
   ModuleCard,
 } from "./components";
 import { ReaderBar } from "./chrome";
-import { computeReadingTime, gearDb, articles, type ArticleMeta, type BodySection, type BodyBlock } from "@/lib/content/data";
+import { computeReadingTime, freshnessStatus, gearDb, articles, type ArticleMeta, type BodySection, type BodyBlock } from "@/lib/content/data";
 import { articleBodies, countBodyWords } from "@/lib/content/article-bodies";
 
 /* ════════════════════════════════════════════════════════════════
@@ -117,7 +117,9 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
             ) : (
               <LongTermBadge />
             )}
-            <FreshnessIndicator status={article.contentType === "comparison" ? "fresh" : "fresh"} />
+            {/* Freshness derives from real dates (lastVerified ?? updatedDate
+                ?? publishedDate) via freshnessStatus() — see data.ts. */}
+            <FreshnessIndicator status={freshnessStatus(article)} />
           </div>
           <h1
             className="font-[family-name:var(--font-chakra)] font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
@@ -149,8 +151,10 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
             caption="Spec plate"
             rows={[
               { label: "Applies to", value: article.tested?.equipment?.[0] ?? "—" },
-              { label: "Software", value: article.tested?.software?.join(", ") ?? "—" },
-              { label: "Platforms", value: article.tested?.platforms?.join(", ") ?? "—" },
+              /* [].join(", ") yields "" — a truthy fallback (not ??) is required
+                 so empty arrays render an em dash, never a blank cell (MOB-004). */
+              { label: "Software", value: article.tested?.software?.join(", ") || "—" },
+              { label: "Platforms", value: article.tested?.platforms?.join(", ") || "—" },
               { label: "Environment", value: article.tested?.environment ?? "—" },
               // Difficulty + time are per-article data — shown only when the
               // article explicitly provides them, never as template defaults.

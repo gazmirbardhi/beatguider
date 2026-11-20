@@ -52,3 +52,16 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# local databases / runtime state
+/db/*.db
+*.pid
+
+# local tool output
+/tool-results/
+
+# QA / verification screenshots at repo root (kept locally, not for the repo)
+/qa*.png
+/screenshot*.png
+/verdict*.png
+/final-*.png

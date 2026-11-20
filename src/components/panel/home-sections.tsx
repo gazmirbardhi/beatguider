@@ -137,8 +137,10 @@ export function SimpleNewsletterCta() {
           </div>
           <p className="lcd !text-sm !bg-transparent leading-relaxed mb-4" style={{ color: "var(--amber)" }}>
             &gt; occasional dispatch with new gear tests, fix guides and lab notes.
-            No sponsored emails, no rented list. Unsubscribe any time.
+            No sponsored emails, no rented list.
           </p>
+          {/* The [data-status] readout lives outside the form (sibling in this
+             card) — query it from the form's parent, not from inside the form. */}
           <form
             className="flex flex-col sm:flex-row gap-2"
             onSubmit={(e) => {
@@ -147,8 +149,8 @@ export function SimpleNewsletterCta() {
               const input = form.querySelector("input[type=email]") as HTMLInputElement;
               if (input?.value) {
                 input.value = "";
-                const status = form.querySelector("[data-status]") as HTMLElement;
-                if (status) status.textContent = "> acknowledged · confirmation pending";
+                const status = form.parentElement?.querySelector("[data-status]") as HTMLElement | null;
+                if (status) status.textContent = "> not connected yet — launching soon · nothing was sent or stored";
               }
             }}
           >
@@ -165,7 +167,7 @@ export function SimpleNewsletterCta() {
             </button>
           </form>
           <p data-status className="lcd !text-xs !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
-            &gt; awaiting input
+            &gt; not connected yet — launching soon
           </p>
         </div>
       </div>

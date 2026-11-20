@@ -1,0 +1,774 @@
+     1→"use client";
+     2→
+     3→import Link from "next/link";
+     4→import {
+     5→  ModuleCard,
+     6→  GearCard,
+     7→  TestedBadge,
+     8→  ResearchBadge,
+     9→  LongTermBadge,
+    10→  QuickAnswer,
+    11→  CautionCallout,
+    12→  NoteCallout,
+    13→  StepBlock,
+    14→  Checklist,
+    15→  SpecTable,
+    16→  ComparisonTable,
+    17→  VUMeter,
+    18→  VerdictCard,
+    19→  ProsCons,
+    20→  AffiliateButton,
+    21→  SourcesList,
+    22→  SegmentedTabs,
+    23→  TOCChips,
+    24→  SearchModule,
+    25→  Figure,
+    26→  AdSlot,
+    27→  SpecPlate,
+    28→  FreshnessIndicator,
+    29→  Screws,
+    30→  DBMeter,
+    31→  DipSwitchBank,
+    32→  TapeEdgeLabel,
+    33→  ErrorLog,
+    34→} from "./components";
+    35→import { BpmCalculator, CamelotCalculator, PowerCalculator, GearDueler, KeyBpmMatcher, SetLengthPlanner } from "./tools";
+    36→import { SpectrumAnalyzer, PhaseMeter, LabActivityFeed, Knob, RivetRow } from "./decorative";
+    37→import { gearDb, articles, gearHref, freshnessStatus, buildValidationChecks, type ArticleMeta } from "@/lib/content/data";
+    38→
+    39→/* ════════════════════════════════════════════════════════════════
+    40→   BeatGuider homepage — panel sections (not a chronological wall).
+    41→   Each section is a module on the test bench.
+    42→   ════════════════════════════════════════════════════════════════ */
+    43→
+    44→function SectionLabel({ code, title, kicker }: { code?: string; title: string; kicker?: string }) {
+    45→  return (
+    46→    <div className="flex items-baseline gap-3 mb-5 flex-wrap">
+    47→      {code && <span className="codechip">{code}</span>}
+    48→      <h2
+    49→        className="font-[family-name:var(--font-chakra)] font-semibold text-2xl sm:text-3xl"
+    50→        style={{ color: "var(--text2)" }}
+    51→      >
+    52→        {title}
+    53→      </h2>
+    54→      {kicker && <span className="silk" style={{ color: "var(--mut)" }}>— {kicker}</span>}
+    55→      <div className="flex-1 h-px ml-2" style={{ background: "var(--line)" }} />
+    56→    </div>
+    57→  );
+    58→}
+    59→
+    60→function SectionFrame({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
+    61→  return (
+    62→    <section id={id} className={`chassis-seam py-10 sm:py-14 ${className}`} style={{ borderTop: "1px solid var(--line)" }}>
+    63→      <div className="mx-auto max-w-[1280px] px-4 sm:px-6">{children}</div>
+    64→    </section>
+    65→  );
+    66→}
+    67→
+    68→/* ─── 1. FACEPLATE HERO ─── */
+    69→export function FaceplateHero({ entryCount, lastPublish }: { entryCount: number; lastPublish: string }) {
+    70→  return (
+    71→    <section id="top" className="panel-surface border-b border-[var(--line)]">
+    72→      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-12 sm:py-20">
+    73→        <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-12 items-center">
+    74→          <div>
+    75→            <div className="flex items-center gap-2 mb-4">
+    76→              <span className="led led-g" aria-hidden="true" />
+    77→              <span className="silk" style={{ color: "var(--mut)" }}>Independent DJ test bench · BG-1</span>
+    78→            </div>
+    79→            <h1
+    80→              className="font-[family-name:var(--font-chakra)] font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
+    81→              style={{ color: "var(--text2)" }}
+    82→            >
+    83→              Test. Fix. <span style={{ color: "var(--amber)" }}>Mix.</span>
+    84→            </h1>
+    85→            <p className="mt-5 text-base sm:text-lg max-w-[58ch]" style={{ color: "var(--body)" }}>
+    86→              BeatGuider is an independent DJ gear, software, troubleshooting and education
+    87→              publication operated by a working DJ. Hands-on equipment testing, software testing,
+    88→              troubleshooting guides, comparisons and research-based educational content — first-hand
+    89→              evidence, never fabricated reviews.
+    90→            </p>
+    91→            <div className="mt-7 flex flex-wrap gap-3">
+    92→              <Link href="#intent" className="hwbtn hwbtn-amber">
+    93→                <span>Choose your intent</span>
+    94→                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    95→                  <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    96→                </svg>
+    97→              </Link>
+    98→              <Link href="#tools" className="hwbtn">
+    99→                Open tool rack
+   100→              </Link>
+   101→              <Link href="/fix/ddj-flx4-no-sound" className="hwbtn">
+   102→                See a fixture article
+   103→              </Link>
+   104→            </div>
+   105→            <div className="mt-6 flex flex-wrap items-center gap-2">
+   106→              <TestedBadge />
+   107→              <LongTermBadge />
+   108→              <ResearchBadge />
+   109→            </div>
+   110→          </div>
+   111→
+   112→          {/* VU meter + LCD readout */}
+   113→          <div className="specplate brushed corner-brackets pcb-traces p-5 sm:p-6 relative">
+   114→            <Screws />
+   115→            <div className="flex items-center gap-2 mb-3">
+   116→              <span className="led led-a led-breathe" aria-hidden="true" />
+   117→              <span className="silk-lg" style={{ color: "var(--acc)" }}>Signal monitor</span>
+   118→              <span className="ml-auto codechip">SIG-01</span>
+   119→            </div>
+   120→            <VUMeter value={82} size="lg" />
+   121→            <div className="mt-3">
+   122→              <SpectrumAnalyzer bars={28} height={56} />
+   123→            </div>
+   124→            <PhaseMeter value={0.08} />
+   125→            <div className="grid grid-cols-3 gap-3 mt-3">
+   126→              <LcdStat label="ENTRIES" value={String(entryCount).padStart(3, "0")} />
+   127→              <LcdStat label="LAST PUB" value={lastPublish} />
+   128→              <LcdStat label="MODE" value="OK" />
+   129→            </div>
+   130→            <p className="mono text-[0.6875rem] mt-3" style={{ color: "var(--mut)" }}>
+   131→              Real build-time data. Display is mode-invariant — identical in NIGHT and DAY.
+   132→            </p>
+   133→          </div>
+   134→        </div>
+   135→      </div>
+   136→    </section>
+   137→  );
+   138→}
+   139→
+   140→function LcdStat({ label, value }: { label: string; value: string }) {
+   141→  return (
+   142→    <div className="electronics px-2 py-1.5 text-center">
+   143→      <div className="silk !text-[0.5rem] mb-0.5" style={{ color: "rgba(255,176,0,0.55)" }}>{label}</div>
+   144→      <div className="lcd !text-sm !bg-transparent font-semibold">{value}</div>
+   145→    </div>
+   146→  );
+   147→}
+   148→
+   149→/* ─── 2. INTENT PATHS ─── */
+   150→export function IntentPaths() {
+   151→  const paths = [
+   152→    {
+   153→      id: "fix",
+   154→      code: "INT-01",
+   155→      title: "Fix a problem",
+   156→      subtitle: "Methodical troubleshooting for DJ hardware and software. Diagnostics, not guesses.",
+   157→      led: "r" as const,
+   158→      accent: "r" as const,
+   159→      href: "#fault-report",
+   160→      cta: "Open fault report",
+   161→    },
+   162→    {
+   163→      id: "compare",
+   164→      code: "INT-02",
+   165→      title: "Compare gear",
+   166→      subtitle: "Where controllers, software and gear actually differ — backed by shared spec data.",
+   167→      led: "a" as const,
+   168→      accent: "amber" as const,
+   169→      href: "#tested-hardware",
+   170→      cta: "Open comparison",
+   171→    },
+   172→    {
+   173→      id: "learn",
+   174→      code: "INT-03",
+   175→      title: "Learn DJing",
+   176→      subtitle: "Practical technique guides written from a working DJ's practice room.",
+   177→      led: "g" as const,
+   178→      accent: "g" as const,
+   179→      href: "#latest",
+   180→      cta: "Open learn log",
+   181→    },
+   182→  ];
+   183→  return (
+   184→    <SectionFrame id="intent">
+   185→      <SectionLabel code="INT-00" title="Three intents" kicker="FIX · COMPARE · LEARN" />
+   186→      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+   187→        {paths.map((p) => (
+   188→          <ModuleCard
+   189→            key={p.id}
+   190→            code={p.code}
+   191→            title={p.title}
+   192→            subtitle={p.subtitle}
+   193→            led={p.led}
+   194→            accent={p.accent}
+   195→            href={p.href}
+   196→            meta={p.cta}
+   197→          />
+   198→        ))}
+   199→      </div>
+   200→      {/* Lab activity ticker — real content, no fabrication */}
+   201→      <div className="mt-6">
+   202→        <LabActivityFeed />
+   203→      </div>
+   204→    </SectionFrame>
+   205→  );
+   206→}
+   207→
+   208→/* ─── 3. FAULT REPORT — popular troubleshooting guides ─── */
+   209→export function FaultReport() {
+   210→  const fixes = articles.filter((a) => a.category === "fix").slice(0, 4);
+   211→  return (
+   212→    <SectionFrame id="fault-report">
+   213→      <SectionLabel code="SEC-01" title="Fault report" kicker="popular troubleshooting" />
+   214→      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+   215→        {fixes.map((a) => (
+   216→          <ModuleCard
+   217→            key={a.code}
+   218→            code={a.code}
+   219→            title={a.title}
+   220→            subtitle={a.description}
+   221→            led={freshnessStatus(a) === "stale" ? "r" : "a"}
+   222→            accent="r"
+   223→            href={`/${a.category}/${a.slug}`}
+   224→            meta={`Updated ${a.updatedDate ?? a.publishedDate} · ${a.experienceType}`}
+   225→          />
+   226→        ))}
+   227→      </div>
+   228→    </SectionFrame>
+   229→  );
+   230→}
+   231→
+   232→/* ─── 4. TESTED HARDWARE ─── */
+   233→export function TestedHardware() {
+   234→  const gear = gearDb;
+   235→  // Generated stylized product photos for tested gear (clearly decorative —
+   236→  // not measurements). Only tested gear gets a photo; untested gear shows
+   237→  // the reserved photo bay (honest, no fabrication).
+   238→  const photoForSlug: Record<string, string> = {
+   239→    "ddj-flx4": "/gear/ddj-flx4.jpg",
+   240→    "ddj-400": "/gear/ddj-400.jpg",
+   241→  };
+   242→  return (
+   243→    <SectionFrame id="tested-hardware">
+   244→      <SectionLabel code="SEC-02" title="Tested hardware" kicker="hands-on gear" />
+   245→      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+   246→        {gear.map((g) => (
+   247→          <GearCard
+   248→            key={g.code}
+   249→            code={g.code}
+   250→            model={g.model}
+   251→            manufacturer={g.manufacturer}
+   252→            category={g.category}
+   253→            year={g.releaseYear}
+   254→            status={g.status}
+   255→            rating={g.rating ? Math.round(g.rating.reduce((s, r) => s + r.value, 0) / g.rating.length) : undefined}
+   256→            href={gearHref(g)}
+   257→            imageSlot={
+   258→              g.tested && photoForSlug[g.slug] ? (
+   259→                <img
+   260→                  src={photoForSlug[g.slug]}
+   261→                  alt={`${g.manufacturer} ${g.model} ${g.category.toLowerCase()} — stylized product photo`}
+   262→                  width={64}
+   263→                  height={64}
+   264→                  loading="lazy"
+   265→                  decoding="async"
+   266→                  className="w-full h-full object-cover"
+   267→                  style={{ filter: "saturate(0.85) contrast(1.05)" }}
+   268→                />
+   269→              ) : undefined
+   270→            }
+   271→          />
+   272→        ))}
+   273→      </div>
+   274→      <p className="mono text-xs mt-4" style={{ color: "var(--mut)" }}>
+   275→        Active products show a green LED · discontinued gray · ratings render as VU meters and are emitted only from real test data. Tested-gear photos are stylized illustrations — not measurements.
+   276→      </p>
+   277→    </SectionFrame>
+   278→  );
+   279→}
+   280→
+   281→/* ─── 5. SOFTWARE LOG ─── */
+   282→export function SoftwareLog() {
+   283→  const sw = articles.filter((a) => a.category === "software").slice(0, 3);
+   284→  return (
+   285→    <SectionFrame id="software-log">
+   286→      <SectionLabel code="SEC-03" title="Software log" kicker="software guides" />
+   287→      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+   288→        {sw.map((a) => (
+   289→          <ModuleCard
+   290→            key={a.code}
+   291→            code={a.code}
+   292→            title={a.title}
+   293→            subtitle={a.description}
+   294→            led="data"
+   295→            accent="data"
+   296→            href={`/${a.category}/${a.slug}`}
+   297→            meta={a.topic}
+   298→          />
+   299→        ))}
+   300→      </div>
+   301→    </SectionFrame>
+   302→  );
+   303→}
+   304→
+   305→/* ─── 6. TOOL MODULES — four tools as rack units ─── */
+   306→export function ToolModules() {
+   307→  return (
+   308→    <SectionFrame id="tools">
+   309→      <SectionLabel code="SEC-04" title="Tool modules" kicker="rack units · client-side" />
+   310→      <p className="text-sm mb-6 max-w-[68ch]" style={{ color: "var(--body)" }}>
+   311→        Each tool is a device: hardware inputs, results on a dark LCD readout in Plex Mono with amber digits.
+   312→        All static-export compatible — JavaScript loads per-route only, not globally.
+   313→      </p>
+   314→      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+   315→        <BpmCalculator />
+   316→        <CamelotCalculator />
+   317→        <PowerCalculator />
+   318→        <KeyBpmMatcher />
+   319→        <SetLengthPlanner />
+   320→      </div>
+   321→      <div className="mt-4">
+   322→        <GearDueler gear={gearDb} />
+   323→      </div>
+   324→    </SectionFrame>
+   325→  );
+   326→}
+   327→
+   328→/* ─── 7. LATEST LOG ─── */
+   329→export function LatestLog() {
+   330→  const latest = [...articles].sort((a, b) => (b.publishedDate > a.publishedDate ? 1 : -1)).slice(0, 6);
+   331→  return (
+   332→    <SectionFrame id="latest">
+   333→      <SectionLabel code="SEC-05" title="Latest log" kicker="recent articles" />
+   334→      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+   335→        {latest.map((a) => (
+   336→          <ModuleCard
+   337→            key={a.code}
+   338→            code={a.code}
+   339→            title={a.title}
+   340→            subtitle={a.description}
+   341→            led={
+   342→              a.experienceType === "hands-on" || a.experienceType === "long-term-owned"
+   343→                ? "g"
+   344→                : a.experienceType === "research-based"
+   345→                ? "data"
+   346→                : "a"
+   347→            }
+   348→            accent={
+   349→              a.experienceType === "hands-on" || a.experienceType === "long-term-owned"
+   350→                ? "g"
+   351→                : a.experienceType === "research-based"
+   352→                ? "data"
+   353→                : "amber"
+   354→            }
+   355→            href={`/${a.category}/${a.slug}`}
+   356→            meta={`${a.category} · ${a.publishedDate}`}
+   357→          />
+   358→        ))}
+   359→      </div>
+   360→    </SectionFrame>
+   361→  );
+   362→}
+   363→
+   364→/* ─── 8. MOBILE DJ module ─── */
+   365→export function MobileDjModule() {
+   366→  const mob = articles.filter((a) => a.category === "mobile-dj");
+   367→  return (
+   368→    <SectionFrame id="mobile-dj">
+   369→      <SectionLabel code="SEC-06" title="Mobile DJ" kicker="business · gigging" />
+   370→      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-6">
+   371→        <div>
+   372→          <p className="text-base mb-4" style={{ color: "var(--body)" }}>
+   373→            Mobile DJ content covers the gig-day reality: power, routing, contracts, transport,
+   374→            backup rigs and the small decisions that prevent silence at 23:00 on a Saturday.
+   375→            Written from a working DJ's gig bag.
+   376→          </p>
+   377→          <div className="flex flex-wrap gap-3">
+   378→            <Link href="#tools" className="hwbtn">
+   379→              Open power calculator
+   380→            </Link>
+   381→            {mob[0] && (
+   382→              <Link href={`/${mob[0].category}/${mob[0].slug}`} className="hwbtn hwbtn-amber">
+   383→                {mob[0].code} · read
+   384→              </Link>
+   385→            )}
+   386→          </div>
+   387→        </div>
+   388→        <div className="specplate brushed p-5 relative">
+   389→          <Screws />
+   390→          <div className="flex items-center gap-2 mb-3">
+   391→            <span className="led led-g" aria-hidden="true" />
+   392→            <span className="silk-lg" style={{ color: "var(--ok)" }}>Gig-day power rules</span>
+   393→          </div>
+   394→          <Checklist
+   395→            items={[
+   396→              { id: "p1", text: "Confirm dedicated circuit — no shared fridge / kettle / stage lights" },
+   397→              { id: "p2", text: "Verify RCD/GFCI protection on the outlet feeding your rig" },
+   398→              { id: "p3", text: "Measure actual draw with a clamp meter before soundcheck" },
+   399→              { id: "p4", text: "Carry 2× the cable length you think you need" },
+   400→              { id: "p5", text: "Have a battery-powered backup for the ceremony / announcements" },
+   401→            ]}
+   402→          />
+   403→        </div>
+   404→      </div>
+   405→    </SectionFrame>
+   406→  );
+   407→}
+   408→
+   409→/* ─── 9. Newsletter CTA — LCD display with input ─── */
+   410→export function NewsletterCta() {
+   411→  return (
+   412→    <SectionFrame id="newsletter">
+   413→      <SectionLabel code="SEC-07" title="Field log dispatch" kicker="newsletter · no spam" />
+   414→      <div className="electronics p-5 sm:p-6 max-w-[640px]">
+   415→        <div className="flex items-center gap-2 mb-3">
+   416→          <span className="led led-a transmit-led" aria-hidden="true" />
+   417→          <span className="silk-lg" style={{ color: "var(--amber)" }}>Subscribe · field log</span>
+   418→          <span className="ml-auto codechip">SUB-01</span>
+   419→        </div>
+   420→        <p className="lcd !text-sm !bg-transparent leading-relaxed mb-3" style={{ color: "var(--amber)" }}>
+   421→          &gt; occasional dispatch with new gear tests, fix guides and the lab notes that don't make it
+   422→          into articles. No sponsored emails, no rented list. Unsubscribe any time.
+   423→        </p>
+   424→        {/* SIGNAL waveform — decorative audio-wave scope trace */}
+   425→        <div className="signal-wave w-full mb-4" aria-hidden="true" />
+   426→        <form
+   427→          className="flex flex-col sm:flex-row gap-2"
+   428→          onSubmit={(e) => {
+   429→            e.preventDefault();
+   430→            // client-side request to a third-party service or dedicated Worker — never a reason to convert the site to SSR
+   431→            const form = e.currentTarget as HTMLFormElement;
+   432→            const input = form.querySelector("input[type=email]") as HTMLInputElement;
+   433→            if (input?.value) {
+   434→              input.value = "";
+   435→              const status = form.querySelector("[data-status]") as HTMLElement;
+   436→              if (status) status.textContent = "> acknowledged · confirmation pending";
+   437→            }
+   438→          }}
+   439→        >
+   440→          <input
+   441→            type="email"
+   442→            required
+   443→            placeholder="you@yourdomain.com"
+   444→            className="flex-1 px-3 py-2 lcd !bg-[#060606] !text-sm outline-none"
+   445→            style={{ color: "var(--amber)", border: "1px solid var(--disp-b)" }}
+   446→            aria-label="Email address"
+   447→          />
+   448→          <button type="submit" className="hwbtn hwbtn-amber justify-center">
+   449→            <span>Transmit</span>
+   450→            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+   451→              <path d="M2 8H14M14 8L9 3M14 8L9 13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+   452→            </svg>
+   453→          </button>
+   454→        </form>
+   455→        <p data-status className="lcd !text-xs !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+   456→          &gt; awaiting input
+   457→        </p>
+   458→      </div>
+   459→    </SectionFrame>
+   460→  );
+   461→}
+   462→
+   463→/* ─── 10. Style guide section — living reference ─── */
+   464→export function StyleGuideSection() {
+   465→  return (
+   466→    <SectionFrame id="style-guide">
+   467→      <SectionLabel code="SEC-08" title="Style guide" kicker="component reference · both modes" />
+   468→      <p className="text-sm mb-6 max-w-[68ch]" style={{ color: "var(--body)" }}>
+   469→        Every signature component rendered in both NIGHT and DAY modes. Toggle the chassis
+   470→        switch in the header to verify the electronics stay lit and identical.
+   471→      </p>
+   472→
+   473→      {/* badges */}
+   474→      <div className="specplate brushed p-5 mb-6 relative">
+   475→        <Screws />
+   476→        <TapeEdgeLabel>SEC-A · BADGES</TapeEdgeLabel>
+   477→        <div className="silk mb-3" style={{ color: "var(--acc)" }}>Testing-status badges</div>
+   478→        <div className="flex flex-wrap gap-3">
+   479→          <TestedBadge />
+   480→          <ResearchBadge />
+   481→          <LongTermBadge />
+   482→          <FreshnessIndicator status="fresh" />
+   483→          <FreshnessIndicator status="recheck" recheckDate="2025-04" />
+   484→          <FreshnessIndicator status="stale" recheckDate="2024-09" />
+   485→        </div>
+   486→      </div>
+   487→
+   488→      {/* error log — REAL build-time validation results (not hardcoded) */}
+   489→      <ErrorLog checks={buildValidationChecks(gearDb, articles)} />
+   490→
+   491→      {/* decorative hardware: knobs + rivets + spectrum + DIP + DB meter */}
+   492→      <div className="specplate brushed p-5 mb-6 relative">
+   493→        <Screws />
+   494→        <div className="silk mb-4" style={{ color: "var(--acc)" }}>Decorative hardware</div>
+   495→        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+   496→          <Knob value={20} label="GAIN" size={28} />
+   497→          <Knob value={55} label="MID" size={28} />
+   498→          <Knob value={80} label="HIGH" size={28} />
+   499→          <Knob value={35} label="FILTER" size={28} />
+   500→        </div>
+   501→        <RivetRow count={8} />
+   502→        <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+   503→          <SpectrumAnalyzer bars={32} height={48} label="SPECTRUM · DEMO" />
+   504→          <DBMeter value={62} peak={78} />
+   505→        </div>
+   506→        <div className="mt-4 flex flex-wrap items-end gap-4">
+   507→          <DipSwitchBank switches={[true, false, true, true, false, true]} labels={["1","2","3","4","5","6"]} />
+   508→          <span className="silk" style={{ color: "var(--mut)" }}>DIP switch bank · decorative config</span>
+   509→        </div>
+   510→      </div>
+   511→
+   512→      {/* callouts */}
+   513→      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-0 mb-6">
+   514→        <div>
+   515→          <QuickAnswer>
+   516→            The Quick Answer block renders the required frontmatter field — an answer-first
+   517→            summary for fix and compare articles. Required by the schema; the build fails without it.
+   518→          </QuickAnswer>
+   519→          <CautionCallout title="Caution · ratings vary">
+   520→            CAUTION callouts mark genuine safety or risk information — never used for emphasis.
+   521→          </CautionCallout>
+   522→        </div>
+   523→        <div>
+   524→          <NoteCallout title="Note · convention">
+   525→            NOTE callouts mark conventions, defaults and editorial notes the reader should know.
+   526→          </NoteCallout>
+   527→          <NoteCallout title="Note · another">
+   528→            Note text uses article body styling (Inter), not LCD styling — only the label is silkscreen.
+   529→          </NoteCallout>
+   530→        </div>
+   531→      </div>
+   532→
+   533→      {/* step + checklist */}
+   534→      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 mb-6">
+   535→        <StepBlock n={1} title="Example step">
+   536→          Step blocks are dark display modules with glowing amber step numbers. Step copy is mono.
+   537→        </StepBlock>
+   538→        <div>
+   539→          <Checklist
+   540→            items={[
+   541→              { id: "sg1", text: "Toggle switches are green when on, strikethrough applied" },
+   542→              { id: "sg2", text: "Each toggle is keyboard operable (Space / Enter)" },
+   543→              { id: "sg3", text: "State is per-page-load — not persisted in this demo" },
+   544→            ]}
+   545→          />
+   546→        </div>
+   547→      </div>
+   548→
+   549→      {/* VU meters */}
+   550→      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+   551→        <VUMeter value={28} size="sm" />
+   552→        <VUMeter value={62} size="sm" />
+   553→        <VUMeter value={94} size="sm" />
+   554→      </div>
+   555→
+   556→      {/* spec table + comparison */}
+   557→      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-6 mb-6">
+   558→        <SpecTable
+   559→          caption="Spec table · example"
+   560→          rows={[
+   561→            { label: "Manufacturer", value: "Pioneer DJ" },
+   562→            { label: "Model", value: "DDJ-FLX4" },
+   563→            { label: "Decks", value: "2" },
+   564→            { label: "Audio", value: "24-bit / 48kHz built-in" },
+   565→            { label: "Software", value: "rekordbox (Serato DJ Lite compatible)" },
+   566→          ]}
+   567→        />
+   568→        <ComparisonTable
+   569→          columns={[
+   570→            { key: "a", label: "DDJ-FLX4", winner: true },
+   571→            { key: "b", label: "DDJ-FLX2" },
+   572→          ]}
+   573→          rows={[
+   574→            { label: "Jog wheel", cells: { a: { value: "Larger, 206mm", winner: true, score: 85 }, b: { value: "Smaller, 155mm", score: 70 } } },
+   575→            { label: "Weight", cells: { a: { value: "2.1kg", score: 60 }, b: { value: "1.6kg", winner: true, score: 90 } } },
+   576→            { label: "USB", cells: { a: { value: "USB-C 2.0" }, b: { value: "USB-C 2.0" } } },
+   577→            { label: "Software", cells: { a: { value: "rekordbox", winner: true, score: 88 }, b: { value: "rekordbox", score: 88 } } },
+   578→          ]}
+   579→        />
+   580→      </div>
+   581→
+   582→      {/* verdict + pros/cons */}
+   583→      <div className="mb-6">
+   584→        <VerdictCard
+   585→          title="DDJ-FLX4 — long-term verdict"
+   586→          meta={["GEAR-014", "long-term owned", "6+ months"]}
+   587→          score={[
+   588→            { label: "Build & feel", value: 78, max: 100 },
+   589→            { label: "Pad response", value: 85, max: 100 },
+   590→            { label: "Mixer ergonomics", value: 82, max: 100 },
+   591→            { label: "Software fit", value: 88, max: 100 },
+   592→            { label: "Value for money", value: 90, max: 100 },
+   593→          ]}
+   594→          rows={[
+   595→            { label: "Best for", value: "Home + small gig beginner" },
+   596→            { label: "Tested", value: "Owned · 6+ months" },
+   597→            { label: "Affiliate", value: "Eligible" },
+   598→            { label: "Last verified", value: "2025-01" },
+   599→          ]}
+   600→        />
+   601→      </div>
+   602→
+   603→      <ProsCons
+   604→        pros={[
+   605→          "Genuine Pioneer jog-wheel feel",
+   606→          "Smart recomposition via CFX pad mode",
+   607→          "rekordbox hardware unlock in the box",
+   608→        ]}
+   609→        cons={[
+   610→          "No standalone mode",
+   611→          "Plastic chassis flex under pressure",
+   612→          "Single master output limits booth routing",
+   613→        ]}
+   614→      />
+   615→
+   616→      {/* figure + ad slot */}
+   617→      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+   618→        <Figure n={1} caption="Reserved-height photo bay — original testing photo placeholder. AVIF/WebP + descriptive alt text in production." />
+   619→        <AdSlot height={180} />
+   620→      </div>
+   621→
+   622→      {/* tabs */}
+   623→      <SegmentedTabs
+   624→        tabs={[
+   625→          { label: "Display", content: "Segmented tabs behave like a hardware switch selector — only one position active at a time." },
+   626→          { label: "Input", content: "Tab content renders in the dark electronics module — identical in both chassis modes." },
+   627→          { label: "Output", content: "Active tab gets the pressed rocker-knob state and an amber LED." },
+   628→        ]}
+   629→      />
+   630→
+   631→      {/* sources */}
+   632→      <SourcesList
+   633→        sources={[
+   634→          { title: "Pioneer DJ DDJ-FLX4 owner's manual", url: "https://www.pioneerdj.com/", date: "2023" },
+   635→          { title: "rekordbox manual — audio settings", url: "https://rekordbox.com/", date: "2024" },
+   636→          { title: "BeatGuider lab notes — owned unit", date: "2025-01" },
+   637→        ]}
+   638→      />
+   639→
+   640→      {/* affiliate */}
+   641→      <div className="specplate brushed p-5 relative">
+   642→        <Screws />
+   643→        <div className="silk mb-3" style={{ color: "var(--acc)" }}>Affiliate CTA · example</div>
+   644→        <AffiliateButton product="ddj-flx4" retailer="amazon" url="https://www.amazon.com/">
+   645→          Check current price
+   646→        </AffiliateButton>
+   647→      </div>
+   648→    </SectionFrame>
+   649→  );
+   650→}
+   651→
+   652→/* ─── 11. GLOSSARY — build-time DJ term dictionary ───
+   653→   A dark LCD reference module defining common DJ terms. Educational +
+   654→   SEO-relevant. Rendered as a 2-column grid of term/definition pairs
+   655→   inside an electronics module. No fabrication — real industry terms. */
+   656→export function Glossary() {
+   657→  const terms: { term: string; def: string }[] = [
+   658→    { term: "BPM", def: "Beats per minute — the tempo of a track. House ≈ 124, techno ≈ 130, drum & bass ≈ 174." },
+   659→    { term: "Camelot key", def: "A numeric notation (1A–12B) for harmonic mixing. Adjacent numbers in the same letter mix in-key." },
+   660→    { term: "DVS", def: "Digital Vinyl System — uses timecode records/CDs to control DJ software with traditional turntables." },
+   661→    { term: "Phrase", def: "A musical section of typically 8 or 16 bars. Mixing on phrase boundaries keeps transitions musical." },
+   662→    { term: "EQ swap", def: "Gradually swapping the frequency balance (low/mid/high) between two tracks during a transition." },
+   663→    { term: "Gain staging", def: "Setting input levels at each stage of the signal chain to avoid clipping and noise." },
+   664→    { term: "Rekordbox", def: "Pioneer DJ's music management software. Exports analyzed libraries to USB for CDJ players." },
+   665→    { term: "Serato", def: "A DJ software platform (Serato DJ Pro / Lite). Popular for DVS and controller-based setups." },
+   666→    { term: "Jog wheel", def: "The spinning platter on a DJ controller or media player used for scratching and track navigation." },
+   667→    { term: "Hot cue", def: "A saved jump-point within a track. Pressing the pad jumps instantly to that position." },
+   668→    { term: "Beatgrid", def: "A visual grid overlaid on a track's waveform marking each beat. Used for sync and quantized jumping." },
+   669→    { term: "Booth output", def: "A dedicated monitor output for the DJ's headphones or booth speakers, separate from the master." },
+   670→  ];
+   671→
+   672→  return (
+   673→    <SectionFrame id="glossary">
+   674→      <SectionLabel code="SEC-09" title="Glossary" kicker="DJ terms · reference" />
+   675→      <p className="text-sm mb-4 max-w-[68ch]" style={{ color: "var(--body)" }}>
+   676→        Common DJ terms defined plainly. Build-time generated — no fabrication, real industry vocabulary.
+   677→      </p>
+   678→      <div className="electronics p-4 sm:p-5">
+   679→        <div className="flex items-center gap-2 mb-4">
+   680→          <span className="led led-a led-breathe" aria-hidden="true" />
+   681→          <span className="silk" style={{ color: "var(--amber)" }}>Reference dictionary · {terms.length} entries</span>
+   682→          <span className="ml-auto codechip">REF-01</span>
+   683→        </div>
+   684→        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+   685→          {terms.map((t) => (
+   686→            <div key={t.term} className="flex flex-col gap-0.5">
+   687→              <dt className="lcd lcd-ghost !text-sm !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>
+   688→                {t.term}
+   689→              </dt>
+   690→              <dd className="text-xs leading-relaxed" style={{ color: "rgba(255,176,0,0.75)" }}>
+   691→                {t.def}
+   692→              </dd>
+   693→            </div>
+   694→          ))}
+   695→        </dl>
+   696→      </div>
+   697→    </SectionFrame>
+   698→  );
+   699→}
+   700→
+   701→/* ─── 12. EQUIPMENT MATRIX — build-time gear inventory ───
+   702→   A dark LCD inventory table of all gear entries with status LEDs +
+   703→   ownership + test state + release year. Complements the Build manifest
+   704→   (which lists codes) with per-gear detail. No fabrication — reads
+   705→   from gearDb. */
+   706→export function EquipmentMatrix() {
+   707→  return (
+   708→    <SectionFrame id="equipment-matrix">
+   709→      <SectionLabel code="SEC-10" title="Equipment matrix" kicker="gear inventory · all entries" />
+   710→      <p className="text-sm mb-4 max-w-[68ch]" style={{ color: "var(--body)" }}>
+   711→        Complete gear inventory with status LEDs (green = active · gray = discontinued),
+   712→        ownership + test state. Build-time generated from the shared gear database.
+   713→      </p>
+   714→      <div className="electronics overflow-x-auto scroll-x">
+   715→        <table className="w-full text-sm min-w-[680px]">
+   716→          <thead>
+   717→            <tr style={{ background: "#060606" }}>
+   718→              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>CODE</th>
+   719→              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>MODEL</th>
+   720→              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>CATEGORY</th>
+   721→              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>YEAR</th>
+   722→              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>STATUS</th>
+   723→              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>TESTED</th>
+   724→              <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>OWNED</th>
+   725→            </tr>
+   726→          </thead>
+   727→          <tbody>
+   728→            {gearDb.map((g, i) => (
+   729→              <tr key={g.code} className={i > 0 ? "border-t border-[var(--disp-b)]" : ""}>
+   730→                <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>{g.code}</td>
+   731→                <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>
+   732→                  {g.manufacturer} {g.model}
+   733→                </td>
+   734→                <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>{g.category}</td>
+   735→                <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>{g.releaseYear ?? "—"}</td>
+   736→                <td className="px-3 sm:px-4 py-2 mono">
+   737→                  <span className="inline-flex items-center gap-1.5">
+   738→                    <span className={g.status === "active" ? "led led-g" : "led"} aria-hidden="true" />
+   739→                    <span style={{ color: g.status === "active" ? "var(--vu-g)" : "var(--mut)" }}>
+   740→                      {g.status === "active" ? "ACTIVE" : "DISC."}
+   741→                    </span>
+   742→                  </span>
+   743→                </td>
+   744→                <td className="px-3 sm:px-4 py-2 mono">
+   745→                  <span className="inline-flex items-center gap-1.5">
+   746→                    <span className={g.tested ? "led led-g" : "led"} aria-hidden="true" />
+   747→                    <span style={{ color: g.tested ? "var(--vu-g)" : "var(--mut)" }}>
+   748→                      {g.tested ? "TESTED" : "SPEC"}
+   749→                    </span>
+   750→                  </span>
+   751→                </td>
+   752→                <td className="px-3 sm:px-4 py-2 mono">
+   753→                  <span className="inline-flex items-center gap-1.5">
+   754→                    <span
+   755→                      className={g.ownership === "owned" ? "led led-a" : g.ownership === "loaned" ? "led led-data" : "led"}
+   756→                      aria-hidden="true"
+   757→                    />
+   758→                    <span style={{ color: g.ownership === "owned" ? "var(--amber)" : g.ownership === "loaned" ? "var(--data)" : "var(--mut)" }}>
+   759→                      {g.ownership.toUpperCase()}
+   760→                    </span>
+   761→                  </span>
+   762→                </td>
+   763→              </tr>
+   764→            ))}
+   765→          </tbody>
+   766→        </table>
+   767→      </div>
+   768→      <p className="mono text-xs mt-3" style={{ color: "var(--mut)" }}>
+   769→        {gearDb.length} entries · {gearDb.filter((g) => g.tested).length} tested · {gearDb.filter((g) => g.ownership === "owned").length} owned · {gearDb.filter((g) => g.status === "active").length} active
+   770→      </p>
+   771→    </SectionFrame>
+   772→  );
+   773→}
+   774→

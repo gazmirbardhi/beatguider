@@ -152,8 +152,10 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
               { label: "Software", value: article.tested?.software?.join(", ") ?? "—" },
               { label: "Platforms", value: article.tested?.platforms?.join(", ") ?? "—" },
               { label: "Environment", value: article.tested?.environment ?? "—" },
-              { label: "Difficulty", value: "Beginner — no special tools" },
-              { label: "Time", value: "10–25 minutes" },
+              // Difficulty + time are per-article data — shown only when the
+              // article explicitly provides them, never as template defaults.
+              ...(article.difficulty ? [{ label: "Difficulty", value: article.difficulty }] : []),
+              ...(article.estimatedTime ? [{ label: "Time", value: article.estimatedTime }] : []),
             ]}
           />
         </SpecPlate>
@@ -171,22 +173,20 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
           <AdSlot height={120} label="Ad slot · disabled in initial release" />
         </div>
 
-        {/* Verdict */}
+        {/* Verdict — rendered only when the article carries verified,
+            article-specific verdict data (article.verdict). No article
+            data → no verdict card. Never a template default. */}
         <div className="max-w-[860px] mx-auto mt-8">
           <div className="flex justify-end mb-2">
             <ShareButton label="Share article" />
           </div>
-          <VerdictCard
-            title="Diagnostic verdict"
-            meta={[article.code, "diagnostic", "verified"]}
-            rows={[
-              { label: "Most likely cause", value: "OS / DJ app routing (≈65%)" },
-              { label: "Second most likely", value: "USB cable / port (≈20%)" },
-              { label: "Firmware / driver", value: "≈10%" },
-              { label: "Hardware fault", value: "<5%" },
-              { label: "Time to resolve", value: "10–25 min" },
-            ]}
-          />
+          {article.verdict && (
+            <VerdictCard
+              title={article.verdict.title}
+              meta={[article.code, ...(article.verdict.meta ?? [])]}
+              rows={article.verdict.rows}
+            />
+          )}
         </div>
 
         {/* Sources */}

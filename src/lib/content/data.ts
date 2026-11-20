@@ -51,6 +51,17 @@ export type ArticleMeta = {
     environment?: string;
   };
   quickAnswer?: string; // REQUIRED for fix + compare types
+  /* Verdict stats, difficulty and estimated time are optional AND strictly
+     article-specific. They render only when explicitly provided here —
+     never as template defaults (anti-fabrication rule). FIX-001's rows are
+     transcribed from its own body "Verdict" section. */
+  verdict?: {
+    title: string;
+    meta?: string[]; // extra chips beyond the article code
+    rows: { label: string; value: string }[];
+  };
+  difficulty?: string; // spec-plate row — shown only when provided
+  estimatedTime?: string; // spec-plate row — shown only when provided
   readingTime?: number; // auto-computed
   body?: BodySection[]; // per-article unique body content
   relatedArticles?: string[]; // slugs
@@ -257,6 +268,21 @@ export const articles: ArticleMeta[] = [
     },
     quickAnswer:
       "If your DDJ-FLX4 produces no sound, the fault is almost always one of: USB cable, audio routing in the DJ app, system output device, or a firmware/driver mismatch. Walk these seven checks in order before assuming hardware failure — the controller itself is the least likely cause.",
+    // Verified, article-specific data — transcribed from this article's own
+    // body "Verdict" section (see article-bodies.ts "ddj-flx4-no-sound").
+    verdict: {
+      title: "Diagnostic verdict",
+      meta: ["diagnostic", "verified"],
+      rows: [
+        { label: "Most likely cause", value: "OS / DJ app routing (≈65%)" },
+        { label: "Second most likely", value: "USB cable / port (≈20%)" },
+        { label: "Firmware / driver", value: "≈10%" },
+        { label: "Hardware fault", value: "<5%" },
+        { label: "Time to resolve", value: "10–25 min" },
+      ],
+    },
+    difficulty: "Beginner — no special tools",
+    estimatedTime: "10–25 minutes",
     relatedArticles: ["ddj-flx2-vs-ddj-flx4"],
     relatedGear: ["GEAR-014"],
     sources: [

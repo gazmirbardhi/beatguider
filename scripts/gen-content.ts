@@ -41,6 +41,15 @@ async function main() {
 
   const metas = articles.map((a) => a.meta);
 
+  /* Generation date (UTC, day precision) baked into the generated module.
+     freshnessStatus() uses it as its deterministic reference point: with a
+     statically-exported site the server HTML is rendered at build time, so
+     any Date.now() evaluated again in the browser can disagree (React
+     hydration mismatch). Pinning "now" to this literal keeps both sides
+     identical while preserving the freshness-window behavior. It refreshes
+     automatically on every `bun run content:gen` / `build:static`. */
+  const generatedAt = new Date().toISOString().slice(0, 10);
+
   const header = `/*
   GENERATED FILE — DO NOT EDIT DIRECTLY.
   Source of truth: content/articles/*.mdx (frontmatter + MDX bodies).
@@ -53,6 +62,10 @@ async function main() {
   separately at build time (src/lib/content/mdx.tsx).
 */
 import type { ArticleMeta } from "../types";
+
+/* UTC date this file was generated — the deterministic "as of" reference
+   for freshnessStatus(). Day precision: freshness windows are in months. */
+export const GENERATED_AT = "${generatedAt}";
 
 export const articles: ArticleMeta[] = `;
 

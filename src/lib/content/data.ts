@@ -15,7 +15,7 @@
   rendered when this passes — never lit from article body text alone.
 */
 
-import { articles as generatedArticles } from "./generated/articles";
+import { articles as generatedArticles, GENERATED_AT } from "./generated/articles";
 import { gearDb } from "./gear";
 import { validateCrossReferences } from "./validate";
 import type { ArticleMeta, GearEntry, SearchEntry } from "./types";
@@ -23,6 +23,7 @@ import type { ArticleMeta, GearEntry, SearchEntry } from "./types";
 /* Types + canonical data (generated from content/articles/*.mdx) */
 export * from "./types";
 export { articles } from "./generated/articles";
+export { GENERATED_AT } from "./generated/articles";
 export { gearDb } from "./gear";
 
 /* Local alias for the helper functions below. */
@@ -53,7 +54,17 @@ export const freshnessWindows: Record<string, { fresh: number; recheck: number; 
 
 export function freshnessStatus(a: ArticleMeta): "fresh" | "recheck" | "stale" {
   const last = new Date(a.lastVerified ?? a.updatedDate ?? a.publishedDate).getTime();
-  const monthsSince = (Date.now() - last) / (1000 * 60 * 60 * 24 * 30);
+  /* Deterministic reference date — the content generation date baked into
+     the generated module at build time (see scripts/gen-content.ts).
+     Never Date.now() here: this module is imported by client components,
+     and on a statically-exported site the server HTML was rendered at
+     build time while the browser re-evaluates at visit time — any wall
+     clock read can disagree across that gap and trigger a React
+     hydration mismatch. Pinning "now" to GENERATED_AT keeps both sides
+     byte-identical while preserving the freshness-window behavior
+     (windows are in months; day precision is more than enough). */
+  const asOf = new Date(GENERATED_AT).getTime();
+  const monthsSince = (asOf - last) / (1000 * 60 * 60 * 24 * 30);
   const key = a.contentType === "comparison" ? "comparison" : a.contentType === "review" ? "review" : a.contentType === "explainer" ? "explainer" : "guide_fix";
   const w = freshnessWindows[key];
   if (monthsSince <= w.fresh) return "fresh";

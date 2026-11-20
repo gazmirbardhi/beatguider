@@ -65,3 +65,7 @@ server.log
 /screenshot*.png
 /verdict*.png
 /final-*.png
+# Local import staging (unpublished drafts, transform tooling) — never publish
+/.staging/
+# User upload working area (source ZIPs) — local only, not for the repo
+/upload/

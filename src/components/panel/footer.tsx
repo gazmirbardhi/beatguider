@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { SearchModule } from "./components";
 import { LiveClock } from "./decorative";
-import { buildSearchIndex, articles, gearDb } from "@/lib/content/data";
+import { buildSearchIndex, articles, gearDb, GENERATED_AT } from "@/lib/content/data";
 
 /* ───────────────────────── SEARCH MODAL ─────────────────────────
    Static client-side search. UI is the backlit display module.
@@ -271,7 +271,11 @@ export function SiteFooter({ serial }: { serial: string }) {
             <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>BG-1.2.0</span>
             <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>·</span>
             <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>BUILD</span>
-            <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>{new Date().toISOString().slice(0, 10)}</span>
+            {/* BUILD date — pinned to the content-generation date (see
+                data.ts GENERATED_AT). Never new Date() here: this is a
+                client component, and the wall clock would disagree with
+                the statically-exported HTML (React hydration mismatch). */}
+            <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>{GENERATED_AT}</span>
             <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>·</span>
             <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>SN</span>
             <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>{serial}</span>
@@ -323,7 +327,7 @@ export function SiteFooter({ serial }: { serial: string }) {
               <span className="load-bar w-12" />
             </span>
             <span className="mono text-xs" style={{ color: "var(--mut)" }}>
-              © {new Date().getFullYear()} BeatGuider · Test. Fix. Mix.
+              © {new Date(GENERATED_AT).getFullYear()} BeatGuider · Test. Fix. Mix.
             </span>
           </div>
         </div>

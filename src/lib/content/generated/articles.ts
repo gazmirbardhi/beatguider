@@ -11,6 +11,10 @@
 */
 import type { ArticleMeta } from "../types";
 
+/* UTC date this file was generated — the deterministic "as of" reference
+   for freshnessStatus(). Day precision: freshness windows are in months. */
+export const GENERATED_AT = "2026-11-20";
+
 export const articles: ArticleMeta[] = [
   {
     "code": "FIX-001",
@@ -348,7 +352,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 1973,
+    "wordCount": 1970,
     "readingTime": 10
   },
   {
@@ -372,7 +376,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 4202,
+    "wordCount": 4199,
     "readingTime": 21
   },
   {
@@ -395,7 +399,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2434,
+    "wordCount": 2431,
     "readingTime": 12
   },
   {
@@ -652,7 +656,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2948,
+    "wordCount": 2945,
     "readingTime": 15
   },
   {
@@ -704,7 +708,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "guide",
     "experienceType": "research-based",
     "quickAnswer": "Fix DJ audio problems: power adapter hum, Serato laptop speaker noise, balanced vs unbalanced cables, and phone Wi-Fi interference. Every fix explained clearly.",
-    "wordCount": 4488,
+    "wordCount": 4472,
     "readingTime": 22
   },
   {
@@ -727,7 +731,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2391,
+    "wordCount": 2374,
     "readingTime": 12
   },
   {
@@ -754,7 +758,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 4696,
+    "wordCount": 4693,
     "readingTime": 23
   },
   {
@@ -781,7 +785,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 4340,
+    "wordCount": 4320,
     "readingTime": 22
   },
   {
@@ -804,7 +808,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 3355,
+    "wordCount": 3352,
     "readingTime": 17
   },
   {
@@ -827,7 +831,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2966,
+    "wordCount": 2944,
     "readingTime": 15
   },
   {
@@ -849,7 +853,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2916,
+    "wordCount": 2913,
     "readingTime": 15
   },
   {
@@ -926,7 +930,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 1939,
+    "wordCount": 1936,
     "readingTime": 10
   },
   {
@@ -949,7 +953,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2708,
+    "wordCount": 2705,
     "readingTime": 14
   },
   {
@@ -975,7 +979,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "guide",
     "experienceType": "research-based",
     "quickAnswer": "Fix five common Virtual DJ problems plus a complete media redundancy strategy to save your set when USBs, SD cards, or hard drives fail mid-gig.",
-    "wordCount": 3836,
+    "wordCount": 3818,
     "readingTime": 19
   },
   {
@@ -999,7 +1003,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 6677,
+    "wordCount": 6674,
     "readingTime": 33
   },
   {
@@ -1093,7 +1097,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 6009,
+    "wordCount": 5989,
     "readingTime": 30
   },
   {
@@ -1115,7 +1119,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4277,
+    "wordCount": 4274,
     "readingTime": 21
   },
   {
@@ -1138,7 +1142,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 4132,
+    "wordCount": 4115,
     "readingTime": 21
   },
   {
@@ -1160,7 +1164,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1883,
+    "wordCount": 1880,
     "readingTime": 9
   },
   {
@@ -1185,7 +1189,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 8833,
+    "wordCount": 8815,
     "readingTime": 44
   },
   {
@@ -1211,7 +1215,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 3698,
+    "wordCount": 3678,
     "readingTime": 18
   },
   {
@@ -1233,7 +1237,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1684,
+    "wordCount": 1681,
     "readingTime": 8
   },
   {
@@ -1260,7 +1264,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 8285,
+    "wordCount": 8268,
     "readingTime": 41
   },
   {
@@ -1282,7 +1286,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2108,
+    "wordCount": 2105,
     "readingTime": 11
   },
   {
@@ -1328,7 +1332,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 5970,
+    "wordCount": 5972,
     "readingTime": 30
   },
   {
@@ -1350,7 +1354,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1730,
+    "wordCount": 1727,
     "readingTime": 9
   },
   {
@@ -1398,7 +1402,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2823,
+    "wordCount": 2806,
     "readingTime": 14
   },
   {
@@ -1535,7 +1539,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1632,
+    "wordCount": 1629,
     "readingTime": 8
   },
   {
@@ -1683,7 +1687,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Rekordbox vs Serato for beginners: honest comparison of USB vs laptop club setups, stems support, and which software is right for your DJ style and goals.",
-    "wordCount": 2789,
+    "wordCount": 2786,
     "readingTime": 14
   },
   {
@@ -1909,7 +1913,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4474,
+    "wordCount": 4471,
     "readingTime": 22
   },
   {
@@ -1932,7 +1936,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Vinyl DJing vs CDJs: side-by-side comparison of BPM readouts, cueing, beat matching, and why vinyl DJs are so passionate about the craft of turntable mixing.",
-    "wordCount": 2905,
+    "wordCount": 2902,
     "readingTime": 15
   },
   {
@@ -1979,7 +1983,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 4600,
+    "wordCount": 4597,
     "readingTime": 23
   },
   {
@@ -2001,7 +2005,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2030,
+    "wordCount": 2027,
     "readingTime": 10
   },
   {
@@ -2075,7 +2079,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 6124,
+    "wordCount": 6109,
     "readingTime": 31
   },
   {

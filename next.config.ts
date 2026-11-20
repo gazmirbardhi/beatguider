@@ -8,10 +8,15 @@ const nextConfig: NextConfig = {
      html_handling: "auto-trailing-slash" (wrangler.jsonc) normalizes URLs. */
   output: "export",
   reactStrictMode: false,
-  // Allow preview origin in dev sandbox only
+  // Allow preview origin in dev sandbox only. NOTE: Next.js matches the
+  // request's bare HOSTNAME against these entries (see
+  // next/dist/server/lib/router-utils/block-cross-site.js — it parses the
+  // Origin header and compares parsedOrigin.hostname), so the value must
+  // NOT include the https:// protocol or it never matches and /_next/*
+  // asset requests from the preview proxy get 403-blocked.
   allowedDevOrigins:
     process.env.NODE_ENV === "development"
-      ? ["https://preview-chat-cd8e3447-b0b4-4f42-a2c7-1e9376e29d33.space-z.ai"]
+      ? ["preview-chat-cd8e3447-b0b4-4f42-a2c7-1e9376e29d33.space-z.ai"]
       : undefined,
   typescript: {
     // Strict TS — never ignore build errors in production.

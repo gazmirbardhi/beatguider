@@ -47,10 +47,21 @@ export const metadata: Metadata = {
   authors: [{ name: "BeatGuider Team" }],
   publisher: "BeatGuider",
   applicationName: "BeatGuider BG-1",
+  formatDetection: { telephone: false },
+  // Site-wide indexability. Pages may refine but never disable this;
+  // the 404 page is the only legitimate noindex.
   robots: { index: true, follow: true, "max-image-preview": "large" },
   alternates: {
-    canonical: "/",
+    // NOTE: no canonical here on purpose — a layout-level canonical is
+    // inherited by every child page and would canonicalize all articles
+    // to the homepage. Each page defines its own canonical instead.
     types: { "application/rss+xml": "/feed.xml" },
+  },
+  // Search Console ownership verification. Set GSC_VERIFICATION_TOKEN in
+  // the environment (e.g. "abc123..." from Google Search Console) and the
+  // meta tag is emitted automatically. No token → no tag.
+  verification: {
+    google: process.env.GSC_VERIFICATION_TOKEN || undefined,
   },
   openGraph: {
     title: "BeatGuider — Test. Fix. Mix.",
@@ -87,6 +98,12 @@ const orgJsonLd = {
   slogan: "Test. Fix. Mix.",
   description:
     "Independent DJ gear, software, troubleshooting and education publication operated by a working DJ.",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://beatguider.com/og/brand.png",
+    width: 1200,
+    height: 630,
+  },
 };
 
 export default function RootLayout({

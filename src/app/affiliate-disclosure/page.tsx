@@ -1,7 +1,12 @@
 import { SiteShell } from "@/components/panel/site-shell";
 import { StaticPage } from "@/components/panel/static-page";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Affiliate disclosure", description: "BeatGuider affiliate partnerships." };
+export const metadata = pageMetadata({
+  title: "Affiliate disclosure",
+  description: "How BeatGuider's affiliate links work — commissions never influence test methodology, ratings or verdicts.",
+  path: "/affiliate-disclosure",
+});
 
 export default function Page() {
   return (

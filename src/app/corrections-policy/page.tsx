@@ -1,7 +1,12 @@
 import { SiteShell } from "@/components/panel/site-shell";
 import { StaticPage } from "@/components/panel/static-page";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Corrections policy", description: "How BeatGuider handles corrections." };
+export const metadata = pageMetadata({
+  title: "Corrections policy",
+  description: "How BeatGuider handles corrections: every fix is logged, dated and visible. Corrections are never silent.",
+  path: "/corrections-policy",
+});
 
 export default function Page() {
   return (

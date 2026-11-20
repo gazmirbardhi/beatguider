@@ -28,6 +28,7 @@ import {
 } from "./components";
 import { ReaderBar } from "./chrome";
 import { articles, gearDb, computeReadingTime } from "@/lib/content/data";
+import { countBodyWords } from "@/lib/content/article-bodies";
 
 /* ════════════════════════════════════════════════════════════════
    Specimen article — the one fixture article that exercises the full
@@ -74,7 +75,7 @@ export function SpecimenArticle() {
             <span>·</span>
             <span>Verified {a.lastVerified}</span>
             <span>·</span>
-            <ReadingTimeChip minutes={computeReadingTime(820)} />
+            <ReadingTimeChip minutes={computeReadingTime(Math.max(countBodyWords(a.slug), 1))} />
           </div>
           <SpecTable
             caption="Spec plate"
@@ -221,10 +222,10 @@ export function SpecimenArticle() {
             ratio="16/9"
           >
             <img
-              src="/articles/ddj-flx4-rear-panel.png"
+              src="/articles/ddj-flx4-rear-panel.jpg"
               alt="Rear panel of the Pioneer DDJ-FLX4 DJ controller showing RCA outputs and USB-C port, photographed on a dark test bench surface"
-              width={1344}
-              height={768}
+              width={1200}
+              height={686}
               loading="lazy"
               decoding="async"
               className="absolute inset-0 w-full h-full object-cover"

@@ -5,15 +5,15 @@
     <link>https://beatguider.com</link>
     <description>Independent DJ gear, software, troubleshooting and education publication. Hands-on testing by a working DJ.</description>
     <language>en-us</language>
-    <lastBuildDate>2026-09-21T15:46:42.681Z</lastBuildDate>
+    <lastBuildDate>2026-11-20T14:55:21.144Z</lastBuildDate>
     <atom:link href="https://beatguider.com/feed.xml" rel="self" type="application/rss+xml" />
     <managingEditor>editorial@beatguider.com (BeatGuider Team)</managingEditor>
     <webMaster>webmaster@beatguider.com (BeatGuider Team)</webMaster>
     <ttl>60</ttl>
     <item>
       <title>DDJ-FLX2 vs DDJ-FLX4 — which beginner controller?</title>
-      <link>https://beatguider.com/#ddj-flx2-vs-ddj-flx4</link>
-      <guid isPermaLink="false">CMP-003</guid>
+      <link>https://beatguider.com/compare/ddj-flx2-vs-ddj-flx4</link>
+      <guid isPermaLink="true">https://beatguider.com/compare/ddj-flx2-vs-ddj-flx4</guid>
       <description>Spec-identical on paper, materially different in the hand. Here is where they actually differ.</description>
       <pubDate>2025-01-15T00:00:00.000Z</pubDate>
       <category>pioneer</category>
@@ -22,8 +22,8 @@
     </item>
     <item>
       <title>DDJ-FLX4 outputs no sound — a 7-step diagnostic</title>
-      <link>https://beatguider.com/#ddj-flx4-no-sound</link>
-      <guid isPermaLink="false">FIX-001</guid>
+      <link>https://beatguider.com/fix/ddj-flx4-no-sound</link>
+      <guid isPermaLink="true">https://beatguider.com/fix/ddj-flx4-no-sound</guid>
       <description>Methodical troubleshooting for the most common DDJ-FLX4 audio-output failures, from cable to driver to routing.</description>
       <pubDate>2025-01-12T00:00:00.000Z</pubDate>
       <category>pioneer</category>
@@ -33,8 +33,8 @@
     </item>
     <item>
       <title>rekordbox crashes mid-export — diagnose in 5 steps</title>
-      <link>https://beatguider.com/#rekordbox-crash-on-export</link>
-      <guid isPermaLink="false">FIX-002</guid>
+      <link>https://beatguider.com/fix/rekordbox-crash-on-export</link>
+      <guid isPermaLink="true">https://beatguider.com/fix/rekordbox-crash-on-export</guid>
       <description>The five failure modes that cause rekordbox to die during USB export, and the order to rule them out.</description>
       <pubDate>2025-01-11T00:00:00.000Z</pubDate>
       <category>rekordbox</category>
@@ -44,9 +44,9 @@
     </item>
     <item>
       <title>rekordbox USB export — the correct way (and the silent failures)</title>
-      <link>https://beatguider.com/#rekordbox-export-usb</link>
-      <guid isPermaLink="false">SW-008</guid>
-      <description>Why yourrekordbox export sometimes works on one CDJ and stalls on another, and how to export once correctly.</description>
+      <link>https://beatguider.com/software/rekordbox-export-usb</link>
+      <guid isPermaLink="true">https://beatguider.com/software/rekordbox-export-usb</guid>
+      <description>Why your rekordbox export sometimes works on one CDJ and stalls on another, and how to export once correctly.</description>
       <pubDate>2025-01-10T00:00:00.000Z</pubDate>
       <category>rekordbox</category>
       <category>usb</category>
@@ -54,8 +54,8 @@
     </item>
     <item>
       <title>Mobile DJ power: the gig-day checklist that prevents silence</title>
-      <link>https://beatguider.com/#mobile-dj-power-checklist</link>
-      <guid isPermaLink="false">MOB-004</guid>
+      <link>https://beatguider.com/mobile-dj/mobile-dj-power-checklist</link>
+      <guid isPermaLink="true">https://beatguider.com/mobile-dj/mobile-dj-power-checklist</guid>
       <description>What to verify about the venue&apos;s power before you plug a single thing in — written from a working DJ&apos;s gig bag.</description>
       <pubDate>2025-01-09T00:00:00.000Z</pubDate>
       <category>mobile-dj</category>
@@ -65,8 +65,8 @@
     </item>
     <item>
       <title>Pioneer DDJ-FLX4 — long-term hands-on review</title>
-      <link>https://beatguider.com/#ddj-flx4-review</link>
-      <guid isPermaLink="false">GEAR-018</guid>
+      <link>https://beatguider.com/gear/ddj-flx4-review</link>
+      <guid isPermaLink="true">https://beatguider.com/gear/ddj-flx4-review</guid>
       <description>Owned-unit review of Pioneer&apos;s entry-level controller after six months of regular gigging and home practice.</description>
       <pubDate>2025-01-08T00:00:00.000Z</pubDate>
       <category>pioneer</category>
@@ -75,8 +75,8 @@
     </item>
     <item>
       <title>EQ mixing: the one skill that separates beginners from working DJs</title>
-      <link>https://beatguider.com/#eq-mixing-basics</link>
-      <guid isPermaLink="false">LEARN-022</guid>
+      <link>https://beatguider.com/learn/eq-mixing-basics</link>
+      <guid isPermaLink="true">https://beatguider.com/learn/eq-mixing-basics</guid>
       <description>Why gain-staging and EQ swaps beat fancy transitions for the first hundred hours of practice.</description>
       <pubDate>2025-01-06T00:00:00.000Z</pubDate>
       <category>eq</category>
@@ -85,8 +85,8 @@
     </item>
     <item>
       <title>Your first 30 minutes behind the decks</title>
-      <link>https://beatguider.com/#first-30-minutes</link>
-      <guid isPermaLink="false">LEARN-021</guid>
+      <link>https://beatguider.com/learn/first-30-minutes</link>
+      <guid isPermaLink="true">https://beatguider.com/learn/first-30-minutes</guid>
       <description>A structured first-session plan that takes a total beginner from plugging in to their first transition.</description>
       <pubDate>2025-01-05T00:00:00.000Z</pubDate>
       <category>beginner</category>

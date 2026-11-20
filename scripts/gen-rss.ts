@@ -18,13 +18,14 @@ async function main() {
   ).slice(0, 20); // cap at 20 most recent
 
   const items = sorted.map((a) => {
-    const url = `https://beatguider.com/#${a.slug}`;
+    // Real permalink — the article's own URL, not a homepage anchor.
+    const url = `https://beatguider.com/${a.category}/${a.slug}`;
     const pub = new Date(a.publishedDate).toISOString();
     const cats = a.tags.map((t) => `      <category>${escapeXml(t)}</category>`).join("\n");
     return `    <item>
       <title>${escapeXml(a.title)}</title>
       <link>${url}</link>
-      <guid isPermaLink="false">${a.code}</guid>
+      <guid isPermaLink="true">${url}</guid>
       <description>${escapeXml(a.description)}</description>
       <pubDate>${pub}</pubDate>
 ${cats}

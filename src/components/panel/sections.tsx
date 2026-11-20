@@ -34,7 +34,7 @@ import {
 } from "./components";
 import { BpmCalculator, CamelotCalculator, PowerCalculator, GearDueler, KeyBpmMatcher, SetLengthPlanner } from "./tools";
 import { SpectrumAnalyzer, PhaseMeter, LabActivityFeed, Knob, RivetRow } from "./decorative";
-import { gearDb, articles, freshnessStatus, buildValidationChecks, type ArticleMeta } from "@/lib/content/data";
+import { gearDb, articles, gearHref, freshnessStatus, buildValidationChecks, type ArticleMeta } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
    BeatGuider homepage — panel sections (not a chronological wall).
@@ -236,8 +236,8 @@ export function TestedHardware() {
   // not measurements). Only tested gear gets a photo; untested gear shows
   // the reserved photo bay (honest, no fabrication).
   const photoForSlug: Record<string, string> = {
-    "ddj-flx4": "/gear/ddj-flx4.png",
-    "ddj-400": "/gear/ddj-400.png",
+    "ddj-flx4": "/gear/ddj-flx4.jpg",
+    "ddj-400": "/gear/ddj-400.jpg",
   };
   return (
     <SectionFrame id="tested-hardware">
@@ -253,7 +253,7 @@ export function TestedHardware() {
             year={g.releaseYear}
             status={g.status}
             rating={g.rating ? Math.round(g.rating.reduce((s, r) => s + r.value, 0) / g.rating.length) : undefined}
-            href={`/gear/${g.slug}`}
+            href={gearHref(g)}
             imageSlot={
               g.tested && photoForSlug[g.slug] ? (
                 <img

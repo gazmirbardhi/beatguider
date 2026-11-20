@@ -1,5 +1,6 @@
 # BeatGuider robots.txt — independent DJ publication
-# Static-export compatible. Sitemap served at /sitemap.xml.
+# The sitemap at /sitemap.xml is generated at build time from the content
+# layer (src/app/sitemap.ts) — it always reflects every published URL.
 
 User-agent: *
 Allow: /

@@ -12,11 +12,10 @@ import { articles } from "@/lib/content/data";
    ════════════════════════════════════════════════════════════════ */
 
 export function AuthorPage({ authorSlug }: { authorSlug: string }) {
-  // Convert slug back to display name: "beatguider-team" → "BeatGuider Team"
-  const authorName = authorSlug
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+  // Real byline from the articles data — slug → name reconstruction
+  // mangles multi-case names ("beatguider-team" → "Beatguider Team").
+  const authorName =
+    articles.find((a) => a.author.toLowerCase().replace(/\s+/g, "-") === authorSlug)?.author ?? authorSlug;
 
   const authorArticles = articles.filter((a) => {
     const articleAuthorSlug = a.author.toLowerCase().replace(/\s+/g, "-");

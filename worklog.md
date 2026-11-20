@@ -575,3 +575,90 @@ Stage Summary:
 - Fixed stale /#tools link → /tools in SiteShell nav.
 - All 21 audited routes pass. Lint clean. 0 console errors.
 - Files: src/lib/content/data.ts (+BodyBlock/BodySection types +body field), src/lib/content/article-bodies.ts (NEW — 8 articles of unique content), src/components/panel/article-view.tsx (BodyRenderer + BlockRenderer replacing generic template), src/components/panel/site-shell.tsx (/#tools → /tools fix).
+
+──────────────────────────────────────────────────────────────
+
+Task ID: 29 (SEO pipeline — full checklist implementation)
+Agent: main (Z.ai Code)
+Task: User requested full SEO pipeline: noindex check, meta titles/descriptions, alt text, sitemap.xml, og:image, broken links, header hierarchy, canonical tags, HTTPS, image compression, schema markup, search console, 1 h1 per page, robots.txt, mobile responsiveness.
+
+Work Log:
+
+AUDIT FINDINGS (before fixes):
+1. sitemap.xml contained only 1 URL (homepage) — all 30 other routes missing
+2. Root layout set canonical "/" — INHERITED BY EVERY PAGE → all articles told Google they were the homepage (critical)
+3. Broken links: gear cards → /gear/ddj-flx4, /gear/ddj-flx2, /gear/ddj-400, /gear/numark-mixtrack-pro-fx (all 404 — gear DB entries are not pages)
+4. Broken links: RSS feed items → beatguider.com/#slug (homepage anchors, not permalinks)
+5. Broken links: search results → #specimen (dead anchor, and clicks never navigated)
+6. Broken anchors: article TOC chips hardcoded 11 ids (spec-table, comparison, figure, methodology...) that exist in NO article body
+7. Author page title: "BeatGuider Team — BeatGuider · BeatGuider" (double branding) + name mangled to "Beatguider Team"
+8. Per-article OG images existed in /og/ but were never wired into metadata
+9. Only Organization JSON-LD existed — no WebSite/TechArticle/Breadcrumb/Person/CollectionPage
+10. 3 images were JPEG data with .png extensions; gear photos 1024px served into 64px slots
+11. Typo in SW-008 description ("yourrekordbox")
+12. Reading time hardcoded 820 words everywhere (dishonest)
+
+FIXES IMPLEMENTED:
+
+[Sitemap + robots]
+- DELETED public/sitemap.xml (1 URL); CREATED src/app/sitemap.ts — dynamic, derived from the content layer: home + 6 categories + tools + 8 articles + author + 6 static pages = 23 URLs with lastmod/changeFreq/priority. /style-guide excluded (robots-disallowed).
+- public/robots.txt kept (path-based, static-export compatible), comments updated.
+
+[Canonical + metadata system]
+- REMOVED canonical "/" from root layout (was poisoning every page).
+- Created src/lib/seo.ts — SEO single source of truth: SITE_URL, pageMetadata() factory (title/desc/canonical/OG/Twitter per page), ogImageForPath(), JSON-LD builders, sitemapEntries().
+- Every page now defines its own canonical: home, 6 categories, tools, 6 static pages, author, all 8 articles.
+- Fixed title template collisions (page titles no longer duplicate "BeatGuider" brand).
+- GSC verification: layout reads GSC_VERIFICATION_TOKEN env → emits google-site-verification meta automatically.
+
+[Structured data (JSON-LD)]
+- Layout: Organization (+logo)
+- Homepage: WebSite
+- Article pages: TechArticle (real wordCount from body, dates, author, image, section) + BreadcrumbList (Home → Category → Article)
+- Category pages: CollectionPage (ItemList of real articles) + BreadcrumbList
+- Author page: Person + BreadcrumbList
+- Shared <JsonLd> server component (src/components/json-ld.tsx).
+
+[Broken links — all fixed]
+- gearHref() helper in data.ts: gear → review article | related article | /tools fallback. Wired into category-index.tsx + sections.tsx. Zero gear-card 404s.
+- buildSearchIndex: article results now link to /{category}/{slug} (was #specimen).
+- Search result clicks NEVER navigated: (a) <a> with preventDefault-only handler → replaced with <Link>; (b) duplicate React keys (multiple results share href /tools → key={r.href}) → key={`${r.code}-${r.href}`}; (c) synchronous unmount cancelled router transition → deferred setOpen/router.push via setTimeout(0) in SearchOverlay. Verified end-to-end: search "camelot" → click → /tools; search "no sound" → click → article.
+- TOC chips: now DERIVED from each article's real body sections (was 11 hardcoded ids). Verified 0 dead anchors on all article pages.
+- RSS: gen-rss.ts now emits real permalinks + guid isPermaLink=true. Regenerated feed.xml (8 items).
+
+[Meta content]
+- All 6 category pages: rich descriptions + canonicals + category OG images.
+- Static pages: proper descriptions (were one-liners).
+- Author: fixed double-brand title, real name lookup (not slug-mangled), Person JSON-LD, og:image.
+- Fixed "yourrekordbox" typo in data.ts + regenerated RSS.
+- Reading time now computed from real body word counts (countBodyWords() in article-bodies.ts) — homepage, article pages, specimen.
+
+[Images + CWV]
+- gear/ddj-flx4: 140K mislabeled JPEG → proper 18K 256px progressive JPEG (.jpg)
+- gear/ddj-400: 107K → 13K
+- articles/ddj-flx4-rear-panel: 100K → 83K (1200w q78 progressive)
+- Updated all refs to .jpg + corrected width/height attrs (CLS).
+- All images have descriptive alt text (verified in DOM: imgsWithAlt=true everywhere).
+
+[HTTPS + security headers]
+- next.config.ts headers(): X-Content-Type-Options nosniff, Referrer-Policy, Permissions-Policy + immutable cache for /_next/static and long cache for /og,/gear,/articles. (No XFO/CSP — keeps sandbox preview iframe working.)
+- All canonical/OG/sitemap/feed URLs are https://. HSTS remains in public/_headers for the production host.
+
+[Mobile]
+- FaceplateHeader: tightened mobile spacing (gap-2, text-lg brand, gap-1.5 LEDs) — fixed 9px viewport overflow at 375px. Verified: docW 375 = viewport, no page-level overflow.
+- Sticky footer mechanism verified (min-h-screen flex flex-col + mt-auto in both shells).
+
+VERIFICATION (agent-browser, fresh session):
+- All 30 routes 200; /nonexistent → 404 with noindex (correct).
+- 1 h1 per page on every page type (home/category/article/static/author/tools/404/style-guide).
+- Canonical correct on all 22 audited pages; og:image correct (per-article cards, category cards, brand card); twitter:card summary_large_image everywhere.
+- JSON-LD validated by parsing: TechArticle (484 real words), BreadcrumbList 3 levels, WebSite, Person, CollectionPage, Organization.
+- Search: navigate-to-article + navigate-to-tools verified. Theme toggle verified. Gear card → /compare article navigation verified.
+- 0 console errors, 0 hydration errors in fresh session (a stale-cache artifact appeared in a long-lived dev session only — content-hashed prod chunks cannot mismatch).
+- lint clean.
+
+Stage Summary:
+- SEO pipeline complete: every checklist item addressed with real, data-derived implementations (no hardcoded URL lists).
+- Critical fixes: layout-canonical inheritance bug, 3 classes of broken internal links, non-navigating search, 1-URL sitemap.
+- Files: src/lib/seo.ts (NEW), src/app/sitemap.ts (NEW), src/components/json-ld.tsx (NEW), src/lib/content/data.ts, src/lib/content/article-bodies.ts, src/lib/content/render-article.tsx, src/app/layout.tsx, src/app/page.tsx, all 6 category pages, tools, 6 static pages, author/[slug], src/components/panel/{article-view,category-index,sections,components,footer,chrome,home-sections,author-page,specimen-article,theme-toggle}.tsx, next.config.ts, scripts/gen-rss.ts, public/robots.txt, public/feed.xml, image conversions (.png→.jpg).
+- Search Console: verification meta auto-emits when GSC_VERIFICATION_TOKEN env is set (documented in layout.tsx). Remaining step for the owner: add the property in GSC and set the token.

@@ -1,8 +1,13 @@
 import { SiteShell } from "@/components/panel/site-shell";
 import { StaticPage } from "@/components/panel/static-page";
+import { pageMetadata } from "@/lib/seo";
 import { SpecTable } from "@/components/panel/components";
 
-export const metadata = { title: "How we test", description: "BeatGuider testing methodology — owned vs loaned, software testing, comparison methodology." };
+export const metadata = pageMetadata({
+  title: "How we test DJ gear and software",
+  description: "BeatGuider testing methodology — owned vs loaned equipment, software testing environments, comparison methodology and the anti-fake-testing rule.",
+  path: "/how-we-test",
+});
 
 export default function Page() {
   return (

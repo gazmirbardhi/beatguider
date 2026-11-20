@@ -21,18 +21,19 @@ export function FaceplateHeader({
   return (
     <header className="panel-surface border-b border-[var(--line)]">
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
-        {/* top row: brand · model · LEDs · mode switch */}
-        <div className="flex items-center justify-between gap-4 py-3">
-          <div className="flex items-center gap-3 sm:gap-5">
+        {/* top row: brand · model · LEDs · mode switch — tightened on
+            small screens so the rocker never overflows the viewport */}
+        <div className="flex items-center justify-between gap-2 sm:gap-4 py-3">
+          <div className="flex items-center gap-2 sm:gap-5 min-w-0">
             <Link href="/" className="group flex items-baseline gap-1" aria-label="BeatGuider home">
               <span
-                className="font-[family-name:var(--font-chakra)] text-xl sm:text-2xl font-bold tracking-tight"
+                className="font-[family-name:var(--font-chakra)] text-lg sm:text-2xl font-bold tracking-tight"
                 style={{ color: "var(--text2)" }}
               >
                 BEAT
               </span>
               <span
-                className="font-[family-name:var(--font-chakra)] text-xl sm:text-2xl font-bold tracking-tight wordmark-glow"
+                className="font-[family-name:var(--font-chakra)] text-lg sm:text-2xl font-bold tracking-tight wordmark-glow"
                 style={{ color: "var(--amber)" }}
               >
                 GUIDER
@@ -42,14 +43,14 @@ export function FaceplateHeader({
           </div>
 
           {/* LED row + mode switch */}
-          <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-2 sm:gap-6">
             <div className="faceplate-led-row led-hum hidden sm:flex items-center gap-3" aria-hidden="true">
               <LedLabel color="g" label="PWR" />
               <LedLabel color="a-breathe" label="SIG" />
               <LedLabel color="r-off" label="ERR" />
             </div>
             {/* mobile: condensed LED row */}
-            <div className="faceplate-led-row led-hum flex sm:hidden items-center gap-2" aria-hidden="true">
+            <div className="faceplate-led-row led-hum flex sm:hidden items-center gap-1.5" aria-hidden="true">
               <span className="led led-g" />
               <span className="led led-a led-breathe" />
               <span className="led" />

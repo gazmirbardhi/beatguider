@@ -1,7 +1,12 @@
 import { SiteShell } from "@/components/panel/site-shell";
 import { StaticPage } from "@/components/panel/static-page";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Editorial policy", description: "BeatGuider editorial standards." };
+export const metadata = pageMetadata({
+  title: "Editorial policy",
+  description: "BeatGuider editorial standards: how content is produced, verified and labeled — hands-on, long-term-owned, software-tested or research-based.",
+  path: "/editorial-policy",
+});
 
 export default function Page() {
   return (

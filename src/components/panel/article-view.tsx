@@ -31,7 +31,7 @@ import {
 } from "./components";
 import { ReaderBar } from "./chrome";
 import { computeReadingTime, gearDb, articles, type ArticleMeta, type BodySection, type BodyBlock } from "@/lib/content/data";
-import { articleBodies } from "@/lib/content/article-bodies";
+import { articleBodies, countBodyWords } from "@/lib/content/article-bodies";
 
 /* ════════════════════════════════════════════════════════════════
    ArticleView — shared article page template.
@@ -46,9 +46,17 @@ import { articleBodies } from "@/lib/content/article-bodies";
 export function ArticleView({ article }: { article: ArticleMeta }) {
   const [active, setActive] = useState<string>("");
 
-  // TOC active-section tracking
+  // TOC entries derive from the article's real body sections — anchors
+  // always exist on the page (no dead in-page links).
+  const tocItems = (articleBodies[article.slug] ?? []).map((s, i) => ({
+    id: s.id,
+    label: s.heading.replace(/^Step \d+ — /, ""),
+    n: String(i + 1).padStart(2, "0"),
+  }));
+
+  // TOC active-section tracking — observes the real section ids
   useEffect(() => {
-    const ids = ["why-this-happens", "step-1", "step-2", "step-3", "step-4", "checklist", "spec-table", "comparison", "figure", "methodology", "verdict"];
+    if (tocItems.length === 0) return;
     const obs = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -58,16 +66,16 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
       },
       { rootMargin: "-112px 0px -65% 0px", threshold: [0, 0.25, 0.5, 1] }
     );
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
+    tocItems.forEach((it) => {
+      const el = document.getElementById(it.id);
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, []);
+  }, [article.slug]);
 
-  // compute reading time from word count (auto, never hand-written per spec §8)
-  const wordCount = 820; // fixture article word count
-  const readingTime = computeReadingTime(wordCount);
+  // compute reading time from the real body word count (auto, never hand-written per spec §8)
+  const wordCount = countBodyWords(article.slug);
+  const readingTime = computeReadingTime(Math.max(wordCount, 1));
 
   // find related gear
   const relatedGear = (article.relatedGear ?? [])
@@ -95,8 +103,8 @@ export function ArticleView({ article }: { article: ArticleMeta }) {
           <span className="mono" style={{ color: "var(--amber)" }}>{article.code}</span>
         </nav>
 
-        {/* TOC diagnostic chips */}
-        <TOCChips active={active} />
+        {/* TOC diagnostic chips — derived from this article's body sections */}
+        <TOCChips active={active} items={tocItems} />
 
         {/* Spec plate */}
         <SpecPlate>
@@ -273,21 +281,10 @@ function NextArticleCta({ currentArticle }: { currentArticle: ArticleMeta }) {
   );
 }
 
-/* TOC diagnostic chips — active-section tracking */
-function TOCChips({ active }: { active: string }) {
-  const items = [
-    { id: "why-this-happens", label: "Why", n: "01" },
-    { id: "step-1", label: "Physical", n: "02" },
-    { id: "step-2", label: "OS audio", n: "03" },
-    { id: "step-3", label: "App route", n: "04" },
-    { id: "step-4", label: "Driver/FW", n: "05" },
-    { id: "checklist", label: "Checklist", n: "06" },
-    { id: "spec-table", label: "Specs", n: "07" },
-    { id: "comparison", label: "Compare", n: "08" },
-    { id: "figure", label: "Photo", n: "09" },
-    { id: "methodology", label: "Method", n: "10" },
-    { id: "verdict", label: "Verdict", n: "11" },
-  ];
+/* TOC diagnostic chips — active-section tracking. Items come from the
+   article's real body sections, so every #anchor resolves. */
+function TOCChips({ active, items }: { active: string; items: { id: string; label: string; n: string }[] }) {
+  if (items.length === 0) return null;
 
   return (
     <div className="mx-auto max-w-[1280px] mb-6">

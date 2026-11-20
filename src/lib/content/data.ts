@@ -321,7 +321,7 @@ export const articles: ArticleMeta[] = [
     code: "SW-008",
     slug: "rekordbox-export-usb",
     title: "rekordbox USB export — the correct way (and the silent failures)",
-    description: "Why yourrekordbox export sometimes works on one CDJ and stalls on another, and how to export once correctly.",
+    description: "Why your rekordbox export sometimes works on one CDJ and stalls on another, and how to export once correctly.",
     category: "software",
     topic: "rekordbox",
     tags: ["rekordbox", "usb", "export"],
@@ -556,6 +556,25 @@ export function buildValidationChecks(
   ];
 }
 
+/* ─── Gear link resolution ───
+   Gear DB entries are NOT pages of their own — gear data backs article
+   reviews and the Gear Dueler tool. This helper resolves every gear entry
+   to a real, existing URL so no card ever links to a 404:
+     1. a hands-on review article in the gear category → /gear/{slug}
+     2. any related article that exists → /{category}/{slug}
+     3. fallback → /tools (Gear Dueler compares any two supported products) */
+export function gearHref(g: GearEntry): string {
+  const review = articles.find(
+    (a) => a.category === "gear" && a.slug.startsWith(`${g.slug}-`)
+  );
+  if (review) return `/gear/${review.slug}`;
+  const rel = (g.relatedArticles ?? [])
+    .map((slug) => articles.find((a) => a.slug === slug))
+    .find(Boolean);
+  if (rel) return `/${rel.category}/${rel.slug}`;
+  return "/tools";
+}
+
 /* ─── Unified search index ───
    Articles + gear + tools in a single searchable collection so the
    search overlay can return matches across all content types.
@@ -574,7 +593,7 @@ export function buildSearchIndex(): SearchEntry[] {
     code: a.code,
     title: a.title,
     description: a.description,
-    href: "#specimen",
+    href: `/${a.category}/${a.slug}`,
     led:
       a.experienceType === "hands-on" || a.experienceType === "long-term-owned"
         ? "g"

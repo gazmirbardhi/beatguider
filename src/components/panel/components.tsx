@@ -828,15 +828,16 @@ export function SearchModule({
           {results.map((r) => {
             const ledCls = r.led === "g" ? "led led-g" : r.led === "a" ? "led led-a" : r.led === "r" ? "led led-r" : r.led === "data" ? "led led-data" : "led";
             return (
-              <li key={r.href}>
-                <a
+              /* key must be the unique result code — several results can
+                 share one href (e.g. multiple tools → /tools) and duplicate
+                 keys corrupt the list rendering and its event handlers. */
+              <li key={`${r.code}-${r.href}`}>
+                {/* Link (not <a>): navigates client-side, then the parent
+                    closes the overlay. Never preventDefault — the result
+                    must actually go somewhere. */}
+                <Link
                   href={r.href}
-                  onClick={(e) => {
-                    if (onResultClick) {
-                      e.preventDefault();
-                      onResultClick(r.href);
-                    }
-                  }}
+                  onClick={() => onResultClick?.(r.href)}
                   className="flex items-center gap-3 px-2 py-2.5 hover:bg-[#161616] transition-colors"
                 >
                   <span className={ledCls} aria-hidden="true" />
@@ -844,7 +845,7 @@ export function SearchModule({
                   <span className="lcd !text-sm !bg-transparent flex-1 truncate" style={{ color: "var(--amber)" }}>
                     {r.title}
                   </span>
-                </a>
+                </Link>
               </li>
             );
           })}

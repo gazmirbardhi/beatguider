@@ -1,7 +1,12 @@
 import { SiteShell } from "@/components/panel/site-shell";
 import { StaticPage } from "@/components/panel/static-page";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "About BeatGuider", description: "BeatGuider is operated by a working DJ." };
+export const metadata = pageMetadata({
+  title: "About",
+  description: "BeatGuider is an independent DJ gear, software, troubleshooting and education publication operated by a working DJ. No fabricated reviews, no invented credentials.",
+  path: "/about",
+});
 
 export default function Page() {
   return (

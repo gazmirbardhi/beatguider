@@ -6,6 +6,43 @@
 */
 import type { BodySection } from "./data";
 
+/* ─── Word count per article — computed from the actual body content ───
+   Never hand-written. Used for reading time + TechArticle wordCount
+   schema (must be honest, like everything else on this site). */
+export function countBodyWords(slug: string): number {
+  const sections = articleBodies[slug];
+  if (!sections) return 0;
+  let words = 0;
+  const add = (text: string | undefined) => {
+    if (text) words += text.split(/\s+/).filter(Boolean).length;
+  };
+  for (const s of sections) {
+    add(s.heading);
+    for (const b of s.blocks) {
+      switch (b.type) {
+        case "paragraph":
+        case "code":
+          add(b.text);
+          break;
+        case "callout":
+          add(b.title); add(b.text);
+          break;
+        case "step":
+          add(b.title); add(b.text);
+          b.items?.forEach(add);
+          break;
+        case "checklist":
+          b.items.forEach((it) => add(it.text));
+          break;
+        case "list":
+          b.items.forEach(add);
+          break;
+      }
+    }
+  }
+  return words;
+}
+
 export const articleBodies: Record<string, BodySection[]> = {
   // ─── FIX-001: DDJ-FLX4 no sound ───
   "ddj-flx4-no-sound": [

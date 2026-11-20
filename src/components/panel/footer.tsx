@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { SearchModule } from "./components";
 import { LiveClock } from "./decorative";
@@ -19,6 +20,7 @@ export function SearchOverlay({
 }) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   // memoized search results — hooks must run unconditionally (before any early return)
   const q = query.trim().toLowerCase();
@@ -81,7 +83,16 @@ export function SearchOverlay({
           query={query}
           setQuery={setQuery}
           results={results}
-          onResultClick={() => setOpen(false)}
+          /* Navigate from this scope, deferred by one tick. Calling
+             setOpen/router.push synchronously inside the click handler
+             unmounts the <Link> mid-event, which cancels the router
+             transition — the navigation silently never happens. */
+          onResultClick={(href) => {
+            setTimeout(() => {
+              setOpen(false);
+              router.push(href);
+            }, 0);
+          }}
           inputRef={inputRef}
         />
         <div className="flex justify-between items-center mt-2 px-1">

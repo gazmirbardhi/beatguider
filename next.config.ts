@@ -15,6 +15,41 @@ const nextConfig: NextConfig = {
     // Strict TS — never ignore build errors in production.
     ignoreBuildErrors: false,
   },
+  /* Security headers — served in dev and production.
+     HTTPS enforcement: every canonical/OG/sitemap URL is https://
+     (see src/lib/seo.ts) and HSTS is set for the production host in
+     public/_headers (Cloudflare). X-Frame-Options and CSP are
+     intentionally NOT set here so the sandbox preview can embed the
+     site in an iframe. */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+        ],
+      },
+      {
+        // Long-cache fingerprinted static assets
+        source: "/_next/static/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        // OG + content images — stable filenames, long cache
+        source: "/:folder(og|gear|articles)/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=604800" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

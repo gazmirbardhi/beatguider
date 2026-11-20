@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ModuleCard } from "./components";
 import { Screws, TapeEdgeLabel } from "./components";
-import { articles, gearDb, freshnessStatus } from "@/lib/content/data";
+import { articles, gearDb, gearHref, freshnessStatus } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
    CategoryIndex — shared category listing page.
@@ -82,7 +82,8 @@ export function CategoryIndex({
                 meta={`${a.publishedDate} · ${a.experienceType}`}
               />
             ))}
-            {/* For the gear category, also show gear DB entries */}
+            {/* Gear DB entries resolve to their review article, a related
+                article, or the Gear Dueler — never a dead /gear/{slug} URL. */}
             {catGear.map((g) => (
               <ModuleCard
                 key={g.code}
@@ -91,7 +92,7 @@ export function CategoryIndex({
                 subtitle={`${g.category} · ${g.status === "active" ? "active" : "discontinued"}`}
                 led={g.tested ? "g" : "off"}
                 accent={g.tested ? "g" : "amber"}
-                href={`/gear/${g.slug}`}
+                href={gearHref(g)}
                 meta={`Rel. ${g.releaseYear ?? "—"} · ${g.ownership}`}
               />
             ))}

@@ -1,7 +1,12 @@
 import { SiteShell } from "@/components/panel/site-shell";
 import { StaticPage } from "@/components/panel/static-page";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Contact", description: "Contact BeatGuider." };
+export const metadata = pageMetadata({
+  title: "Contact",
+  description: "Get in touch with BeatGuider — corrections, gear test suggestions, press and reader feedback.",
+  path: "/contact",
+});
 
 export default function Page() {
   return (

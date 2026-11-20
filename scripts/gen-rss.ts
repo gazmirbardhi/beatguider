@@ -13,9 +13,11 @@ async function main() {
   const { articles } = await import("../src/lib/content/data");
 
   // sort by published date desc
+  // Full-post feed: every published article is included so no post is
+  // hidden from subscribers/crawlers by an arbitrary recency cap.
   const sorted = [...articles].sort((a, b) =>
     new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()
-  ).slice(0, 20); // cap at 20 most recent
+  );
 
   const items = sorted.map((a) => {
     // Real permalink — the article's own URL, not a homepage anchor.

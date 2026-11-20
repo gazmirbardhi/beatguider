@@ -2105,5 +2105,32 @@ export const articles: ArticleMeta[] = [
     "affiliateEligible": true,
     "wordCount": 2731,
     "readingTime": 14
+  },
+  {
+    "code": "FIX-005",
+    "slug": "ddj-flx4-not-connecting-to-rekordbox-fix",
+    "title": "DDJ-FLX4 Not Connecting to rekordbox? Try These Fixes",
+    "description": "Fix a DDJ-FLX4 that rekordbox cannot detect. Check the correct USB-C port, cable, direct connection, OS detection, current software, and firmware.",
+    "category": "fix",
+    "topic": "ddj-flx4",
+    "tags": [
+      "DDJ-FLX4",
+      "rekordbox",
+      "Troubleshooting",
+      "AlphaTheta",
+      "Pioneer DJ",
+      "USB-C",
+      "Windows",
+      "macOS",
+      "Firmware"
+    ],
+    "publishedDate": "2026-01-29",
+    "updatedDate": "2026-08-09",
+    "author": "BeatGuider Team",
+    "contentType": "guide",
+    "experienceType": "research-based",
+    "quickAnswer": "Fix a DDJ-FLX4 that rekordbox cannot detect. Check the correct USB-C port, cable, direct connection, OS detection, current software, and firmware.",
+    "wordCount": 2540,
+    "readingTime": 13
   }
 ];

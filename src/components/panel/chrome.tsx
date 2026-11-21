@@ -119,7 +119,7 @@ export function LcdStatus({
           <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-dim)" }}>
             {s.label}
           </span>
-          <span className="lcd lcd-ghost !text-[0.8125rem] sm:text-sm! font-semibold bg-transparent!">
+          <span className="lcd lcd-ghost text-[0.8125rem]! sm:text-sm! font-semibold bg-transparent!">
             {s.value}
           </span>
         </div>
@@ -188,8 +188,8 @@ export function StickyNav({
               <li key={it.href} className="shrink-0">
                 <a
                   href={it.href}
-                  className={`relative flex items-center gap-2 px-3 sm:px-4 h-11 font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold tracking-wider uppercase transition-colors ${
-                    isActive ? "text-[var(--amber)]" : "text-[var(--text)] hover:text-[var(--text2)]"
+                  className={`relative flex items-center gap-2 px-3 sm:px-4 h-11 font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold tracking-wider uppercase transition-colors ${isActive ? "text-amber" : "text-text"} hover:text-(--text2)
+                    isActive ? "text-[var(--amber)]" : "text-text hover:text-[var(--text2)]"
                   }`}
                 >
                   {isActive && (
@@ -205,7 +205,7 @@ export function StickyNav({
               <button
                 type="button"
                 onClick={onSearchClick}
-                className="flex items-center gap-2 px-3 sm:px-4 h-11 font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold tracking-wider uppercase text-[var(--text)] hover:text-amber"
+                className="flex items-center gap-2 px-3 sm:px-4 h-11 font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold tracking-wider uppercase text-text hover:text-amber"
                 aria-label="Open search module"
               >
                 <SearchGlyph />
@@ -220,7 +220,7 @@ export function StickyNav({
             fully dissolve the truncated glyph; pointer-events-none so taps
             pass through to the items beneath. */}
         <div
-          className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-0 w-14 bg-linear-to-l from-[var(--card)] via-[var(--card)]/85 to-transparent"
+          className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-0 w-14 bg-linear-to-l from-(--card)/85 via-(--card)/85 to-transparent"
           aria-hidden="true"
         />
       </div>
@@ -335,7 +335,7 @@ export function ReaderBar({
         <div className="flex items-center gap-3 h-12">
           <a
             href={backHref}
-            className="flex items-center gap-1.5 text-[var(--mut)] hover:text-amber transition-colors shrink-0 tap"
+            className="flex items-center gap-1.5 text-(--mut) hover:text-amber transition-colors shrink-0 tap"
             aria-label="Back to top"
           >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -378,7 +378,7 @@ export function ReaderBar({
             {/* chapter indicator — which section the reader is in */}
             {chapter && (
               <span
-                className="hidden md:inline-flex codechip max-w-[280px]"
+                className="hidden md:inline-flex codechip max-w-70"
                 aria-label={`Current section: ${chapter}`}
               >
                 <span className="led led-a shrink-0" aria-hidden="true" />

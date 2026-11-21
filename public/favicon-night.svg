@@ -1,0 +1,12 @@
+# BeatGuider BG-1 — night mode favicon
+# Lime wordmark on lighter dark electronics module faceplate
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="8" fill="#1A1A1A"/>
+  <rect x="2" y="2" width="60" height="60" rx="6" fill="none" stroke="#3D3D3D" stroke-width="2"/>
+  <circle cx="10" cy="10" r="2" fill="#FF66B2"/>
+  <circle cx="54" cy="10" r="2" fill="#FF66B2"/>
+  <circle cx="10" cy="54" r="2" fill="#FF66B2"/>
+  <circle cx="54" cy="54" r="2" fill="#FF66B2"/>
+  <text x="32" y="40" font-family="monospace" font-size="22" font-weight="700" text-anchor="middle" fill="#00FFC5">BG</text>
+  <text x="32" y="54" font-family="monospace" font-size="6" text-anchor="middle" fill="#00FFC5" opacity="0.7">BG-1</text>
+</svg>

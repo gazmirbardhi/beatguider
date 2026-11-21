@@ -2,7 +2,7 @@ name = "beatguider"
 compatibility_date = "2026-11-21"
 
 [build]
-command = "bun run content:gen && next build"
+command = "bun run content:gen && bunx next build"
 pages_build_output_dir = "out"
 
 [observability]

@@ -389,7 +389,7 @@ export function MobileDjModule() {
           <Screws />
           <div className="flex items-center gap-2 mb-3">
             <span className="led led-g" aria-hidden="true" />
-            <span className="silk-lg" style={{ color: "var(--ok)" }}>Gig-day power rules</span>
+            <span className="silk-lg" style={{ color: "var(--ok)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>Gig-day power rules</span>
           </div>
           <Checklist
             items={[

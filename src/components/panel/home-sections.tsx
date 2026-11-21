@@ -29,7 +29,7 @@ export function SimplifiedHero({ entryCount, lastPublish }: { entryCount: number
           className="font-(family-name:--font-chakra) font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
           style={{ color: "var(--text2)" }}
         >
-          Test. Fix. <span style={{ color: "var(--amber)" }}>Mix.</span>
+          Test. Fix. <span style={{ color: "var(--amber)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>Mix.</span>
         </h1>
         <p className="mt-5 text-base sm:text-lg max-w-[58ch]" style={{ color: "var(--body)" }}>
           BeatGuider is an independent DJ gear, software, troubleshooting and education
@@ -232,10 +232,10 @@ export function SimpleNewsletterCta() {
         <div className="electronics p-5 sm:p-6 max-w-160 mx-auto">
           <div className="flex items-center gap-2 mb-3">
             <span className="led led-a transmit-led" aria-hidden="true" />
-            <span className="silk-lg" style={{ color: "var(--amber)" }}>Field log dispatch</span>
+            <span className="silk-lg" style={{ color: "var(--amber)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>Field log dispatch</span>
             <span className="ml-auto codechip">SUB-01</span>
           </div>
-          <p className="lcd text-sm! bg-transparent! leading-relaxed mb-4" style={{ color: "var(--amber)" }}>
+          <p className="lcd text-sm! bg-transparent! leading-relaxed mb-4" style={{ color: "var(--amber)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>
             &gt; occasional dispatch with new gear tests, fix guides and lab notes.
             No sponsored emails, no rented list.
           </p>
@@ -259,7 +259,7 @@ export function SimpleNewsletterCta() {
               required
               placeholder="you@yourdomain.com"
               className="flex-1 px-3 py-2.5 lcd bg-[#060606]! text-sm! outline-none"
-              style={{ color: "var(--amber)", border: "1px solid var(--disp-b)" }}
+              style={{ color: "var(--amber)", textShadow: "0 0 4px rgba(0,0,0,0.3)", border: "1px solid var(--disp-b)" }}
               aria-label="Email address"
             />
             <button type="submit" className="hwbtn hwbtn-amber justify-center">

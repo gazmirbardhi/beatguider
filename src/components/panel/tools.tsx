@@ -686,7 +686,7 @@ function DuelistCard({
       </p>
       <div className="flex items-center gap-2 mt-2">
         <span className={ledCls} aria-hidden="true" />
-        <span className="silk" style={{ color: g.tested ? "var(--ok)" : "var(--mut)" }}>
+        <span className="silk" style={{ color: g.tested ? "var(--ok)" : "var(--mut)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>
           {g.tested ? "TESTED" : "SPEC-ONLY"}
         </span>
         {g.ownership === "owned" && (
@@ -1023,7 +1023,7 @@ export function BpmTapDetector() {
         {bpm && (
           <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--disp-b)" }}>
             <span className={`led ${stability === "stable" ? "led-g" : stability === "drifting" ? "led-a" : "led-r"}`} aria-hidden="true" />
-            <span className="silk" style={{ color: stability === "stable" ? "var(--ok)" : stability === "drifting" ? "var(--amber)" : "var(--err)" }}>
+            <span className="silk" style={{ color: stability === "stable" ? "var(--ok)" : stability === "drifting" ? "var(--amber)" : "var(--err)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>
               {stability.toUpperCase()}
             </span>
           </span>

@@ -194,7 +194,7 @@ export function TestedBadge({ size = "md" }: { size?: "sm" | "md" }) {
   return (
     <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--ok-b)", background: "rgba(51,255,102,0.06)" }}>
       <span className="led led-g" aria-hidden="true" />
-      <span className={`silk ${txt}`} style={{ color: "var(--ok)" }}>Hands-on tested</span>
+      <span className={`silk ${txt}`} style={{ color: "var(--ok)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>Hands-on tested</span>
     </span>
   );
 }
@@ -212,7 +212,7 @@ export function LongTermBadge({ size = "md" }: { size?: "sm" | "md" }) {
   return (
     <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--acc-b)", background: "var(--acc-soft)" }}>
       <span className="led led-a" aria-hidden="true" />
-      <span className={`silk ${txt}`} style={{ color: "var(--acc)" }}>Long-term owned</span>
+      <span className={`silk ${txt}`} style={{ color: "var(--acc)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>Long-term owned</span>
     </span>
   );
 }
@@ -267,7 +267,7 @@ export function NoteCallout({ title = "Note", children }: { title?: string; chil
       aria-label="Note"
     >
       <div className="flex items-center gap-2 mb-2">
-        <span className="font-(family-name:--font-chakra) font-bold text-xs tracking-widest" style={{ color: "var(--ok)" }}>
+        <span className="font-(family-name:--font-chakra) font-bold text-xs tracking-widest" style={{ color: "var(--ok)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>
           {"//"} {title.toUpperCase()}
         </span>
         <span className="led led-g" aria-hidden="true" />
@@ -577,7 +577,7 @@ export function VerdictCard({
       <Screws />
       <div className="flex items-center gap-2 mb-3">
         <span className="led led-a" aria-hidden="true" />
-        <span className="silk-lg" style={{ color: "var(--acc)" }}>Verdict</span>
+        <span className="silk-lg" style={{ color: "var(--acc)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>Verdict</span>
       </div>
       <h3 className="font-(family-name:--font-chakra) font-bold text-xl sm:text-2xl mb-3" style={{ color: "var(--text2)" }}>
         {title}
@@ -619,7 +619,7 @@ export function ProsCons({
       <div className="specplate p-4">
         <div className="flex items-center gap-2 mb-3">
           <span className="led led-g" aria-hidden="true" />
-          <span className="silk-lg" style={{ color: "var(--ok)" }}>Pros</span>
+          <span className="silk-lg" style={{ color: "var(--ok)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>Pros</span>
         </div>
         <ul className="space-y-1.5">
           {pros.map((p) => (
@@ -791,7 +791,7 @@ export function SourcesList({ sources }: { sources: { title: string; url?: strin
             {s.url && (
               <>
                 {" "}
-                <a href={s.url} target="_blank" rel="noopener noreferrer" className="underline" style={{ color: "var(--acc)" }}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="underline" style={{ color: "var(--acc)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>
                   source ↗
                 </a>
               </>
@@ -957,7 +957,7 @@ export function Figure({
         <span className="absolute top-2 left-2 codechip">FIG-{String(n).padStart(2, "0")}</span>
       </div>
       <figcaption className="mono text-xs mt-2 flex items-baseline gap-2" style={{ color: "var(--mut)" }}>
-        <span style={{ color: "var(--acc)" }}>FIG-{String(n).padStart(2, "0")}</span>
+        <span style={{ color: "var(--acc)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>FIG-{String(n).padStart(2, "0")}</span>
         <span style={{ color: "var(--body)" }}>{caption}</span>
       </figcaption>
     </figure>
@@ -1091,12 +1091,12 @@ export function DiagnosticSequence({
                   className="font-(family-name:--font-chakra) font-bold text-lg shrink-0"
                   style={{
                     color: "var(--amber)",
-                    textShadow: isActive ? "0 0 12px rgba(255,176,0,0.8)" : "0 0 8px rgba(255,176,0,0.6)",
+                    textShadow: isActive ? "0 0 12px rgba(255,176,0,0.8), 0 0 4px rgba(0,0,0,0.3)" : "0 0 8px rgba(255,176,0,0.6), 0 0 4px rgba(0,0,0,0.3)",
                   }}
                 >
                   {String(s.n).padStart(2, "0")}
                 </span>
-                <span className="lcd text-xs! bg-transparent! flex-1 min-w-0" style={{ color: "var(--amber)" }}>
+                <span className="lcd text-xs! bg-transparent! flex-1 min-w-0" style={{ color: "var(--amber)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>
                   {s.label}
                 </span>
                 <span className={statusLed} aria-hidden="true" />
@@ -1350,7 +1350,7 @@ export function ErrorLog({
       <div className="flex items-center gap-3 mb-3 text-[0.5625rem]">
         <span className="inline-flex items-center gap-1">
           <span className="led led-g" aria-hidden="true" />
-          <span className="silk" style={{ color: "var(--ok)" }}>{passCount} PASS</span>
+          <span className="silk" style={{ color: "var(--ok)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>{passCount} PASS</span>
         </span>
         <span className="inline-flex items-center gap-1">
           <span className="led led-a" aria-hidden="true" />

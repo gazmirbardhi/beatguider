@@ -120,7 +120,7 @@ function ProsConsPanel({ children }: { children: ReactNode }) {
         <div className="flex items-center gap-2 mb-3">
           <span
             className="font-(family-name:--font-chakra) font-bold text-xs tracking-widest"
-            style={{ color: "var(--ok)" }}
+            style={{ color: "var(--ok)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}
           >
             {"//"} PROS
           </span>

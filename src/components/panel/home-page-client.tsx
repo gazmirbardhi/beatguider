@@ -47,7 +47,7 @@ export function HomePageClient({
         {/* validation status line (dev only — surfaces anti-fake-testing rule violations) */}
         {validationErrors.length > 0 && (
           <div className="border-y border-[var(--err-b)] px-4 py-2" style={{ background: "rgba(255,68,68,0.06)" }}>
-            <div className="mx-auto max-w-[1280px] flex items-center gap-2 flex-wrap">
+            <div className="mx-auto max-w-7xl flex items-center gap-2 flex-wrap">
               <span className="led led-r" aria-hidden="true" />
               <span className="silk" style={{ color: "var(--err)" }}>Content validation</span>
               <span className="mono text-xs" style={{ color: "var(--body)" }}>

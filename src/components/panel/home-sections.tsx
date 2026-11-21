@@ -19,14 +19,14 @@ export function SimplifiedHero({ entryCount, lastPublish }: { entryCount: number
   ];
 
   return (
-    <section id="top" className="panel-surface border-b border-[var(--line)]">
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-12 sm:py-20">
+    <section id="top" className="panel-surface border-b border-(--line)">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-20">
         <div className="flex items-center gap-2 mb-4">
           <span className="led led-g" aria-hidden="true" />
           <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>Independent DJ test bench · BG-1</span>
         </div>
         <h1
-          className="font-[family-name:var(--font-chakra)] font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
+          className="font-(family-name:--font-chakra) font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
           style={{ color: "var(--text2)" }}
         >
           Test. Fix. <span style={{ color: "var(--amber)" }}>Mix.</span>
@@ -42,7 +42,7 @@ export function SimplifiedHero({ entryCount, lastPublish }: { entryCount: number
             <Link
               key={it.label}
               href={it.href}
-              className="modcard group block p-5 transition-colors hover:bg-[var(--plate)]"
+              className="modcard group block p-5 transition-colors hover:bg-(--plate)"
               style={{ borderLeftColor: it.accent }}
             >
               <div className="flex items-center gap-2 mb-2">
@@ -80,10 +80,10 @@ export function LatestArticles() {
 
   return (
     <section id="latest" className="chassis-seam py-10 sm:py-14">
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex items-baseline gap-3 mb-6 flex-wrap">
           <span className="codechip">SEC-01</span>
-          <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-2xl sm:text-3xl" style={{ color: "var(--text2)" }}>
+          <h2 className="font-(family-name:--font-chakra) font-semibold text-2xl sm:text-3xl" style={{ color: "var(--text2)" }}>
             Latest
           </h2>
           <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>— recent articles</span>
@@ -97,7 +97,7 @@ export function LatestArticles() {
               <Link
                 key={a.code}
                 href={`/${a.category}/${a.slug}`}
-                className="modcard group block p-4 transition-colors hover:bg-[var(--plate)]"
+                className="modcard group block p-4 transition-colors hover:bg-(--plate)"
                 style={{
                   borderLeftColor: a.experienceType === "hands-on" || a.experienceType === "long-term-owned"
                     ? "var(--ok)" : "var(--amber)",
@@ -108,7 +108,7 @@ export function LatestArticles() {
                   <span className="codechip">{a.code}</span>
                   <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>{a.category}</span>
                 </div>
-                <h3 className="font-[family-name:var(--font-chakra)] font-semibold text-base sm:text-lg leading-tight" style={{ color: "var(--text2)" }}>
+                <h3 className="font-(family-name:--font-chakra) font-semibold text-base sm:text-lg leading-tight" style={{ color: "var(--text2)" }}>
                   {a.title}
                 </h3>
                 <p className="text-sm mt-1 line-clamp-2" style={{ color: "var(--body)" }}>{a.description}</p>
@@ -139,10 +139,10 @@ export function CategoryBrowser() {
 
   return (
     <section id="categories" className="chassis-seam py-10 sm:py-14">
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex items-baseline gap-3 mb-6 flex-wrap">
           <span className="codechip">SEC-02</span>
-          <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-2xl sm:text-3xl" style={{ color: "var(--text2)" }}>
+          <h2 className="font-(family-name:--font-chakra) font-semibold text-2xl sm:text-3xl" style={{ color: "var(--text2)" }}>
             Categories
           </h2>
           <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>— every article, grouped by category</span>
@@ -154,13 +154,13 @@ export function CategoryBrowser() {
             <article key={g.def.id} className="modcard overflow-hidden">
               {/* group header — category name, live count, kicker, open link */}
               <div
-                className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 sm:px-5 py-3 border-b border-[var(--line)]"
+                className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 sm:px-5 py-3 border-b border-(--line)"
                 style={{ background: "var(--plate)" }}
               >
                 <span className="led led-a" aria-hidden="true" />
                 <Link
                   href={`/${g.def.id}`}
-                  className="font-[family-name:var(--font-chakra)] font-semibold text-lg tracking-tight hover:text-[var(--amber)] transition-colors"
+                  className="font-(family-name:--font-chakra) font-semibold text-lg tracking-tight hover:text-amber transition-colors"
                   style={{ color: "var(--text2)" }}
                 >
                   {g.def.name}
@@ -170,7 +170,7 @@ export function CategoryBrowser() {
                 </span>
                 <Link
                   href={`/${g.def.id}`}
-                  className="ml-auto hwbtn !text-[0.6875rem] !py-1.5"
+                  className="ml-auto hwbtn text-[0.6875rem]! py-1.5!"
                   aria-label={`Open all ${g.def.name} articles`}
                 >
                   <span>Open {g.def.name}</span>
@@ -194,20 +194,20 @@ export function CategoryBrowser() {
                       <li key={a.code}>
                         <Link
                           href={`/${a.category}/${a.slug}`}
-                          className="flex items-center gap-3 px-4 sm:px-5 py-2.5 border-b border-[var(--line)] last:border-b-0 transition-colors hover:bg-[var(--plate)] group/row"
+                          className="flex items-center gap-3 px-4 sm:px-5 py-2.5 border-b border-(--line) last:border-b-0 transition-colors hover:bg-(--plate) group/row"
                         >
                           <span className={led} aria-hidden="true" />
-                          <span className="codechip flex-shrink-0">{a.code}</span>
+                          <span className="codechip shrink-0">{a.code}</span>
                           <span
                             className="flex-1 min-w-0 line-clamp-2 text-sm font-medium leading-snug group-hover/row:text-[var(--text2)] transition-colors"
                             style={{ color: "var(--body)" }}
                           >
                             {a.title}
                           </span>
-                          <span className="silk hidden md:inline flex-shrink-0" style={{ color: "var(--panel-silk-muted)" }}>
+                          <span className="silk hidden md:inline shrink-0" style={{ color: "var(--panel-silk-muted)" }}>
                             {a.publishedDate}
                           </span>
-                          <span className="silk flex-shrink-0 tabular-nums" style={{ color: "var(--panel-silk-muted)" }}>
+                          <span className="silk shrink-0 tabular-nums" style={{ color: "var(--panel-silk-muted)" }}>
                             {a.readingTime} min
                           </span>
                         </Link>
@@ -228,14 +228,14 @@ export function CategoryBrowser() {
 export function SimpleNewsletterCta() {
   return (
     <section id="newsletter" className="chassis-seam py-10 sm:py-14">
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
-        <div className="electronics p-5 sm:p-6 max-w-[640px] mx-auto">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="electronics p-5 sm:p-6 max-w-160 mx-auto">
           <div className="flex items-center gap-2 mb-3">
             <span className="led led-a transmit-led" aria-hidden="true" />
             <span className="silk-lg" style={{ color: "var(--amber)" }}>Field log dispatch</span>
             <span className="ml-auto codechip">SUB-01</span>
           </div>
-          <p className="lcd !text-sm !bg-transparent leading-relaxed mb-4" style={{ color: "var(--amber)" }}>
+          <p className="lcd text-sm! bg-transparent! leading-relaxed mb-4" style={{ color: "var(--amber)" }}>
             &gt; occasional dispatch with new gear tests, fix guides and lab notes.
             No sponsored emails, no rented list.
           </p>
@@ -258,7 +258,7 @@ export function SimpleNewsletterCta() {
               type="email"
               required
               placeholder="you@yourdomain.com"
-              className="flex-1 px-3 py-2.5 lcd !bg-[#060606] !text-sm outline-none"
+              className="flex-1 px-3 py-2.5 lcd bg-[#060606]! text-sm! outline-none"
               style={{ color: "var(--amber)", border: "1px solid var(--disp-b)" }}
               aria-label="Email address"
             />
@@ -266,7 +266,7 @@ export function SimpleNewsletterCta() {
               <span>Transmit</span>
             </button>
           </form>
-          <p data-status className="lcd !text-xs !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+          <p data-status className="lcd text-xs! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
             &gt; not connected yet — launching soon
           </p>
         </div>

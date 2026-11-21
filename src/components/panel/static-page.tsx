@@ -26,10 +26,10 @@ export function StaticPage({
   return (
     <div>
       {/* Hero header */}
-      <section className="panel-surface border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-12 sm:py-16">
+      <section className="panel-surface border-b border-(--line)">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16">
           <nav className="flex items-center gap-2 mb-4 text-xs" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>HOME</Link>
+            <Link href="/" className="hover:text-amber" style={{ color: "var(--mut)" }}>HOME</Link>
             <span style={{ color: "var(--mut)" }}>/</span>
             <span className="mono" style={{ color: "var(--amber)" }}>{code}</span>
           </nav>
@@ -38,7 +38,7 @@ export function StaticPage({
             <span className="silk" style={{ color: "var(--mut)" }}>{kicker}</span>
           </div>
           <h1
-            className="font-[family-name:var(--font-chakra)] font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3"
+            className="font-(family-name:--font-chakra) font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3"
             style={{ color: "var(--text2)" }}
           >
             {title}
@@ -51,7 +51,7 @@ export function StaticPage({
 
       {/* Body */}
       <section className="py-10 sm:py-14 chassis-seam">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="max-w-[68ch] mx-auto prose-panel">
             {children}
           </div>

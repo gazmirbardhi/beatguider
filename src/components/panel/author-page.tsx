@@ -25,18 +25,18 @@ export function AuthorPage({ authorSlug }: { authorSlug: string }) {
   return (
     <div>
       {/* Hero header */}
-      <section className="panel-surface border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-12 sm:py-16">
+      <section className="panel-surface border-b border-(--line)">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16">
           <nav className="flex items-center gap-2 mb-4 text-xs" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-[var(--amber)] tap" style={{ color: "var(--mut)" }}>HOME</Link>
+            <Link href="/" className="hover:text-amber tap" style={{ color: "var(--mut)" }}>HOME</Link>
             <span style={{ color: "var(--mut)" }}>/</span>
             <span className="mono" style={{ color: "var(--amber)" }}>AUTHOR</span>
           </nav>
           <div className="flex items-center gap-5 flex-wrap">
             {/* Author avatar — a stylized LCD portrait, not a fabricated photo */}
-            <div className="electronics w-20 h-20 flex items-center justify-center flex-shrink-0">
+            <div className="electronics w-20 h-20 flex items-center justify-center shrink-0">
               <span
-                className="font-[family-name:var(--font-chakra)] font-bold text-2xl"
+                className="font-(family-name:--font-chakra) font-bold text-2xl"
                 style={{ color: "var(--amber)" }}
               >
                 {authorName.split(" ").map((w) => w[0]).join("").slice(0, 2)}
@@ -44,7 +44,7 @@ export function AuthorPage({ authorSlug }: { authorSlug: string }) {
             </div>
             <div className="min-w-0">
               <h1
-                className="font-[family-name:var(--font-chakra)] font-bold text-3xl sm:text-4xl leading-tight mb-2"
+                className="font-(family-name:--font-chakra) font-bold text-3xl sm:text-4xl leading-tight mb-2"
                 style={{ color: "var(--text2)" }}
               >
                 {authorName}
@@ -62,7 +62,7 @@ export function AuthorPage({ authorSlug }: { authorSlug: string }) {
 
       {/* About — honest, no fabricated bio (spec §11) */}
       <section className="py-8 sm:py-10 chassis-seam">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="max-w-[68ch] electronics p-5">
             <div className="flex items-center gap-2 mb-3">
               <span className="led led-a led-breathe" aria-hidden="true" />
@@ -83,9 +83,9 @@ export function AuthorPage({ authorSlug }: { authorSlug: string }) {
 
       {/* Articles by this author */}
       <section className="py-6 sm:py-8">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <h2
-            className="font-[family-name:var(--font-chakra)] font-semibold text-xl sm:text-2xl mb-4"
+            className="font-(family-name:--font-chakra) font-semibold text-xl sm:text-2xl mb-4"
             style={{ color: "var(--text2)" }}
           >
             Articles by {authorName}

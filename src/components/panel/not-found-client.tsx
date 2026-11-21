@@ -39,8 +39,8 @@ export function NotFoundClient({ children }: { children?: ReactNode }) {
 
 function FaultReport() {
   return (
-    <section className="mx-auto max-w-[1280px] px-4 sm:px-6 py-16 sm:py-24">
-      <div className="max-w-[640px] mx-auto">
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
+      <div className="max-w-160 mx-auto">
         <div
           className="specplate brushed p-6 sm:p-8 relative"
           style={{ borderLeftColor: "var(--err)", borderLeftWidth: 3 }}
@@ -52,17 +52,17 @@ function FaultReport() {
             <span className="codechip ml-auto">ERR-404</span>
           </div>
           <h1
-            className="font-[family-name:var(--font-chakra)] font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3"
+            className="font-(family-name:--font-chakra) font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3"
             style={{ color: "var(--text2)" }}
           >
             Signal not found
           </h1>
-          <p className="lcd !text-sm !bg-transparent mb-6" style={{ color: "var(--amber)" }}>
+          <p className="lcd text-sm! bg-transparent! mb-6" style={{ color: "var(--amber)" }}>
             &gt; ERR-404 · the requested route produced no output on the test bench
           </p>
           <div className="electronics p-4 mb-6">
             <div className="silk mb-2" style={{ color: "rgba(255,176,0,0.6)" }}>Diagnostic</div>
-            <ul className="space-y-1.5 lcd !text-sm !bg-transparent" style={{ color: "var(--amber)" }}>
+            <ul className="space-y-1.5 lcd text-sm! bg-transparent!" style={{ color: "var(--amber)" }}>
               <li>&gt; route does not match any indexable article, gear or tool module</li>
               <li>&gt; if this was a typed URL, check the slug (codes are cosmetic — never in URLs)</li>
               <li>&gt; if this was an internal link, it is broken and will be flagged in CI</li>

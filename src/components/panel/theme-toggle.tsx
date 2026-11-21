@@ -138,7 +138,7 @@ export function ModeIconButton() {
       aria-pressed={isDay}
       aria-label={isDay ? "Switch to night mode" : "Switch to day mode"}
       title={isDay ? "Switch to night mode" : "Switch to day mode"}
-      className="hwbtn !px-2.5 !py-2"
+      className="hwbtn px-2!.5 !py-2"
     >
       <span className="led led-a" aria-hidden="true" />
       <span className="text-[0.6875rem]">{isDay ? "DAY" : "NIGHT"}</span>

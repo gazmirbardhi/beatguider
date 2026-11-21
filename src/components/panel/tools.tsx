@@ -26,13 +26,13 @@ function RackFrame({
       <header className="flex items-center gap-2 mb-3">
         <span className="led led-a led-breathe" aria-hidden="true" />
         <span className="codechip">{code}</span>
-        <h3 className="font-[family-name:var(--font-chakra)] font-semibold text-sm sm:text-base" style={{ color: "var(--text2)" }}>
+        <h3 className="font-(family-name:--font-chakra) font-semibold text-sm sm:text-base" style={{ color: "var(--text2)" }}>
           {title}
         </h3>
       </header>
       {children}
       {foot && (
-        <footer className="mt-3 pt-3 border-t border-[var(--line)] silk" style={{ color: "var(--mut)" }}>
+        <footer className="mt-3 pt-3 border-t border-(--line) silk" style={{ color: "var(--mut)" }}>
           {foot}
         </footer>
       )}
@@ -49,7 +49,7 @@ function LcdReadout({ children, label }: { children: ReactNode; label?: string }
           {label}
         </div>
       )}
-      <div className="lcd !bg-transparent text-sm sm:text-base leading-relaxed" style={{ color: "var(--amber)" }}>
+      <div className="lcd bg-transparent! text-sm sm:text-base leading-relaxed" style={{ color: "var(--amber)" }}>
         {children}
       </div>
     </div>
@@ -98,7 +98,7 @@ export function BpmCalculator() {
             step="0.1"
             value={bpm}
             onChange={(e) => setBpm(e.target.value)}
-            className="electronics px-3 py-2 lcd !bg-transparent !text-lg font-semibold tabular-nums w-full outline-none"
+            className="electronics px-3 py-2 lcd bg-transparent! text-lg! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }}
             aria-label="Tempo in beats per minute"
           />
@@ -109,7 +109,7 @@ export function BpmCalculator() {
               key={b}
               type="button"
               onClick={() => setBpm(String(b))}
-              className="hwbtn !px-2 !py-1.5 !text-[0.6875rem]"
+              className="hwbtn px-2! py-1.5! text-[0.6875rem]!"
             >
               {b}
             </button>
@@ -129,7 +129,7 @@ export function BpmCalculator() {
             <Row k="1/4T · ms" v={data.triplet.toFixed(2)} />
             <Row k="dotted 1/8" v={data.dotted.toFixed(2)} />
           </dl>
-          <div className="mt-3 pt-3 border-t border-[var(--disp-b)]">
+          <div className="mt-3 pt-3 border-t border-disp-b">
             <div className="silk mb-1.5" style={{ color: "rgba(255,176,0,0.6)" }}>Common delay timings</div>
             <ul className="space-y-1">
               {commonDelays.map((d) => (
@@ -212,7 +212,7 @@ export function CamelotCalculator() {
         <select
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          className="electronics px-3 py-2 lcd !bg-transparent !text-base font-semibold outline-none w-full"
+          className="electronics px-3 py-2 lcd bg-transparent! text-base! font-semibold outline-none w-full"
           style={{ color: "var(--amber)" }}
           aria-label="Select your Camelot key code"
         >
@@ -256,17 +256,17 @@ function CompatRow({
   const segCount = confidence === "100%" ? 8 : confidence === "high" ? 6 : confidence === "med" ? 4 : 2;
   return (
     <li className="flex items-center gap-3">
-      <span className="lcd !text-xs font-semibold !px-1.5 !py-0.5 flex-shrink-0" style={{ color: "var(--amber)" }}>{code}</span>
+      <span className="lcd text-xs! font-semibold px-1.5! py-0.5! shrink-0" style={{ color: "var(--amber)" }}>{code}</span>
       <span className="flex-1 min-w-0">
         <span style={{ color: "var(--amber)" }}>{keyName}</span>
-        <span className="block silk !text-[0.5625rem] mt-0.5" style={{ color: "var(--panel-silk-dim)" }}>{label}</span>
+        <span className="block silk text-[0.5625rem]! mt-0.5" style={{ color: "var(--panel-silk-dim)" }}>{label}</span>
       </span>
-      <span className="flex items-center gap-px w-16 flex-shrink-0" aria-hidden="true">
+      <span className="flex items-center gap-px w-16 shrink-0" aria-hidden="true">
         {Array.from({ length: 8 }).map((_, i) => (
           <span key={i} className={`vu-seg h-2 ${i < segCount ? "vu-seg-g" : ""}`} style={i >= segCount ? {} : {}} />
         ))}
       </span>
-      <span className="text-[0.6875rem] flex-shrink-0 w-12 text-right" style={{ color: confColor }}>{confidence}</span>
+      <span className="text-[0.6875rem] shrink-0 w-12 text-right" style={{ color: confColor }}>{confidence}</span>
     </li>
   );
 }
@@ -311,7 +311,7 @@ export function PowerCalculator() {
             min="0"
             value={watts}
             onChange={(e) => setWatts(e.target.value)}
-            className="electronics px-3 py-2 lcd !bg-transparent !text-base font-semibold tabular-nums outline-none w-full"
+            className="electronics px-3 py-2 lcd bg-transparent! text-base! font-semibold tabular-nums outline-none w-full"
             style={{ color: "var(--amber)" }}
             aria-label="Total continuous load in watts"
           />
@@ -321,7 +321,7 @@ export function PowerCalculator() {
           <select
             value={voltage}
             onChange={(e) => setVoltage(e.target.value)}
-            className="electronics px-3 py-2 lcd !bg-transparent !text-base font-semibold outline-none w-full"
+            className="electronics px-3 py-2 lcd bg-transparent! text-base! font-semibold outline-none w-full"
             style={{ color: "var(--amber)" }}
             aria-label="Mains voltage"
           >
@@ -483,7 +483,7 @@ export function GearDueler({
             style={{ background: "var(--card)", borderRadius: "3px", border: "1px solid var(--plate-b)" }}
           >
             <div className="flex items-center justify-center h-full px-1">
-              <span className="silk !text-[0.5rem]" style={{ color: "var(--amber)" }}>VS</span>
+              <span className="silk text-[0.5rem]!" style={{ color: "var(--amber)" }}>VS</span>
             </div>
           </div>
         )}
@@ -498,20 +498,20 @@ export function GearDueler({
             <span className="silk" style={{ color: "var(--amber)" }}>Verdict plate · auto-derived</span>
           </div>
           {overall === null ? (
-            <p className="lcd !text-sm !bg-transparent" style={{ color: "var(--amber)" }}>
+            <p className="lcd text-sm! bg-transparent!" style={{ color: "var(--amber)" }}>
               &gt; no comparable numeric dimensions — pick two units with overlapping specs
             </p>
           ) : overall === "tie" ? (
-            <p className="lcd !text-sm !bg-transparent" style={{ color: "var(--amber)" }}>
+            <p className="lcd text-sm! bg-transparent!" style={{ color: "var(--amber)" }}>
               &gt; TIE · {tally.a}–{tally.b} on {tally.judged} judged dimensions · {tally.tie} tie(s)
             </p>
           ) : (
-            <p className="lcd !text-sm !bg-transparent" style={{ color: "var(--amber)" }}>
+            <p className="lcd text-sm! bg-transparent!" style={{ color: "var(--amber)" }}>
               &gt; WINNER · <span style={{ color: "var(--vu-g)" }}>{overall === "a" ? a.model : b.model}</span>
               {" "}· {tally.a}–{tally.b} on {tally.judged} judged dimensions · {tally.tie} tie(s)
             </p>
           )}
-          <p className="lcd !text-[0.6875rem] !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+          <p className="lcd text-[0.6875rem]! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
             &gt; heuristic judge · lower-better: weight · higher-better: bit-depth, channels, pads, release year · ties scored separately
           </p>
         </div>
@@ -520,7 +520,7 @@ export function GearDueler({
       {/* comparison table */}
       {a && b && (
         <div className="electronics overflow-x-auto scroll-x">
-          <table className="w-full text-sm min-w-[560px]">
+          <table className="w-full text-sm min-w-140">
             <thead>
               <tr style={{ background: "#060606" }}>
                 <th className="text-left px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>SPEC</th>
@@ -550,7 +550,7 @@ export function GearDueler({
                 const vb = parseSpec(b.majorSpecs, label) ?? "—";
                 const w = judgeSpec(label, va, vb);
                 return (
-                  <tr key={label} className={i > 0 ? "border-t border-[var(--disp-b)]" : ""}>
+                  <tr key={label} className={i > 0 ? "border-t border-disp-b" : ""}>
                     <th scope="row" className="text-left align-top px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>
                       {label}
                     </th>
@@ -594,7 +594,7 @@ export function GearDueler({
           <button
             type="button"
             onClick={() => { setASlug(b.slug); setBSlug(a.slug); }}
-            className="hwbtn !text-[0.6875rem]"
+            className="hwbtn text-[0.6875rem]!"
             aria-label="Swap contestant A and B"
           >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -631,7 +631,7 @@ function DuelSelector({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="electronics px-3 py-2 lcd !bg-transparent !text-base font-semibold outline-none w-full"
+        className="electronics px-3 py-2 lcd bg-transparent! text-base! font-semibold outline-none w-full"
         style={{ color: "var(--amber)" }}
         aria-label={label}
       >
@@ -697,7 +697,7 @@ function DuelistCard({
         <div className="mt-3">
           <div className="flex items-baseline justify-between mb-1">
             <span className="silk" style={{ color: "var(--mut)" }}>Overall score</span>
-            <span className="lcd !text-sm !bg-transparent font-semibold tabular-nums">{String(avg).padStart(3, "0")}%</span>
+            <span className="lcd text-sm! bg-transparent! font-semibold tabular-nums">{String(avg).padStart(3, "0")}%</span>
           </div>
           <div className="flex items-center gap-px h-2" aria-hidden="true">
             {Array.from({ length: 20 }).map((_, i) => {
@@ -709,7 +709,7 @@ function DuelistCard({
         </div>
       )}
       {avg === null && (
-        <p className="lcd !text-xs !bg-transparent mt-3" style={{ color: "rgba(255,176,0,0.55)" }}>
+        <p className="lcd text-xs! bg-transparent! mt-3" style={{ color: "rgba(255,176,0,0.55)" }}>
           &gt; no test data · spec-only comparison
         </p>
       )}
@@ -771,7 +771,7 @@ export function KeyBpmMatcher() {
             step="0.1"
             value={bpm}
             onChange={(e) => setBpm(e.target.value)}
-            className="electronics px-3 py-2 lcd !bg-transparent !text-lg font-semibold tabular-nums w-full outline-none"
+            className="electronics px-3 py-2 lcd bg-transparent! text-lg! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }}
             aria-label="Tempo in beats per minute"
           />
@@ -781,7 +781,7 @@ export function KeyBpmMatcher() {
           <select
             value={key}
             onChange={(e) => setKey(e.target.value)}
-            className="electronics px-3 py-2 lcd !bg-transparent !text-lg font-semibold outline-none w-full"
+            className="electronics px-3 py-2 lcd bg-transparent! text-lg! font-semibold outline-none w-full"
             style={{ color: "var(--amber)" }}
             aria-label="Camelot key"
           >
@@ -802,7 +802,7 @@ export function KeyBpmMatcher() {
             <Row k="Double-time" v={`${data.doubleBpm.toFixed(1)} BPM`} />
             <Row k="Energy boost" v={`${keyCompat.energyBoost}`} />
           </div>
-          <div className="mt-3 pt-3 border-t border-[var(--disp-b)]">
+          <div className="mt-3 pt-3 border-t border-disp-b">
             <div className="silk mb-1.5" style={{ color: "rgba(255,176,0,0.6)" }}>Harmonic matches</div>
             <ul className="space-y-1">
               <li className="flex items-baseline justify-between gap-3">
@@ -871,38 +871,38 @@ export function SetLengthPlanner() {
     >
       <div className="grid grid-cols-3 gap-2 mb-3">
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>TRACKS</span>
+          <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>TRACKS</span>
           <input
             type="number"
             min="1"
             value={tracks}
             onChange={(e) => setTracks(e.target.value)}
-            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            className="electronics px-2 py-2 lcd bg-transparent! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }}
             aria-label="Number of tracks"
           />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>AVG BPM</span>
+          <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>AVG BPM</span>
           <input
             type="number"
             min="20"
             value={avgBpm}
             onChange={(e) => setAvgBpm(e.target.value)}
-            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            className="electronics px-2 py-2 lcd bg-transparent! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }}
             aria-label="Average BPM"
           />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>MIN/TRACK</span>
+          <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>MIN/TRACK</span>
           <input
             type="number"
             min="1"
             step="0.5"
             value={avgMins}
             onChange={(e) => setAvgMins(e.target.value)}
-            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            className="electronics px-2 py-2 lcd bg-transparent! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }}
             aria-label="Average minutes per track"
           />
@@ -917,7 +917,7 @@ export function SetLengthPlanner() {
             <Row k="Total bars" v={data.totalBars.toLocaleString()} />
             <Row k="Total beats" v={data.totalBeats.toLocaleString()} />
           </div>
-          <div className="mt-3 pt-3 border-t border-[var(--disp-b)]">
+          <div className="mt-3 pt-3 border-t border-disp-b">
             <div className="silk mb-1.5" style={{ color: "rgba(255,176,0,0.6)" }}>Tracks needed for common gig lengths</div>
             <ul className="space-y-1">
               {gigLengths.map((g) => (
@@ -1007,12 +1007,12 @@ export function BpmTapDetector() {
         style={{ cursor: "pointer" }}
         aria-label="Tap to detect BPM"
       >
-        <div className="font-[family-name:var(--font-chakra)] font-bold text-3xl sm:text-5xl mb-2" style={{ color: bpm ? "var(--amber)" : "rgba(255,176,0,0.3)" }}>
+        <div className="font-(family-name:--font-chakra) font-bold text-3xl sm:text-5xl mb-2" style={{ color: bpm ? "var(--amber)" : "rgba(255,176,0,0.3)" }}>
           {bpm ? String(bpm).padStart(3, "0") : "---"}
         </div>
         <div className="silk" style={{ color: "rgba(255,176,0,0.55)" }}>BPM · TAP TO DETECT</div>
         {taps.length > 0 && (
-          <div className="lcd !text-xs !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.5)" }}>
+          <div className="lcd text-xs! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.5)" }}>
             {taps.length} tap{taps.length !== 1 ? "s" : ""} · press SPACE
           </div>
         )}
@@ -1029,7 +1029,7 @@ export function BpmTapDetector() {
           </span>
         )}
         {taps.length > 0 && (
-          <button type="button" onClick={reset} className="hwbtn !text-[0.6875rem] !py-1.5">
+          <button type="button" onClick={reset} className="hwbtn text-[0.6875rem]! py-1.5!">
             Reset
           </button>
         )}
@@ -1078,34 +1078,34 @@ export function DjFeeCalculator() {
     >
       <div className="grid grid-cols-2 gap-3 mb-3">
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>HOURS</span>
+          <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>HOURS</span>
           <input type="number" min="1" step="0.5" value={hours} onChange={(e) => setHours(e.target.value)}
-            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            className="electronics px-2 py-2 lcd bg-transparent! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }} aria-label="Gig duration in hours" />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>BASE $/HR</span>
+          <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>BASE $/HR</span>
           <input type="number" min="0" step="10" value={baseRate} onChange={(e) => setBaseRate(e.target.value)}
-            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            className="electronics px-2 py-2 lcd bg-transparent! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }} aria-label="Base hourly rate" />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>TRAVEL (MI)</span>
+          <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>TRAVEL (MI)</span>
           <input type="number" min="0" value={travel} onChange={(e) => setTravel(e.target.value)}
-            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            className="electronics px-2 py-2 lcd bg-transparent! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }} aria-label="Travel distance in miles" />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>$/MI RATE</span>
+          <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>$/MI RATE</span>
           <input type="number" min="0" step="0.05" value={travelRate} onChange={(e) => setTravelRate(e.target.value)}
-            className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
+            className="electronics px-2 py-2 lcd bg-transparent! font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }} aria-label="Cost per mile" />
         </label>
       </div>
       <label className="flex flex-col gap-1 mb-3">
-        <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>EQUIPMENT</span>
+        <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>EQUIPMENT</span>
         <select value={equipment} onChange={(e) => setEquipment(e.target.value)}
-          className="electronics px-3 py-2 lcd !bg-transparent font-semibold outline-none w-full"
+          className="electronics px-3 py-2 lcd bg-transparent! font-semibold outline-none w-full"
           style={{ color: "var(--amber)" }} aria-label="Equipment status">
           <option value="owned" style={{ background: "#0A0A0A", color: "#FFB000" }}>Owned (+$25/hr wear)</option>
           <option value="rented" style={{ background: "#0A0A0A", color: "#FFB000" }}>Rented (+$50/hr cost)</option>
@@ -1121,9 +1121,9 @@ export function DjFeeCalculator() {
             <Row k="Travel (round)" v={`$${data.travelFee}`} />
             <Row k="Per hour" v={`$${data.perHour}`} />
           </dl>
-          <div className="mt-3 pt-3 border-t border-[var(--disp-b)] flex items-baseline justify-between">
+          <div className="mt-3 pt-3 border-t border-disp-b flex items-baseline justify-between">
             <span className="silk" style={{ color: "rgba(255,176,0,0.6)" }}>TOTAL FEE</span>
-            <span className="lcd lcd-ghost !text-2xl !bg-transparent font-bold">${data.total}</span>
+            <span className="lcd lcd-ghost text-2xl! bg-transparent! font-bold">${data.total}</span>
           </div>
         </LcdReadout>
       ) : (
@@ -1176,7 +1176,7 @@ export function CuePointCalculator() {
       <label className="flex flex-col gap-1 mb-3">
         <span className="silk" style={{ color: "var(--mut)" }}>BPM</span>
         <input type="number" min="20" max="400" step="0.1" value={bpm} onChange={(e) => setBpm(e.target.value)}
-          className="electronics px-3 py-2 lcd !bg-transparent !text-lg font-semibold tabular-nums w-full outline-none"
+          className="electronics px-3 py-2 lcd bg-transparent! text-lg! font-semibold tabular-nums w-full outline-none"
           style={{ color: "var(--amber)" }} aria-label="Tempo in beats per minute" />
       </label>
 
@@ -1208,7 +1208,7 @@ export function CuePointCalculator() {
               <span className="font-semibold tabular-nums">{formatMs(data.bar64)}</span>
             </li>
           </ul>
-          <div className="mt-3 pt-3 border-t border-[var(--disp-b)]">
+          <div className="mt-3 pt-3 border-t border-disp-b">
             <div className="silk mb-1.5" style={{ color: "rgba(255,176,0,0.6)" }}>Section lengths</div>
             <div className="grid grid-cols-2 gap-2">
               <Row k="32-bar section" v={`${data.secondsPer32.toFixed(1)}s`} />

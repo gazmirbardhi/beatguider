@@ -46,7 +46,7 @@ function SectionLabel({ code, title, kicker }: { code?: string; title: string; k
     <div className="flex items-baseline gap-3 mb-5 flex-wrap">
       {code && <span className="codechip">{code}</span>}
       <h2
-        className="font-[family-name:var(--font-chakra)] font-semibold text-2xl sm:text-3xl"
+        className="font-(family-name:--font-chakra) font-semibold text-2xl sm:text-3xl"
         style={{ color: "var(--text2)" }}
       >
         {title}
@@ -60,7 +60,7 @@ function SectionLabel({ code, title, kicker }: { code?: string; title: string; k
 function SectionFrame({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
   return (
     <section id={id} className={`chassis-seam py-10 sm:py-14 ${className}`} style={{ borderTop: "1px solid var(--line)" }}>
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6">{children}</div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">{children}</div>
     </section>
   );
 }
@@ -68,8 +68,8 @@ function SectionFrame({ id, children, className = "" }: { id: string; children: 
 /* ─── 1. FACEPLATE HERO ─── */
 export function FaceplateHero({ entryCount, lastPublish }: { entryCount: number; lastPublish: string }) {
   return (
-    <section id="top" className="panel-surface border-b border-[var(--line)]">
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-12 sm:py-20">
+    <section id="top" className="panel-surface border-b border-(--line)">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-12 items-center">
           <div>
             <div className="flex items-center gap-2 mb-4">
@@ -77,7 +77,7 @@ export function FaceplateHero({ entryCount, lastPublish }: { entryCount: number;
               <span className="silk" style={{ color: "var(--mut)" }}>Independent DJ test bench · BG-1</span>
             </div>
             <h1
-              className="font-[family-name:var(--font-chakra)] font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
+              className="font-(family-name:--font-chakra) font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
               style={{ color: "var(--text2)" }}
             >
               Test. Fix. <span style={{ color: "var(--amber)" }}>Mix.</span>
@@ -140,8 +140,8 @@ export function FaceplateHero({ entryCount, lastPublish }: { entryCount: number;
 function LcdStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="electronics px-2 py-1.5 text-center">
-      <div className="silk !text-[0.5rem] mb-0.5" style={{ color: "var(--panel-silk-dim)" }}>{label}</div>
-      <div className="lcd !text-sm !bg-transparent font-semibold">{value}</div>
+      <div className="silk text-[0.5rem]! mb-0.5" style={{ color: "var(--panel-silk-dim)" }}>{label}</div>
+      <div className="lcd text-sm! bg-transparent! font-semibold">{value}</div>
     </div>
   );
 }
@@ -411,13 +411,13 @@ export function NewsletterCta() {
   return (
     <SectionFrame id="newsletter">
       <SectionLabel code="SEC-07" title="Field log dispatch" kicker="newsletter · no spam" />
-      <div className="electronics p-5 sm:p-6 max-w-[640px]">
+      <div className="electronics p-5 sm:p-6 max-w-160">
         <div className="flex items-center gap-2 mb-3">
           <span className="led led-a transmit-led" aria-hidden="true" />
           <span className="silk-lg" style={{ color: "var(--amber)" }}>Subscribe · field log</span>
           <span className="ml-auto codechip">SUB-01</span>
         </div>
-        <p className="lcd !text-sm !bg-transparent leading-relaxed mb-3" style={{ color: "var(--amber)" }}>
+        <p className="lcd text-sm! bg-transparent! leading-relaxed mb-3" style={{ color: "var(--amber)" }}>
           &gt; occasional dispatch with new gear tests, fix guides and the lab notes that don't make it
           into articles. No sponsored emails, no rented list. Unsubscribe any time.
         </p>
@@ -441,7 +441,7 @@ export function NewsletterCta() {
             type="email"
             required
             placeholder="you@yourdomain.com"
-            className="flex-1 px-3 py-2 lcd !bg-[#060606] !text-sm outline-none"
+            className="flex-1 px-3 py-2 lcd bg-[#060606]! text-sm! outline-none"
             style={{ color: "var(--amber)", border: "1px solid var(--disp-b)" }}
             aria-label="Email address"
           />
@@ -452,7 +452,7 @@ export function NewsletterCta() {
             </svg>
           </button>
         </form>
-        <p data-status className="lcd !text-xs !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+        <p data-status className="lcd text-xs! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
           &gt; awaiting input
         </p>
       </div>
@@ -684,7 +684,7 @@ export function Glossary() {
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
           {terms.map((t) => (
             <div key={t.term} className="flex flex-col gap-0.5">
-              <dt className="lcd lcd-ghost !text-sm !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>
+              <dt className="lcd lcd-ghost text-sm! bg-transparent! font-semibold" style={{ color: "var(--amber)" }}>
                 {t.term}
               </dt>
               <dd className="text-xs leading-relaxed" style={{ color: "rgba(255,176,0,0.75)" }}>
@@ -726,7 +726,7 @@ export function EquipmentMatrix() {
           </thead>
           <tbody>
             {gearDb.map((g, i) => (
-              <tr key={g.code} className={i > 0 ? "border-t border-[var(--disp-b)]" : ""}>
+              <tr key={g.code} className={i > 0 ? "border-t border-disp-b" : ""}>
                 <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>{g.code}</td>
                 <td className="px-3 sm:px-4 py-2 mono" style={{ color: "var(--amber)" }}>
                   {g.manufacturer} {g.model}

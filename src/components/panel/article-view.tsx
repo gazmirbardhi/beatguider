@@ -102,12 +102,12 @@ export function ArticleView({
         sections={tocItems}
       />
 
-      <article id="specimen-article" className="mx-auto max-w-[1280px] px-4 sm:px-6 py-8 sm:py-10">
+      <article id="specimen-article" className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-10">
         {/* breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 text-xs" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-[var(--amber)] tap" style={{ color: "var(--panel-silk-muted)" }}>HOME</Link>
+          <Link href="/" className="hover:text-amber tap" style={{ color: "var(--panel-silk-muted)" }}>HOME</Link>
           <span style={{ color: "var(--panel-silk-muted)" }}>/</span>
-          <Link href={`/${article.category}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--panel-silk-muted)" }}>
+          <Link href={`/${article.category}`} className="hover:text-amber tap" style={{ color: "var(--panel-silk-muted)" }}>
             {categoryName(article.category).toUpperCase()}
           </Link>
           <span style={{ color: "var(--panel-silk-muted)" }}>/</span>
@@ -133,7 +133,7 @@ export function ArticleView({
             <FreshnessIndicator status={freshnessStatus(article)} />
           </div>
           <h1
-            className="font-[family-name:var(--font-chakra)] font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
+            className="font-(family-name:--font-chakra) font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
             style={{ color: "var(--text2)" }}
           >
             {article.title}
@@ -143,7 +143,7 @@ export function ArticleView({
               non-breaking unit, so flex-wrap never leaves a stray “·” at the
               start of a wrapped line on narrow phones. */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs mono mb-5" style={{ color: "var(--panel-silk-muted)" }}>
-            <span className="whitespace-nowrap">By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
+            <span className="whitespace-nowrap">By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-amber tap" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
             <span className="whitespace-nowrap">· Published {article.publishedDate}</span>
             {article.updatedDate && (
               <span className="whitespace-nowrap">· Updated {article.updatedDate}</span>
@@ -177,7 +177,7 @@ export function ArticleView({
             68ch body width) with a divider. The “End of article” label
             balances the right-aligned share button so it reads as an
             intentional row, not an orphaned floating control. */}
-        <div className="max-w-[68ch] mx-auto mt-8 pt-5 border-t border-[var(--line)]">
+        <div className="max-w-[68ch] mx-auto mt-8 pt-5 border-t border-(--line)">
           <div className="flex items-center justify-between gap-3 mb-4">
             <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>End of article</span>
             <ShareButton label="Share article" />
@@ -194,7 +194,7 @@ export function ArticleView({
         {/* Sources */}
         {article.sources && article.sources.length > 0 && (
           <div className="max-w-[68ch] mx-auto mt-8">
-            <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl mb-2" style={{ color: "var(--text2)" }}>
+            <h2 className="font-(family-name:--font-chakra) font-semibold text-xl mb-2" style={{ color: "var(--text2)" }}>
               Sources
             </h2>
             <SourcesList sources={article.sources} />
@@ -203,7 +203,7 @@ export function ArticleView({
 
         {/* Affiliate disclosure */}
         {article.affiliateEligible && (
-          <div className="max-w-[68ch] mx-auto mt-8 pt-4 border-t border-[var(--line)]">
+          <div className="max-w-[68ch] mx-auto mt-8 pt-4 border-t border-(--line)">
             <p className="text-xs" style={{ color: "var(--panel-silk-muted)" }}>
               Affiliate disclosure · BeatGuider may earn a commission on purchases made through
               affiliate links. Prices are set by the retailer. Affiliation does not influence
@@ -214,8 +214,8 @@ export function ArticleView({
 
         {/* Related articles */}
         {relatedArticles.length > 0 && (
-          <div className="max-w-[1280px] mx-auto mt-12">
-            <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl mb-4" style={{ color: "var(--text2)" }}>
+          <div className="max-w-7xl mx-auto mt-12">
+            <h2 className="font-(family-name:--font-chakra) font-semibold text-xl mb-4" style={{ color: "var(--text2)" }}>
               Related modules
             </h2>
             {/* columns adapt to the card count — 2 cards never leave a
@@ -223,7 +223,7 @@ export function ArticleView({
             <div
               className={`grid grid-cols-1 gap-4 ${
                 relatedArticles.length === 1
-                  ? "max-w-[640px]"
+                  ? "max-w-160"
                   : relatedArticles.length === 2
                     ? "sm:grid-cols-2"
                     : "sm:grid-cols-2 lg:grid-cols-3"
@@ -262,7 +262,7 @@ function NextArticleCta({ currentArticle }: { currentArticle: ArticleMeta }) {
     <div className="max-w-[68ch] mx-auto mt-12">
       <Link
         href={`/${nextArticle.category}/${nextArticle.slug}`}
-        className="modcard block p-5 group transition-colors hover:bg-[var(--plate)]"
+        className="modcard block p-5 group transition-colors hover:bg-(--plate)"
         style={{ borderLeftColor: "var(--acc)" }}
       >
         <div className="flex items-center gap-2 mb-2">
@@ -273,7 +273,7 @@ function NextArticleCta({ currentArticle }: { currentArticle: ArticleMeta }) {
           <div className="min-w-0">
             <span className="codechip mb-1">{nextArticle.code}</span>
             <h3
-              className="font-[family-name:var(--font-chakra)] font-semibold text-base sm:text-lg leading-tight mt-1"
+              className="font-(family-name:--font-chakra) font-semibold text-base sm:text-lg leading-tight mt-1"
               style={{ color: "var(--text2)" }}
             >
               {nextArticle.title}
@@ -282,7 +282,7 @@ function NextArticleCta({ currentArticle }: { currentArticle: ArticleMeta }) {
               {nextArticle.description}
             </p>
           </div>
-          <span style={{ color: "var(--amber)" }} aria-hidden="true" className="flex-shrink-0">
+          <span style={{ color: "var(--amber)" }} aria-hidden="true" className="shrink-0">
             <svg width="24" height="24" viewBox="0 0 16 16" fill="none">
               <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -299,7 +299,7 @@ function TOCChips({ active, items }: { active: string; items: { id: string; labe
   if (items.length === 0) return null;
 
   return (
-    <div className="mx-auto max-w-[1280px] mb-6 relative">
+    <div className="mx-auto max-w-7xl mb-6 relative">
       <nav aria-label="Diagnostic map" className="scroll-x -mx-4 sm:mx-0 px-4 sm:px-0">
         <ol className="flex items-center gap-2 no-scrollbar w-max pb-1">
           {items.map((it) => {
@@ -324,7 +324,7 @@ function TOCChips({ active, items }: { active: string; items: { id: string; labe
           the horizontal TOC scroll. Wide enough (w-12) to read clearly
           against the page background. */}
       <div
-        className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-1 w-12 bg-gradient-to-l from-[var(--bg)] via-[var(--bg)]/70 to-transparent"
+        className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-1 w-12 bg-linear-to-l from-(--bg) via-(--bg)/70 to-transparent"
         aria-hidden="true"
       />
     </div>

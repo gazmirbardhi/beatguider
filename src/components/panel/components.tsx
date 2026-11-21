@@ -138,7 +138,7 @@ export function ModuleCard({
         <div className="min-w-0">
           {code && <span className="codechip mb-2">{code}</span>}
           <Heading
-            className="font-[family-name:var(--font-chakra)] font-semibold text-base sm:text-lg leading-tight mt-1 engraved"
+            className="font-(family-name:--font-chakra) font-semibold text-base sm:text-lg leading-tight mt-1 engraved"
             style={{ color: "var(--text2)" }}
           >
             {title}
@@ -154,7 +154,7 @@ export function ModuleCard({
             </p>
           )}
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0 pt-1">
+        <div className="flex items-center gap-2 shrink-0 pt-1">
           <span className={ledCls} aria-hidden="true" />
           {href && (
             <span style={{ color: "var(--mut)" }} aria-hidden="true">
@@ -168,7 +168,7 @@ export function ModuleCard({
     </>
   );
 
-  const wrapperCls = `modcard block group transition-colors ${href ? "cursor-pointer hover:bg-[var(--plate)]" : ""}`;
+  const wrapperCls = `modcard block group transition-colors ${href ? "cursor-pointer hover:bg-(--plate)" : ""}`;
   const style = { borderLeftColor: borderClr };
 
   if (href) {
@@ -190,7 +190,7 @@ export function ModuleCard({
    An author cannot light the Tested LED by writing it into article body —
    it is driven from validated frontmatter at the call site. */
 export function TestedBadge({ size = "md" }: { size?: "sm" | "md" }) {
-  const txt = size === "sm" ? "!text-[0.5625rem]" : "!text-[0.625rem]";
+  const txt = size === "sm" ? "text-[0.5625rem]!" : "text-[0.625rem]!";
   return (
     <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--ok-b)", background: "rgba(51,255,102,0.06)" }}>
       <span className="led led-g" aria-hidden="true" />
@@ -199,7 +199,7 @@ export function TestedBadge({ size = "md" }: { size?: "sm" | "md" }) {
   );
 }
 export function ResearchBadge({ size = "md" }: { size?: "sm" | "md" }) {
-  const txt = size === "sm" ? "!text-[0.5625rem]" : "!text-[0.625rem]";
+  const txt = size === "sm" ? "text-[0.5625rem]!" : "text-[0.625rem]!";
   return (
     <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "rgba(53,214,196,0.4)", background: "rgba(53,214,196,0.06)" }}>
       <span className="led led-data" aria-hidden="true" />
@@ -208,7 +208,7 @@ export function ResearchBadge({ size = "md" }: { size?: "sm" | "md" }) {
   );
 }
 export function LongTermBadge({ size = "md" }: { size?: "sm" | "md" }) {
-  const txt = size === "sm" ? "!text-[0.5625rem]" : "!text-[0.625rem]";
+  const txt = size === "sm" ? "text-[0.5625rem]!" : "text-[0.625rem]!";
   return (
     <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--acc-b)", background: "var(--acc-soft)" }}>
       <span className="led led-a" aria-hidden="true" />
@@ -227,12 +227,12 @@ export function QuickAnswer({ children }: { children: ReactNode }) {
       aria-label="Quick answer"
     >
       <div className="flex items-center gap-2 mb-2">
-        <span className="font-[family-name:var(--font-chakra)] font-bold text-xs tracking-widest" style={{ color: "var(--amber)" }}>
+        <span className="font-(family-name:--font-chakra) font-bold text-xs tracking-widest" style={{ color: "var(--amber)" }}>
           &gt;&gt; QUICK ANSWER
         </span>
         <span className="led led-a" aria-hidden="true" />
       </div>
-      <div className="lcd !text-sm sm:!text-base !bg-transparent leading-relaxed" style={{ color: "var(--amber)" }}>
+      <div className="lcd text-sm! sm:text-base! bg-transparent! leading-relaxed" style={{ color: "var(--amber)" }}>
         {children}
       </div>
     </aside>
@@ -247,7 +247,7 @@ export function CautionCallout({ title = "Caution", children }: { title?: string
       aria-label="Caution"
     >
       <div className="flex items-center gap-2 mb-2">
-        <span className="font-[family-name:var(--font-chakra)] font-bold text-xs tracking-widest" style={{ color: "var(--err)" }}>
+        <span className="font-(family-name:--font-chakra) font-bold text-xs tracking-widest" style={{ color: "var(--err)" }}>
           !! {title.toUpperCase()}
         </span>
         <span className="led led-r" aria-hidden="true" />
@@ -267,7 +267,7 @@ export function NoteCallout({ title = "Note", children }: { title?: string; chil
       aria-label="Note"
     >
       <div className="flex items-center gap-2 mb-2">
-        <span className="font-[family-name:var(--font-chakra)] font-bold text-xs tracking-widest" style={{ color: "var(--ok)" }}>
+        <span className="font-(family-name:--font-chakra) font-bold text-xs tracking-widest" style={{ color: "var(--ok)" }}>
           {"//"} {title.toUpperCase()}
         </span>
         <span className="led led-g" aria-hidden="true" />
@@ -293,11 +293,11 @@ export function StepBlock({
     <div className="electronics my-5 overflow-hidden">
       <div className="flex items-stretch">
         <div
-          className="flex items-center justify-center px-4 sm:px-5 flex-shrink-0"
+          className="flex items-center justify-center px-4 sm:px-5 shrink-0"
           style={{ borderRight: "1px solid var(--disp-b)", background: "linear-gradient(180deg, #111, var(--disp))" }}
         >
           <span
-            className="font-[family-name:var(--font-chakra)] font-bold text-2xl sm:text-3xl"
+            className="font-(family-name:--font-chakra) font-bold text-2xl sm:text-3xl"
             style={{ color: "var(--amber)", textShadow: "0 0 12px rgba(255,176,0,0.7)" }}
           >
             {String(n).padStart(2, "0")}
@@ -308,12 +308,12 @@ export function StepBlock({
               (every article opens its steps under a Section marker);
               h4 here would skip a heading level (h2 → h4). */}
           <h3
-            className="font-[family-name:var(--font-chakra)] font-semibold text-sm sm:text-base mb-2"
+            className="font-(family-name:--font-chakra) font-semibold text-sm sm:text-base mb-2"
             style={{ color: "var(--amber)" }}
           >
             {title}
           </h3>
-          <div className="lcd !text-sm !bg-transparent leading-relaxed" style={{ color: "var(--amber)" }}>
+          <div className="lcd text-sm! bg-transparent! leading-relaxed" style={{ color: "var(--amber)" }}>
             {children}
           </div>
         </div>
@@ -370,7 +370,7 @@ export function SpecTable({
   return (
     <div className="electronics my-4 overflow-hidden rounded-sm">
       {caption && (
-        <div className="px-4 py-2 border-b border-[var(--disp-b)] flex items-center gap-2" style={{ background: "#060606" }}>
+        <div className="px-4 py-2 border-b border-disp-b flex items-center gap-2" style={{ background: "#060606" }}>
           <span className="led led-a" aria-hidden="true" />
           <span className="silk" style={{ color: "var(--amber)" }}>{caption}</span>
         </div>
@@ -384,7 +384,7 @@ export function SpecTable({
           {rows.map((r, i) => (
             <tr
               key={r.label}
-              className={i > 0 ? "border-t border-[var(--disp-b)]" : ""}
+              className={i > 0 ? "border-t border-disp-b" : ""}
             >
               <th
                 scope="row"
@@ -442,7 +442,7 @@ export function ComparisonTable({
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={r.label} className={i > 0 ? "border-t border-[var(--disp-b)]" : ""}>
+            <tr key={r.label} className={i > 0 ? "border-t border-disp-b" : ""}>
               <th scope="row" className="text-left align-top px-3 sm:px-4 py-2 silk" style={{ color: "var(--amber)" }}>
                 {r.label}
               </th>
@@ -514,9 +514,9 @@ export function VUMeter({
           />
         </div>
         {showDigits && (
-          <div className="flex flex-col items-end flex-shrink-0">
-            <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>LEVEL</span>
-            <span className="lcd lcd-ghost !text-lg !bg-transparent font-semibold tabular-nums">
+          <div className="flex flex-col items-end shrink-0">
+            <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-dim)" }}>LEVEL</span>
+            <span className="lcd lcd-ghost text-lg! bg-transparent! font-semibold tabular-nums">
               {String(Math.round(v)).padStart(3, "0")}%
             </span>
           </div>
@@ -544,7 +544,7 @@ export function ScoreMeter({
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between gap-2 mb-1">
           <span className="silk truncate" style={{ color: "var(--mut)" }}>{label}</span>
-          <span className="lcd lcd-ghost !text-sm !bg-transparent font-semibold tabular-nums">
+          <span className="lcd lcd-ghost text-sm! bg-transparent! font-semibold tabular-nums">
             {String(pct).padStart(3, "0")}{unit}
           </span>
         </div>
@@ -579,7 +579,7 @@ export function VerdictCard({
         <span className="led led-a" aria-hidden="true" />
         <span className="silk-lg" style={{ color: "var(--acc)" }}>Verdict</span>
       </div>
-      <h3 className="font-[family-name:var(--font-chakra)] font-bold text-xl sm:text-2xl mb-3" style={{ color: "var(--text2)" }}>
+      <h3 className="font-(family-name:--font-chakra) font-bold text-xl sm:text-2xl mb-3" style={{ color: "var(--text2)" }}>
         {title}
       </h3>
       <div className="flex flex-wrap gap-1.5 mb-4">
@@ -596,8 +596,8 @@ export function VerdictCard({
       )}
       <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
         {rows.map((r) => (
-          <div key={r.label} className="flex items-baseline justify-between gap-3 py-1 border-b border-[var(--line)]">
-            <dt className="silk flex-shrink-0" style={{ color: "var(--mut)" }}>{r.label}</dt>
+          <div key={r.label} className="flex items-baseline justify-between gap-3 py-1 border-b border-(--line)">
+            <dt className="silk shrink-0" style={{ color: "var(--mut)" }}>{r.label}</dt>
             <dd className="mono text-sm text-right" style={{ color: "var(--text2)" }}>{r.value}</dd>
           </div>
         ))}
@@ -690,7 +690,7 @@ export function AffiliateButton({
           <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         {children}
-        <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>{retailer.toUpperCase()}</span>
+        <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>{retailer.toUpperCase()}</span>
       </a>
       <span className="text-[0.6875rem]" style={{ color: "var(--mut)" }}>
         We may earn a commission — prices set by the retailer. Not a current price quote.
@@ -726,11 +726,11 @@ export function GearCard({
     <article className="modcard p-4" style={{ borderLeftColor: status === "active" ? "var(--ok)" : "var(--mut)" }}>
       <div className="flex items-start gap-3">
         {imageSlot && (
-          <div className="electronics w-16 h-16 flex-shrink-0 flex items-center justify-center overflow-hidden relative">
+          <div className="electronics w-16 h-16 shrink-0 flex items-center justify-center overflow-hidden relative">
             {imageSlot}
             {/* SPIN UP indicator — brief amber pulse on mount, like a platter spinning up */}
             <span
-              className="spin-up-badge absolute top-1 right-1 silk !text-[0.5rem] px-1 py-0.5 rounded-sm"
+              className="spin-up-badge absolute top-1 right-1 silk text-[0.5rem]! px-1 py-0.5 rounded-sm"
               style={{ background: "var(--amber)", color: "var(--disp)", opacity: 0 }}
               aria-hidden="true"
             >
@@ -757,7 +757,7 @@ export function GearCard({
                 const cls = i < 8 ? "vu-seg-g" : i < 10 ? "vu-seg-a" : "vu-seg-r";
                 return <span key={i} className={`vu-seg h-1.5 ${on ? cls : ""}`} />;
               })}
-              <span className="lcd !text-[0.6875rem] !bg-transparent ml-2 font-semibold tabular-nums">
+              <span className="lcd text-[0.6875rem]! bg-transparent! ml-2 font-semibold tabular-nums">
                 {String(Math.round(rating)).padStart(3, "0")}
               </span>
             </div>
@@ -765,7 +765,7 @@ export function GearCard({
         </div>
       </div>
       {href && (
-        <a href={href} className="silk mt-3 inline-flex items-center gap-1 hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>
+        <a href={href} className="silk mt-3 inline-flex items-center gap-1 hover:text-amber" style={{ color: "var(--mut)" }}>
           Open module
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -782,7 +782,7 @@ export function SourcesList({ sources }: { sources: { title: string; url?: strin
     <ol className="my-5 space-y-2.5 mono text-sm">
       {sources.map((s, i) => (
         <li key={i} className="flex items-baseline gap-3" style={{ color: "var(--body)" }}>
-          <span className="lcd !text-xs font-semibold !px-1.5 !py-0.5 flex-shrink-0">
+          <span className="lcd text-xs! font-semibold px-1.5! py-0.5! shrink-0">
             {String(i + 1).padStart(2, "0")}
           </span>
           <span className="min-w-0">
@@ -829,7 +829,7 @@ export function SegmentedTabs({
         ))}
       </div>
       <div className="mt-3 electronics p-4" role="tabpanel">
-        <div className="lcd !text-sm !bg-transparent leading-relaxed" style={{ color: "var(--amber)" }}>
+        <div className="lcd text-sm! bg-transparent! leading-relaxed" style={{ color: "var(--amber)" }}>
           {tabs[idx].content}
         </div>
       </div>
@@ -876,19 +876,19 @@ export function SearchModule({
         <span className="led led-a led-breathe" aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>Search · beatguider.com</span>
       </div>
-      <label className="flex items-center gap-2 px-3 py-2 border border-[var(--disp-b)] rounded-sm" style={{ background: "#060606" }}>
-        <span className="lcd !bg-transparent" style={{ color: "var(--amber)" }}>&gt;</span>
+      <label className="flex items-center gap-2 px-3 py-2 border border-disp-b rounded-sm" style={{ background: "#060606" }}>
+        <span className="lcd bg-transparent!" style={{ color: "var(--amber)" }}>&gt;</span>
         <input
           ref={inputRef}
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="ddj-flx4 · rekordbox · bpm · power"
-          className="lcd !bg-transparent !text-base flex-1 outline-none placeholder:!text-[rgba(255,176,0,0.4)]"
+          className="lcd bg-transparent! text-base! flex-1 outline-none placeholder:!text-[rgba(255,176,0,0.4)]"
           style={{ color: "var(--amber)" }}
           aria-label="Search BeatGuider"
         />
-        <span className="lcd !bg-transparent animate-pulse" style={{ color: "var(--amber)" }}>█</span>
+        <span className="lcd bg-transparent! animate-pulse" style={{ color: "var(--amber)" }}>█</span>
       </label>
       {results.length > 0 && (
         <ul className="mt-2 divide-y divide-[var(--disp-b)]">
@@ -909,7 +909,7 @@ export function SearchModule({
                 >
                   <span className={ledCls} aria-hidden="true" />
                   <span className="codechip">{r.code}</span>
-                  <span className="lcd !text-sm !bg-transparent flex-1 truncate" style={{ color: "var(--amber)" }}>
+                  <span className="lcd text-sm! bg-transparent! flex-1 truncate" style={{ color: "var(--amber)" }}>
                     {r.title}
                   </span>
                 </Link>
@@ -919,7 +919,7 @@ export function SearchModule({
         </ul>
       )}
       {query && results.length === 0 && (
-        <p className="lcd !text-sm !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.6)" }}>
+        <p className="lcd text-sm! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.6)" }}>
           &gt; no signal · try a different query
         </p>
       )}
@@ -943,14 +943,14 @@ export function Figure({
   return (
     <figure className="my-6">
       <div
-        className="relative w-full border border-[var(--line)] electronics overflow-hidden"
+        className="relative w-full border border-(--line) electronics overflow-hidden"
         style={{ aspectRatio: ratio, background: "#060606" }}
       >
         {children ?? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
               <div className="silk mb-1" style={{ color: "rgba(255,176,0,0.5)" }}>Photo bay</div>
-              <div className="lcd !text-xs !bg-transparent" style={{ color: "rgba(255,176,0,0.4)" }}>FIG-{String(n).padStart(2, "0")} · reserved</div>
+              <div className="lcd text-xs! bg-transparent!" style={{ color: "rgba(255,176,0,0.4)" }}>FIG-{String(n).padStart(2, "0")} · reserved</div>
             </div>
           </div>
         )}
@@ -1024,7 +1024,7 @@ export function FreshnessIndicator({
     <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--line2)", background: "var(--bg)" }}>
       <span className={map.led} aria-hidden="true" />
       <span className="silk" style={{ color: map.color }}>{map.label}</span>
-      {recheckDate && <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>· {recheckDate}</span>}
+      {recheckDate && <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>· {recheckDate}</span>}
     </span>
   );
 }
@@ -1063,7 +1063,7 @@ export function DiagnosticSequence({
       <div className="flex items-center gap-2 mb-3">
         <span className="led led-a led-breathe" aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>Signal path · diagnostic sequence</span>
-        <span className="ml-auto silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>
+        <span className="ml-auto silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-dim)" }}>
           {active ? `STEP ${String(active).padStart(2, "0")} ACTIVE` : "click to jump"}
         </span>
       </div>
@@ -1075,7 +1075,7 @@ export function DiagnosticSequence({
             s.status === "fail" ? "led led-r" :
             isActive ? "led led-a" : "led";
           return (
-            <li key={s.n} className="flex items-stretch flex-shrink-0">
+            <li key={s.n} className="flex items-stretch shrink-0">
               <button
                 type="button"
                 onClick={() => handleSelect(s)}
@@ -1088,7 +1088,7 @@ export function DiagnosticSequence({
                 aria-label={`Step ${s.n}: ${s.label}`}
               >
                 <span
-                  className="font-[family-name:var(--font-chakra)] font-bold text-lg flex-shrink-0"
+                  className="font-(family-name:--font-chakra) font-bold text-lg shrink-0"
                   style={{
                     color: "var(--amber)",
                     textShadow: isActive ? "0 0 12px rgba(255,176,0,0.8)" : "0 0 8px rgba(255,176,0,0.6)",
@@ -1096,14 +1096,14 @@ export function DiagnosticSequence({
                 >
                   {String(s.n).padStart(2, "0")}
                 </span>
-                <span className="lcd !text-xs !bg-transparent flex-1 min-w-0" style={{ color: "var(--amber)" }}>
+                <span className="lcd text-xs! bg-transparent! flex-1 min-w-0" style={{ color: "var(--amber)" }}>
                   {s.label}
                 </span>
                 <span className={statusLed} aria-hidden="true" />
               </button>
               {i < steps.length - 1 && (
                 <span
-                  className="flex items-center px-1 flex-shrink-0 transition-colors"
+                  className="flex items-center px-1 shrink-0 transition-colors"
                   style={{ color: isActive ? "var(--amber)" : "var(--disp-b)" }}
                   aria-hidden="true"
                 >
@@ -1116,7 +1116,7 @@ export function DiagnosticSequence({
           );
         })}
       </ol>
-      <p className="lcd !text-[0.6875rem] !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+      <p className="lcd text-[0.6875rem]! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
         &gt; walk the chain in failure-probability order · do not skip nodes · click to jump
       </p>
     </nav>
@@ -1168,7 +1168,7 @@ export function DipSwitchBank({
             />
           </div>
           {labels?.[i] && (
-            <span className="silk !text-[0.5rem]" style={{ color: "var(--mut)" }}>{labels[i]}</span>
+            <span className="silk text-[0.5rem]!" style={{ color: "var(--mut)" }}>{labels[i]}</span>
           )}
         </div>
       ))}
@@ -1189,7 +1189,7 @@ export function DBMeter({ value = 60, peak = 75 }: { value?: number; peak?: numb
       <div className="flex items-center gap-2 mb-2">
         <span className="led led-g" />
         <span className="silk" style={{ color: "var(--amber)" }}>LEVEL · dB</span>
-        <span className="ml-auto lcd !text-xs !bg-transparent tabular-nums" style={{ color: "var(--amber)" }}>
+        <span className="ml-auto lcd text-xs! bg-transparent! tabular-nums" style={{ color: "var(--amber)" }}>
           -{(60 - v / 100 * 60).toFixed(1)} dB
         </span>
       </div>
@@ -1207,7 +1207,7 @@ export function DBMeter({ value = 60, peak = 75 }: { value?: number; peak?: numb
           style={{ top: `${peakPct}%`, background: "var(--amber)", boxShadow: "0 0 4px var(--amber)" }}
         />
       </div>
-      <div className="flex justify-between mt-1 silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.5)" }}>
+      <div className="flex justify-between mt-1 silk text-[0.5rem]!" style={{ color: "rgba(255,176,0,0.5)" }}>
         <span>-60</span>
         <span>-30</span>
         <span>-12</span>
@@ -1223,7 +1223,7 @@ export function DBMeter({ value = 60, peak = 75 }: { value?: number; peak?: numb
 export function TapeEdgeLabel({ children, side = "top" }: { children: ReactNode; side?: "top" | "bottom" }) {
   return (
     <span
-      className="absolute silk !text-[0.5625rem] px-2 py-0.5"
+      className="absolute silk text-[0.5625rem]! px-2 py-0.5"
       style={{
         background: "var(--plate)",
         color: "var(--panel-silk-muted)",
@@ -1269,7 +1269,7 @@ export function ShareButton({ label = "Share signal" }: { label?: string }) {
     <button
       type="button"
       onClick={onShare}
-      className="hwbtn !text-[0.6875rem] !py-1.5"
+      className="hwbtn text-[0.6875rem]! py-1.5!"
       aria-label="Copy page URL to clipboard"
     >
       <span className={`led ${copied ? "led-g" : "led-a"}`} aria-hidden="true" />
@@ -1312,11 +1312,11 @@ export function LabNotesStrip({
             e.led === "data" ? "led led-data" :
             "led led-a";
           return (
-            <li key={i} className="flex items-baseline gap-3 lcd !text-xs !bg-transparent" style={{ color: "var(--amber)" }}>
+            <li key={i} className="flex items-baseline gap-3 lcd text-xs! bg-transparent!" style={{ color: "var(--amber)" }}>
               <span className={ledCls} aria-hidden="true" />
               <span style={{ color: "rgba(255,176,0,0.65)" }}>{String(i + 1).padStart(2, "0")}</span>
               <span style={{ color: "var(--amber)" }}>{e.label}</span>
-              <span className="flex-1 border-b border-dotted border-[var(--disp-b)] mx-2" style={{ borderBottomWidth: "1px" }} />
+              <span className="flex-1 border-b border-dotted border-disp-b mx-2" style={{ borderBottomWidth: "1px" }} />
               <span className="font-semibold text-right">{e.value}</span>
             </li>
           );
@@ -1366,7 +1366,7 @@ export function ErrorLog({
           const ledCls = c.status === "pass" ? "led led-g" : c.status === "fail" ? "led led-r" : "led led-a";
           const labelClr = c.status === "pass" ? "var(--ok)" : c.status === "fail" ? "var(--err)" : "var(--amber)";
           return (
-            <li key={i} className="flex items-baseline gap-2 lcd !text-xs !bg-transparent" style={{ color: "var(--amber)" }}>
+            <li key={i} className="flex items-baseline gap-2 lcd text-xs! bg-transparent!" style={{ color: "var(--amber)" }}>
               <span className={ledCls} aria-hidden="true" />
               <span style={{ color: "rgba(255,176,0,0.55)" }}>{String(i + 1).padStart(2, "0")}</span>
               <span style={{ color: labelClr }}>{c.status.toUpperCase()}</span>

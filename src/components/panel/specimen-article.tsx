@@ -40,10 +40,10 @@ export function SpecimenArticle() {
   const gear = gearDb.find((g) => g.code === "GEAR-014")!;
 
   return (
-    <section id="specimen" className="border-t border-[var(--line)]">
+    <section id="specimen" className="border-t border-(--line)">
       <ReaderBar code={a.code} title={a.title} backHref="#top" />
 
-      <article id="specimen-article" className="mx-auto max-w-[1280px] px-4 sm:px-6 py-10 sm:py-14">
+      <article id="specimen-article" className="mx-auto max-w-7xl px-4 sm:px-6 py-10 sm:py-14">
         {/* TOC diagnostic chips */}
         <TOCInline />
 
@@ -55,7 +55,7 @@ export function SpecimenArticle() {
             <FreshnessIndicator status="fresh" recheckDate="2025-04" />
           </div>
           <h2
-            className="font-[family-name:var(--font-chakra)] font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
+            className="font-(family-name:--font-chakra) font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3"
             style={{ color: "var(--text2)" }}
           >
             {a.title}
@@ -90,7 +90,7 @@ export function SpecimenArticle() {
         </SpecPlate>
 
         {/* Diagnostic sequence — signal-path stepper */}
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-7xl mx-auto">
           <DiagnosticSequence
             steps={[
               { n: 1, label: "Physical chain", status: "pending", target: "step-1" },
@@ -309,14 +309,14 @@ export function SpecimenArticle() {
 
         {/* Sources */}
         <div className="max-w-[860px] mx-auto">
-          <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl mt-8 mb-2" style={{ color: "var(--text2)" }}>
+          <h2 className="font-(family-name:--font-chakra) font-semibold text-xl mt-8 mb-2" style={{ color: "var(--text2)" }}>
             Sources
           </h2>
           <SourcesList sources={a.sources ?? []} />
         </div>
 
         {/* Disclosure */}
-        <div className="max-w-[860px] mx-auto mt-8 pt-4 border-t border-[var(--line)]">
+        <div className="max-w-[860px] mx-auto mt-8 pt-4 border-t border-(--line)">
           <p className="text-xs" style={{ color: "var(--mut)" }}>
             Affiliate disclosure · BeatGuider may earn a commission on purchases made through affiliate
             links. Prices are set by the retailer and are not quoted by BeatGuider. Affiliation does not
@@ -325,8 +325,8 @@ export function SpecimenArticle() {
         </div>
 
         {/* Related */}
-        <div className="max-w-[1280px] mx-auto mt-10">
-          <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl mb-4" style={{ color: "var(--text2)" }}>
+        <div className="max-w-7xl mx-auto mt-10">
+          <h2 className="font-(family-name:--font-chakra) font-semibold text-xl mb-4" style={{ color: "var(--text2)" }}>
             Related modules
           </h2>
           <p className="mono text-xs mb-4" style={{ color: "var(--mut)" }}>
@@ -338,12 +338,12 @@ export function SpecimenArticle() {
               const r = articles.find((x) => x.slug === slug);
               if (!r) return null;
               return (
-                <Link key={r.code} href="#specimen" className="modcard group block p-4 hover:bg-[var(--plate)]" style={{ borderLeftColor: "var(--acc)" }}>
+                <Link key={r.code} href="#specimen" className="modcard group block p-4 hover:bg-(--plate)" style={{ borderLeftColor: "var(--acc)" }}>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="led led-a" aria-hidden="true" />
                     <span className="codechip">{r.code}</span>
                   </div>
-                  <h3 className="font-[family-name:var(--font-chakra)] font-semibold text-sm" style={{ color: "var(--text2)" }}>
+                  <h3 className="font-(family-name:--font-chakra) font-semibold text-sm" style={{ color: "var(--text2)" }}>
                     {r.title}
                   </h3>
                   <p className="text-xs mt-1" style={{ color: "var(--body)" }}>{r.description}</p>
@@ -405,7 +405,7 @@ function TOCInline() {
   ];
 
   return (
-    <div className="mx-auto max-w-[1280px] mb-6">
+    <div className="mx-auto max-w-7xl mb-6">
       <nav aria-label="Diagnostic map" className="scroll-x -mx-4 sm:mx-0 px-4 sm:px-0">
         <ol className="flex items-center gap-2 no-scrollbar w-max pb-1">
           {items.map((it) => {

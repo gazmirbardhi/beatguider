@@ -24,10 +24,10 @@ export function ToolCategoryPage() {
   return (
     <div>
       {/* Hero header */}
-      <section className="panel-surface border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-10 sm:py-14">
+      <section className="panel-surface border-b border-(--line)">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 sm:py-14">
           <nav className="flex items-center gap-2 mb-4 text-xs" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-[var(--amber)]" style={{ color: "var(--mut)" }}>HOME</Link>
+            <Link href="/" className="hover:text-amber" style={{ color: "var(--mut)" }}>HOME</Link>
             <span style={{ color: "var(--mut)" }}>/</span>
             <span className="mono" style={{ color: "var(--amber)" }}>TOOLS</span>
           </nav>
@@ -36,7 +36,7 @@ export function ToolCategoryPage() {
             <span className="silk" style={{ color: "var(--mut)" }}>9 tools · all free · run in your browser</span>
           </div>
           <h1
-            className="font-[family-name:var(--font-chakra)] font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3"
+            className="font-(family-name:--font-chakra) font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3"
             style={{ color: "var(--text2)" }}
           >
             DJ Tools
@@ -50,10 +50,10 @@ export function ToolCategoryPage() {
 
       {/* TIMING category */}
       <section className="chassis-seam py-8 sm:py-10">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex items-baseline gap-3 mb-5 flex-wrap">
             <span className="led led-a" aria-hidden="true" />
-            <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
+            <h2 className="font-(family-name:--font-chakra) font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
               Timing
             </h2>
             <span className="silk" style={{ color: "var(--mut)" }}>— BPM, tap, cue points</span>
@@ -68,10 +68,10 @@ export function ToolCategoryPage() {
 
       {/* HARMONIC category */}
       <section className="chassis-seam py-8 sm:py-10">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex items-baseline gap-3 mb-5 flex-wrap">
             <span className="led led-g" aria-hidden="true" />
-            <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
+            <h2 className="font-(family-name:--font-chakra) font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
               Harmonic
             </h2>
             <span className="silk" style={{ color: "var(--mut)" }}>— key matching, Camelot wheel</span>
@@ -85,10 +85,10 @@ export function ToolCategoryPage() {
 
       {/* BUSINESS category */}
       <section className="chassis-seam py-8 sm:py-10">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex items-baseline gap-3 mb-5 flex-wrap">
             <span className="led led-a" aria-hidden="true" />
-            <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
+            <h2 className="font-(family-name:--font-chakra) font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
               Business
             </h2>
             <span className="silk" style={{ color: "var(--mut)" }}>— set planning, gig pricing</span>
@@ -102,10 +102,10 @@ export function ToolCategoryPage() {
 
       {/* POWER category */}
       <section className="chassis-seam py-8 sm:py-10">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex items-baseline gap-3 mb-5 flex-wrap">
             <span className="led led-r" aria-hidden="true" />
-            <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
+            <h2 className="font-(family-name:--font-chakra) font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
               Power
             </h2>
             <span className="silk" style={{ color: "var(--mut)" }}>— mobile DJ load + safety</span>
@@ -118,10 +118,10 @@ export function ToolCategoryPage() {
 
       {/* COMPARISON category */}
       <section className="chassis-seam py-8 sm:py-10">
-        <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex items-baseline gap-3 mb-5 flex-wrap">
             <span className="led led-a" aria-hidden="true" />
-            <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
+            <h2 className="font-(family-name:--font-chakra) font-semibold text-xl sm:text-2xl" style={{ color: "var(--text2)" }}>
               Comparison
             </h2>
             <span className="silk" style={{ color: "var(--mut)" }}>— gear head-to-head</span>

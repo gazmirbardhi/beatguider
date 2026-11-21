@@ -119,7 +119,7 @@ function ProsConsPanel({ children }: { children: ReactNode }) {
       >
         <div className="flex items-center gap-2 mb-3">
           <span
-            className="font-[family-name:var(--font-chakra)] font-bold text-xs tracking-widest"
+            className="font-(family-name:--font-chakra) font-bold text-xs tracking-widest"
             style={{ color: "var(--ok)" }}
           >
             {"//"} PROS
@@ -142,7 +142,7 @@ function ProsConsPanel({ children }: { children: ReactNode }) {
       >
         <div className="flex items-center gap-2 mb-3">
           <span
-            className="font-[family-name:var(--font-chakra)] font-bold text-xs tracking-widest"
+            className="font-(family-name:--font-chakra) font-bold text-xs tracking-widest"
             style={{ color: "var(--err)" }}
           >
             !! CONS
@@ -165,7 +165,7 @@ function ProsConsPanel({ children }: { children: ReactNode }) {
 function CheckGlyph() {
   return (
     <svg
-      className="flex-shrink-0 mt-0.5"
+      className="shrink-0 mt-0.5"
       width="14"
       height="14"
       viewBox="0 0 16 16"
@@ -180,7 +180,7 @@ function CheckGlyph() {
 function CrossGlyph() {
   return (
     <svg
-      className="flex-shrink-0 mt-0.5"
+      className="shrink-0 mt-0.5"
       width="14"
       height="14"
       viewBox="0 0 16 16"

@@ -118,7 +118,7 @@ export function SpectrumAnalyzer({
         })}
       </div>
       {/* frequency scale */}
-      <div className="flex justify-between mt-1 silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.45)" }}>
+      <div className="flex justify-between mt-1 silk text-[0.5rem]!" style={{ color: "rgba(255,176,0,0.45)" }}>
         <span>20Hz</span>
         <span>200</span>
         <span>2k</span>
@@ -187,7 +187,7 @@ export function LabActivityFeed() {
       role="marquee"
       aria-label="Recent lab activity — pauses on hover"
     >
-      <div className="flex items-center gap-2 px-3 py-1.5 border-b border-[var(--disp-b)]" style={{ background: "#060606" }}>
+      <div className="flex items-center gap-2 px-3 py-1.5 border-b border-disp-b" style={{ background: "#060606" }}>
         <span className={`led led-g ${reduced ? "" : "led-breathe"}`} aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>LAB · ACTIVITY</span>
         {/* Cassette reels — decorative tape-deck spinners when live */}
@@ -196,7 +196,7 @@ export function LabActivityFeed() {
         {!paused && !reduced && (
           <span className="rec-indicator" aria-hidden="true">
             <span className="led led-r" />
-            <span className="silk !text-[0.5rem]" style={{ color: "var(--vu-r)" }}>REC</span>
+            <span className="silk text-[0.5rem]!" style={{ color: "var(--vu-r)" }}>REC</span>
           </span>
         )}
         <span className="silk ml-auto" style={{ color: "rgba(255,176,0,0.5)" }}>
@@ -212,8 +212,8 @@ export function LabActivityFeed() {
           }}
         >
           {doubled.map((it, i) => (
-            <span key={i} className="lcd !text-xs !bg-transparent inline-flex items-center gap-2" style={{ color: "var(--amber)" }}>
-              <span className="codechip !text-[0.5625rem]">{it.code}</span>
+            <span key={i} className="lcd text-xs! bg-transparent! inline-flex items-center gap-2" style={{ color: "var(--amber)" }}>
+              <span className="codechip text-[0.5625rem]!">{it.code}</span>
               <span>{it.label}</span>
               <span style={{ color: "rgba(255,176,0,0.5)" }}>· {it.ts}</span>
               <span style={{ color: "var(--vu-g)" }}>▮</span>
@@ -251,7 +251,7 @@ export function Knob({
           transition: "transform 200ms ease",
         }}
       />
-      {label && <span className="silk !text-[0.5rem]" style={{ color: "var(--mut)" }}>{label}</span>}
+      {label && <span className="silk text-[0.5rem]!" style={{ color: "var(--mut)" }}>{label}</span>}
     </div>
   );
 }
@@ -270,7 +270,7 @@ export function RivetRow({ count = 6 }: { count?: number }) {
 /* ─── Animated LCD cursor (blink) ───
    Drop into any LCD readout for a "waiting for input" feel. */
 export function LcdCursor() {
-  return <span className="lcd-cursor lcd !bg-transparent" style={{ color: "var(--amber)" }}>█</span>;
+  return <span className="lcd-cursor lcd bg-transparent!" style={{ color: "var(--amber)" }}>█</span>;
 }
 
 /* ─── Phase meter — stereo correlation indicator ───
@@ -298,7 +298,7 @@ export function PhaseMeter({ value = 0 }: { value?: number }) {
           }}
         />
       </div>
-      <div className="flex justify-between mt-1 silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.5)" }}>
+      <div className="flex justify-between mt-1 silk text-[0.5rem]!" style={{ color: "rgba(255,176,0,0.5)" }}>
         <span>L</span>
         <span>IN-PHASE</span>
         <span>R</span>
@@ -350,7 +350,7 @@ export function BootSplash() {
     >
       <div className="text-center">
         <div
-          className="font-[family-name:var(--font-chakra)] font-bold text-2xl tracking-widest boot-on-load"
+          className="font-(family-name:--font-chakra) font-bold text-2xl tracking-widest boot-on-load"
           style={{ color: "var(--amber)", textShadow: "0 0 12px var(--amber)" }}
         >
           BEAT<span style={{ color: "var(--vu-g)" }}>·</span>GUIDER
@@ -501,7 +501,7 @@ export function PostSequence() {
                 style={{ width: 10, height: 10, opacity: c.on ? 1 : 0.2 }}
               />
               <span
-                className="silk !text-[0.5625rem]"
+                className="silk text-[0.5625rem]!"
                 style={{ color: c.on ? "var(--amber)" : "var(--panel-silk-dim)" }}
               >
                 {c.label}
@@ -509,7 +509,7 @@ export function PostSequence() {
             </div>
           ))}
         </div>
-        <div className="lcd !text-xs !bg-transparent" style={{ color: "rgba(255,176,0,0.6)" }}>
+        <div className="lcd text-xs! bg-transparent!" style={{ color: "rgba(255,176,0,0.6)" }}>
           &gt; {step < 4 ? `checking ${checks[step]?.label}…` : "all systems nominal"}
         </div>
       </div>
@@ -550,7 +550,7 @@ export function SignalChain({
       </div>
       <div className="flex items-stretch gap-1 overflow-x-auto scroll-x pb-1">
         {nodes.map((n, i) => (
-          <div key={n.label} className="flex items-stretch flex-shrink-0">
+          <div key={n.label} className="flex items-stretch shrink-0">
             <div
               className="flex flex-col items-center justify-center px-3 py-2 border rounded-sm"
               style={{
@@ -560,10 +560,10 @@ export function SignalChain({
               }}
             >
               <span className="led led-a mb-1" aria-hidden="true" />
-              <span className="lcd !text-[0.6875rem] !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>
+              <span className="lcd text-[0.6875rem]! bg-transparent! font-semibold" style={{ color: "var(--amber)" }}>
                 {n.label}
               </span>
-              <span className="silk !text-[0.5rem] mt-0.5" style={{ color: "var(--panel-silk-dim)" }}>
+              <span className="silk text-[0.5rem]! mt-0.5" style={{ color: "var(--panel-silk-dim)" }}>
                 {n.sub}
               </span>
             </div>
@@ -595,7 +595,7 @@ export function SignalChain({
           </div>
         ))}
       </div>
-      <p className="lcd !text-[0.6875rem] !bg-transparent mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
+      <p className="lcd text-[0.6875rem]! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
         &gt; signal flows left → right · each node adds processing · output is line-level
       </p>
     </div>
@@ -669,10 +669,10 @@ export function LiveClock() {
   return (
     <span className="clock-readout" aria-label="Current time">
       <span className={`led led-g ${reduced ? "" : ""}`} aria-hidden="true" style={{ width: 4, height: 4, animation: reduced ? "none" : "clock-tick 1s steps(1) infinite" }} />
-      <span className="lcd !text-[0.5625rem] !bg-transparent font-semibold tabular-nums" style={{ color: "var(--amber)" }}>
+      <span className="lcd text-[0.5625rem]! bg-transparent! font-semibold tabular-nums" style={{ color: "var(--amber)" }}>
         {time}
       </span>
-      <span className="silk !text-[0.5rem]" style={{ color: "var(--panel-silk-dim)" }}>UTC</span>
+      <span className="silk text-[0.5rem]!" style={{ color: "var(--panel-silk-dim)" }}>UTC</span>
     </span>
   );
 }

@@ -19,21 +19,21 @@ export function FaceplateHeader({
   mode: string;
 }) {
   return (
-    <header className="panel-surface border-b border-[var(--line)]">
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+    <header className="panel-surface border-b border-(--line)">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* top row: brand · model · LEDs · mode switch — tightened on
             small screens so the rocker never overflows the viewport */}
         <div className="flex items-center justify-between gap-2 sm:gap-4 py-3">
           <div className="flex items-center gap-2 sm:gap-5 min-w-0">
             <Link href="/" className="group flex items-baseline gap-1" aria-label="BeatGuider home">
               <span
-                className="font-[family-name:var(--font-chakra)] text-lg sm:text-2xl font-bold tracking-tight"
+                className="font-(family-name:--font-chakra) text-lg sm:text-2xl font-bold tracking-tight"
                 style={{ color: "var(--text2)" }}
               >
                 BEAT
               </span>
               <span
-                className="font-[family-name:var(--font-chakra)] text-lg sm:text-2xl font-bold tracking-tight wordmark-glow"
+                className="font-(family-name:--font-chakra) text-lg sm:text-2xl font-bold tracking-tight wordmark-glow"
                 style={{ color: "var(--amber)" }}
               >
                 GUIDER
@@ -113,21 +113,21 @@ export function LcdStatus({
         <div
           key={s.label}
           className={`flex flex-col justify-center px-3 sm:px-4 py-1.5 min-w-0 ${
-            i > 0 ? "border-l border-[var(--disp-b)]" : ""
+            i > 0 ? "border-l border-disp-b" : ""
           }`}
         >
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>
+          <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-dim)" }}>
             {s.label}
           </span>
-          <span className="lcd lcd-ghost !text-[0.8125rem] sm:!text-sm font-semibold !bg-transparent">
+          <span className="lcd lcd-ghost !text-[0.8125rem] sm:text-sm! font-semibold bg-transparent!">
             {s.value}
           </span>
         </div>
       ))}
       <div className="flex-1" />
       {/* signal-strength indicator */}
-      <div className="hidden sm:flex flex-col justify-center items-center px-3 border-l border-[var(--disp-b)]">
-        <span className="silk !text-[0.5rem] mb-0.5" style={{ color: "var(--panel-silk-dim)" }}>SIG</span>
+      <div className="hidden sm:flex flex-col justify-center items-center px-3 border-l border-disp-b">
+        <span className="silk text-[0.5rem]! mb-0.5" style={{ color: "var(--panel-silk-dim)" }}>SIG</span>
         <span className="sig-bars" aria-hidden="true">
           <span className="on" />
           <span className="on" />
@@ -135,7 +135,7 @@ export function LcdStatus({
           <span className="on" />
         </span>
       </div>
-      <div className="flex items-center px-3 border-l border-[var(--disp-b)]">
+      <div className="flex items-center px-3 border-l border-disp-b">
         <span className="led led-g led-breathe" aria-hidden="true" />
       </div>
     </div>
@@ -176,19 +176,19 @@ export function StickyNav({
 
   return (
     <nav
-      className="panel-surface sticky top-0 z-40 border-b border-[var(--line)] backdrop-blur-sm"
+      className="panel-surface sticky top-0 z-40 border-b border-(--line) backdrop-blur-sm"
       style={{ background: "color-mix(in srgb, var(--card) 88%, transparent)" }}
       aria-label="Primary"
     >
-      <div className="mx-auto max-w-[1280px] px-2 sm:px-6 relative">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 relative">
         <ul className="flex items-stretch gap-0 overflow-x-auto no-scrollbar">
           {items.map((it) => {
             const isActive = active === it.href;
             return (
-              <li key={it.href} className="flex-shrink-0">
+              <li key={it.href} className="shrink-0">
                 <a
                   href={it.href}
-                  className={`relative flex items-center gap-2 px-3 sm:px-4 h-11 font-[family-name:var(--font-chakra)] text-xs sm:text-sm font-semibold tracking-wider uppercase transition-colors ${
+                  className={`relative flex items-center gap-2 px-3 sm:px-4 h-11 font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold tracking-wider uppercase transition-colors ${
                     isActive ? "text-[var(--amber)]" : "text-[var(--text)] hover:text-[var(--text2)]"
                   }`}
                 >
@@ -201,11 +201,11 @@ export function StickyNav({
             );
           })}
           {onSearchClick && (
-            <li className="flex-shrink-0 ml-auto">
+            <li className="shrink-0 ml-auto">
               <button
                 type="button"
                 onClick={onSearchClick}
-                className="flex items-center gap-2 px-3 sm:px-4 h-11 font-[family-name:var(--font-chakra)] text-xs sm:text-sm font-semibold tracking-wider uppercase text-[var(--text)] hover:text-[var(--amber)]"
+                className="flex items-center gap-2 px-3 sm:px-4 h-11 font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold tracking-wider uppercase text-[var(--text)] hover:text-amber"
                 aria-label="Open search module"
               >
                 <SearchGlyph />
@@ -220,7 +220,7 @@ export function StickyNav({
             fully dissolve the truncated glyph; pointer-events-none so taps
             pass through to the items beneath. */}
         <div
-          className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-0 w-14 bg-gradient-to-l from-[var(--card)] via-[var(--card)]/85 to-transparent"
+          className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-0 w-14 bg-linear-to-l from-[var(--card)] via-[var(--card)]/85 to-transparent"
           aria-hidden="true"
         />
       </div>
@@ -328,14 +328,14 @@ export function ReaderBar({
 
   return (
     <div
-      className="sticky top-11 z-30 border-y border-[var(--line)] panel-surface"
+      className="sticky top-11 z-30 border-y border-(--line) panel-surface"
       style={{ background: "color-mix(in srgb, var(--card) 92%, transparent)" }}
     >
-      <div className="mx-auto max-w-[1280px] px-3 sm:px-6">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6">
         <div className="flex items-center gap-3 h-12">
           <a
             href={backHref}
-            className="flex items-center gap-1.5 text-[var(--mut)] hover:text-[var(--amber)] transition-colors flex-shrink-0 tap"
+            className="flex items-center gap-1.5 text-[var(--mut)] hover:text-amber transition-colors shrink-0 tap"
             aria-label="Back to top"
           >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -346,7 +346,7 @@ export function ReaderBar({
           <div className="hidden sm:flex items-center gap-2 min-w-0">
             <span className="codechip">{code}</span>
             <span
-              className="font-[family-name:var(--font-chakra)] text-xs sm:text-sm font-semibold truncate"
+              className="font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold truncate"
               style={{ color: "var(--text2)" }}
             >
               {title}
@@ -355,7 +355,7 @@ export function ReaderBar({
           {/* mobile compact: code only */}
           <span className="sm:hidden codechip">{code}</span>
 
-          <div className="ml-auto flex items-center gap-3 flex-shrink-0">
+          <div className="ml-auto flex items-center gap-3 shrink-0">
             {/* VU reading progress */}
             <div className="hidden sm:flex items-center gap-2">
               <span className="silk">READ</span>
@@ -371,7 +371,7 @@ export function ReaderBar({
                   );
                 })}
               </div>
-              <span className="lcd lcd-ghost !text-[0.6875rem] !bg-transparent font-semibold tabular-nums">
+              <span className="lcd lcd-ghost text-[0.6875rem]! bg-transparent! font-semibold tabular-nums">
                 {String(progress).padStart(3, "0")}%
               </span>
             </div>
@@ -381,12 +381,12 @@ export function ReaderBar({
                 className="hidden md:inline-flex codechip max-w-[280px]"
                 aria-label={`Current section: ${chapter}`}
               >
-                <span className="led led-a flex-shrink-0" aria-hidden="true" />
+                <span className="led led-a shrink-0" aria-hidden="true" />
                 <span className="truncate">{chapter}</span>
               </span>
             )}
             {/* mobile compact percent */}
-            <span className="sm:hidden lcd !text-[0.6875rem] !bg-transparent font-semibold tabular-nums">
+            <span className="sm:hidden lcd text-[0.6875rem]! bg-transparent! font-semibold tabular-nums">
               {String(progress).padStart(3, "0")}%
             </span>
             <ModeIconButton />

@@ -139,23 +139,18 @@ export function ArticleView({
             {article.title}
           </h1>
           <p className="text-base mb-4" style={{ color: "var(--body)" }}>{article.description}</p>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs mono mb-5" style={{ color: "var(--mut)" }}>
-            <span>By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
-            <span>·</span>
-            <span>Published {article.publishedDate}</span>
+          {/* Meta row — each field wrapped with its separator as a single
+              non-breaking unit, so flex-wrap never leaves a stray “·” at the
+              start of a wrapped line on narrow phones. */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs mono mb-5" style={{ color: "var(--mut)" }}>
+            <span className="whitespace-nowrap">By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
+            <span className="whitespace-nowrap">· Published {article.publishedDate}</span>
             {article.updatedDate && (
-              <>
-                <span>·</span>
-                <span>Updated {article.updatedDate}</span>
-              </>
+              <span className="whitespace-nowrap">· Updated {article.updatedDate}</span>
             )}
             {article.lastVerified && (
-              <>
-                <span>·</span>
-                <span>Verified {article.lastVerified}</span>
-              </>
+              <span className="whitespace-nowrap">· Verified {article.lastVerified}</span>
             )}
-            <span>·</span>
             <ReadingTimeChip minutes={readingTime} />
           </div>
           {specRows.length > 0 && (
@@ -178,11 +173,13 @@ export function ArticleView({
           {body}
         </div>
 
-        {/* Verdict — rendered only when the article carries verified,
-            article-specific verdict data (article.verdict). No article
-            data → no verdict card. Never a template default. */}
-        <div className="max-w-[860px] mx-auto mt-6">
-          <div className="flex justify-end mb-3">
+        {/* Verdict + share — anchored to the reading column (matches the
+            68ch body width) with a divider. The “End of article” label
+            balances the right-aligned share button so it reads as an
+            intentional row, not an orphaned floating control. */}
+        <div className="max-w-[68ch] mx-auto mt-8 pt-5 border-t border-[var(--line)]">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <span className="silk" style={{ color: "var(--mut)" }}>End of article</span>
             <ShareButton label="Share article" />
           </div>
           {article.verdict && (
@@ -196,7 +193,7 @@ export function ArticleView({
 
         {/* Sources */}
         {article.sources && article.sources.length > 0 && (
-          <div className="max-w-[860px] mx-auto mt-8">
+          <div className="max-w-[68ch] mx-auto mt-8">
             <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-xl mb-2" style={{ color: "var(--text2)" }}>
               Sources
             </h2>
@@ -206,7 +203,7 @@ export function ArticleView({
 
         {/* Affiliate disclosure */}
         {article.affiliateEligible && (
-          <div className="max-w-[860px] mx-auto mt-8 pt-4 border-t border-[var(--line)]">
+          <div className="max-w-[68ch] mx-auto mt-8 pt-4 border-t border-[var(--line)]">
             <p className="text-xs" style={{ color: "var(--mut)" }}>
               Affiliate disclosure · BeatGuider may earn a commission on purchases made through
               affiliate links. Prices are set by the retailer. Affiliation does not influence
@@ -262,7 +259,7 @@ function NextArticleCta({ currentArticle }: { currentArticle: ArticleMeta }) {
   if (!nextArticle) return null;
 
   return (
-    <div className="max-w-[860px] mx-auto mt-12">
+    <div className="max-w-[68ch] mx-auto mt-12">
       <Link
         href={`/${nextArticle.category}/${nextArticle.slug}`}
         className="modcard block p-5 group transition-colors hover:bg-[var(--plate)]"
@@ -302,7 +299,7 @@ function TOCChips({ active, items }: { active: string; items: { id: string; labe
   if (items.length === 0) return null;
 
   return (
-    <div className="mx-auto max-w-[1280px] mb-6">
+    <div className="mx-auto max-w-[1280px] mb-6 relative">
       <nav aria-label="Diagnostic map" className="scroll-x -mx-4 sm:mx-0 px-4 sm:px-0">
         <ol className="flex items-center gap-2 no-scrollbar w-max pb-1">
           {items.map((it) => {
@@ -323,6 +320,13 @@ function TOCChips({ active, items }: { active: string; items: { id: string; labe
           })}
         </ol>
       </nav>
+      {/* right-edge fade — mobile only, signals more chips to the right of
+          the horizontal TOC scroll. Wide enough (w-12) to read clearly
+          against the page background. */}
+      <div
+        className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-1 w-12 bg-gradient-to-l from-[var(--bg)] via-[var(--bg)]/70 to-transparent"
+        aria-hidden="true"
+      />
     </div>
   );
 }

@@ -272,7 +272,7 @@ export function SiteFooter({ serial }: { serial: string }) {
         {/* build manifest — real-time content inventory LCD strip */}
         <div className="mt-8 pt-4 border-t border-[var(--line)]">
           <BuildManifest />
-          <div className="electronics flex flex-wrap items-center gap-3 px-3 py-2 mb-3">
+          <div className="electronics hidden sm:flex flex-wrap items-center gap-3 px-3 py-2 mb-3">
             <span className="led led-g" aria-hidden="true" />
             <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>FW</span>
             <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>BG-1.2.0</span>
@@ -309,27 +309,34 @@ export function SiteFooter({ serial }: { serial: string }) {
             <span className="mono text-xs" style={{ color: "var(--mut)" }}>
               BEATGUIDER BG-1 — independent DJ test bench
             </span>
-            {/* temperature readout — decorative, clearly illustrative */}
-            <span className="temp-readout" aria-hidden="true">
-              <span className="temp-bar" />
-              <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>34.2°C</span>
-              <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>TEMP</span>
-            </span>
-            {/* battery readout — decorative backup-power indicator */}
-            <span className="battery-readout" aria-hidden="true">
-              <span className="battery-cells">
-                <span className="on" />
-                <span className="on" />
-                <span className="on" />
-                <span />
+            {/* temperature readout — decorative, clearly illustrative; the
+                wrapper span (no custom class) carries the responsive hide so
+                the unlayered .temp-readout display rule can't override it. */}
+            <span className="hidden sm:inline-flex" aria-hidden="true">
+              <span className="temp-readout">
+                <span className="temp-bar" />
+                <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>34.2°C</span>
+                <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>TEMP</span>
               </span>
-              <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>75%</span>
-              <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>BATT</span>
+            </span>
+            {/* battery readout — decorative backup-power indicator; wrapped
+                so the responsive hide isn't overridden by .battery-readout. */}
+            <span className="hidden sm:inline-flex" aria-hidden="true">
+              <span className="battery-readout">
+                <span className="battery-cells">
+                  <span className="on" />
+                  <span className="on" />
+                  <span className="on" />
+                  <span />
+                </span>
+                <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>75%</span>
+                <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>BATT</span>
+              </span>
             </span>
             {/* live clock readout — real-time HH:MM:SS with blinking tick LED */}
             <LiveClock />
-            {/* LOAD bar — decorative CPU-load-style indicator */}
-            <span className="inline-flex items-center gap-2" aria-hidden="true">
+            {/* LOAD bar — decorative CPU-load-style indicator; hidden on phones */}
+            <span className="hidden sm:inline-flex items-center gap-2" aria-hidden="true">
               <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>LOAD</span>
               <span className="load-bar w-12" />
             </span>
@@ -386,7 +393,7 @@ function BuildManifest() {
   });
 
   return (
-    <div className="electronics p-3 mb-3 overflow-x-auto scroll-x">
+    <div className="electronics p-3 mb-3 overflow-x-auto scroll-x hidden sm:block">
       <div className="flex items-center gap-2 mb-2 flex-wrap">
         <span className="led led-a led-breathe" aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>Build manifest · content inventory</span>
@@ -394,7 +401,9 @@ function BuildManifest() {
           {allCodes.length} ENTRIES
         </span>
       </div>
-      <div className="flex items-start gap-4 flex-wrap">
+      {/* Full code grid only on sm+ — on phones the dense ID wall is
+          unreadable, so only the summary header + entry count shows. */}
+      <div className="hidden sm:flex items-start gap-4 flex-wrap">
         {groups.map((g) => (
           <div key={g.prefix} className="flex flex-col gap-1 min-w-[80px]">
             <div className="flex items-center gap-1.5">

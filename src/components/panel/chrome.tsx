@@ -180,7 +180,7 @@ export function StickyNav({
       style={{ background: "color-mix(in srgb, var(--card) 88%, transparent)" }}
       aria-label="Primary"
     >
-      <div className="mx-auto max-w-[1280px] px-2 sm:px-6">
+      <div className="mx-auto max-w-[1280px] px-2 sm:px-6 relative">
         <ul className="flex items-stretch gap-0 overflow-x-auto no-scrollbar">
           {items.map((it) => {
             const isActive = active === it.href;
@@ -214,6 +214,15 @@ export function StickyNav({
             </li>
           )}
         </ul>
+        {/* right-edge fade — mobile only, signals more nav items to the right
+            of the horizontal scroll (the last "Mobile DJ" item is otherwise
+            cut with no affordance). Wide + opaque enough at the edge to
+            fully dissolve the truncated glyph; pointer-events-none so taps
+            pass through to the items beneath. */}
+        <div
+          className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-0 w-14 bg-gradient-to-l from-[var(--card)] via-[var(--card)]/85 to-transparent"
+          aria-hidden="true"
+        />
       </div>
     </nav>
   );

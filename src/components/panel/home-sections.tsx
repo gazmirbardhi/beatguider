@@ -54,16 +54,18 @@ export function SimplifiedHero({ entryCount, lastPublish }: { entryCount: number
           ))}
         </div>
 
-        {/* quick links */}
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/tools" className="hwbtn hwbtn-amber">
+        {/* quick links — stacked full-width on mobile so the three CTAs
+            never wrap into the floating scroll-to-top button; inline row
+            from sm up. min-h-11 gives a 44px touch target on phones. */}
+        <div className="mt-8 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+          <Link href="/tools" className="hwbtn hwbtn-amber min-h-11 w-full sm:w-auto justify-center sm:justify-start">
             <span>Open tools</span>
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
-          <Link href="/compare" className="hwbtn">Compare gear</Link>
-          <Link href="/mobile-dj" className="hwbtn">Mobile DJ</Link>
+          <Link href="/compare" className="hwbtn min-h-11 w-full sm:w-auto justify-center">Compare gear</Link>
+          <Link href="/mobile-dj" className="hwbtn min-h-11 w-full sm:w-auto justify-center">Mobile DJ</Link>
         </div>
       </div>
     </section>
@@ -197,7 +199,7 @@ export function CategoryBrowser() {
                           <span className={led} aria-hidden="true" />
                           <span className="codechip flex-shrink-0">{a.code}</span>
                           <span
-                            className="flex-1 min-w-0 truncate text-sm font-medium group-hover/row:text-[var(--text2)] transition-colors"
+                            className="flex-1 min-w-0 line-clamp-2 text-sm font-medium leading-snug group-hover/row:text-[var(--text2)] transition-colors"
                             style={{ color: "var(--body)" }}
                           >
                             {a.title}

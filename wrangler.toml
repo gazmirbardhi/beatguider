@@ -1,0 +1,10 @@
+name = "beatguider"
+compatibility_date = "2026-11-21"
+
+[build]
+command = "bun run content:gen && next build"
+# Next.js static export emits to ./out; Cloudflare Pages serves from there.
+# Set "Build output directory" to "out" in the Pages dashboard as well.
+
+[observability]
+enabled = true

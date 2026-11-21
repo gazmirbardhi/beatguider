@@ -116,7 +116,7 @@ export function LcdStatus({
             i > 0 ? "border-l border-[var(--disp-b)]" : ""
           }`}
         >
-          <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>
             {s.label}
           </span>
           <span className="lcd lcd-ghost !text-[0.8125rem] sm:!text-sm font-semibold !bg-transparent">
@@ -127,7 +127,7 @@ export function LcdStatus({
       <div className="flex-1" />
       {/* signal-strength indicator */}
       <div className="hidden sm:flex flex-col justify-center items-center px-3 border-l border-[var(--disp-b)]">
-        <span className="silk !text-[0.5rem] mb-0.5" style={{ color: "rgba(255,176,0,0.55)" }}>SIG</span>
+        <span className="silk !text-[0.5rem] mb-0.5" style={{ color: "var(--panel-silk-dim)" }}>SIG</span>
         <span className="sig-bars" aria-hidden="true">
           <span className="on" />
           <span className="on" />

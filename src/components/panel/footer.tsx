@@ -97,7 +97,7 @@ export function SearchOverlay({
           inputRef={inputRef}
         />
         <div className="flex justify-between items-center mt-2 px-1">
-          <span className="silk" style={{ color: "var(--mut)" }}>Esc to close · ⌘K to open · ? for shortcuts</span>
+          <span className="silk" style={{ color: "var(--panel-silk-dim)" }}>Esc to close · ⌘K to open · ? for shortcuts</span>
           <button type="button" onClick={() => setOpen(false)} className="hwbtn !text-[0.6875rem] !py-1.5">
             Close
           </button>
@@ -193,12 +193,12 @@ export function ShortcutsHelp({
               </li>
             ))}
           </ul>
-          <p className="lcd !text-[0.6875rem] !bg-transparent mt-4" style={{ color: "rgba(255,176,0,0.55)" }}>
+          <p className="lcd !text-[0.6875rem] !bg-transparent mt-4" style={{ color: "var(--panel-silk-dim)" }}>
             &gt; shortcuts fire globally except when typing in an input field
           </p>
         </div>
         <div className="flex justify-between items-center mt-2 px-1">
-          <span className="silk" style={{ color: "var(--mut)" }}>Esc to close · ? to toggle</span>
+          <span className="silk" style={{ color: "var(--panel-silk-dim)" }}>Esc to close · ? to toggle</span>
           <button type="button" onClick={() => setOpen(false)} className="hwbtn !text-[0.6875rem] !py-1.5">
             Close
           </button>
@@ -238,7 +238,7 @@ export function SiteFooter({ serial }: { serial: string }) {
             </p>
             <div className="flex items-center gap-2 mt-4">
               <span className="led led-g" aria-hidden="true" />
-              <span className="silk" style={{ color: "var(--mut)" }}>PWR · OK</span>
+              <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>PWR · OK</span>
             </div>
           </div>
 
@@ -274,17 +274,17 @@ export function SiteFooter({ serial }: { serial: string }) {
           <BuildManifest />
           <div className="electronics hidden sm:flex flex-wrap items-center gap-3 px-3 py-2 mb-3">
             <span className="led led-g" aria-hidden="true" />
-            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>FW</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>FW</span>
             <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>BG-1.2.0</span>
-            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>·</span>
-            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>BUILD</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>·</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>BUILD</span>
             {/* BUILD date — pinned to the content-generation date (see
                 data.ts GENERATED_AT). Never new Date() here: this is a
                 client component, and the wall clock would disagree with
                 the statically-exported HTML (React hydration mismatch). */}
             <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>{GENERATED_AT}</span>
-            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>·</span>
-            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>SN</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>·</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>SN</span>
             <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>{serial}</span>
             <span className="flex-1" />
             {/* power-supply LED bank — 3.3V / 5V / 12V rails */}
@@ -300,13 +300,13 @@ export function SiteFooter({ serial }: { serial: string }) {
               <span className="led led-g" />
               <span className="lcd !text-[0.5rem] !bg-transparent" style={{ color: "var(--amber)" }}>12V</span>
             </span>
-            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>STATUS</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>STATUS</span>
             <span className="lcd !text-xs !bg-transparent font-semibold" style={{ color: "var(--vu-g)" }}>ONLINE</span>
           </div>
           {/* data-bus indicator — flowing amber dots */}
           <div className="data-bus w-full mb-2" aria-hidden="true" />
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="mono text-xs" style={{ color: "var(--mut)" }}>
+            <span className="mono text-xs" style={{ color: "var(--panel-silk-muted)" }}>
               BEATGUIDER BG-1 — independent DJ test bench
             </span>
             {/* temperature readout — decorative, clearly illustrative; the
@@ -316,7 +316,7 @@ export function SiteFooter({ serial }: { serial: string }) {
               <span className="temp-readout">
                 <span className="temp-bar" />
                 <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>34.2°C</span>
-                <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>TEMP</span>
+                <span className="silk !text-[0.5rem]" style={{ color: "var(--panel-silk-muted)" }}>TEMP</span>
               </span>
             </span>
             {/* battery readout — decorative backup-power indicator; wrapped
@@ -330,17 +330,17 @@ export function SiteFooter({ serial }: { serial: string }) {
                   <span />
                 </span>
                 <span className="lcd !text-[0.5625rem] !bg-transparent" style={{ color: "var(--amber)" }}>75%</span>
-                <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>BATT</span>
+                <span className="silk !text-[0.5rem]" style={{ color: "var(--panel-silk-muted)" }}>BATT</span>
               </span>
             </span>
             {/* live clock readout — real-time HH:MM:SS with blinking tick LED */}
             <LiveClock />
             {/* LOAD bar — decorative CPU-load-style indicator; hidden on phones */}
             <span className="hidden sm:inline-flex items-center gap-2" aria-hidden="true">
-              <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>LOAD</span>
+              <span className="silk !text-[0.5rem]" style={{ color: "var(--panel-silk-muted)" }}>LOAD</span>
               <span className="load-bar w-12" />
             </span>
-            <span className="mono text-xs" style={{ color: "var(--mut)" }}>
+            <span className="mono text-xs" style={{ color: "var(--panel-silk-muted)" }}>
               © {new Date(GENERATED_AT).getFullYear()} BeatGuider · Test. Fix. Mix.
             </span>
           </div>
@@ -397,7 +397,7 @@ function BuildManifest() {
       <div className="flex items-center gap-2 mb-2 flex-wrap">
         <span className="led led-a led-breathe" aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>Build manifest · content inventory</span>
-        <span className="ml-auto silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>
+        <span className="ml-auto silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>
           {allCodes.length} ENTRIES
         </span>
       </div>

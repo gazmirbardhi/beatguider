@@ -116,6 +116,9 @@
 
   /* electronics — constant in both modes */
   --disp: #0A0A0A;
+  /* panel secondary silk text — calibrated for 4.5:1 on small text */
+  --panel-silk-muted: #8F8F8F;
+  --panel-silk-dim: rgba(255, 176, 0, 0.8);
   --disp-b: #2E2E2E;
   --amber: #FFB000;
   --vu-g: #33FF66;
@@ -153,6 +156,9 @@
 
   /* electronics unchanged */
   --disp: #0A0A0A;
+  /* panel secondary silk text — calibrated for 4.5:1 on small text */
+  --panel-silk-muted: #4A4A46;
+  --panel-silk-dim: #A67708;
   --disp-b: #2E2E2E;
   --amber: #FFB000;
   --vu-g: #33FF66;

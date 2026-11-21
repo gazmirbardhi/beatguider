@@ -515,7 +515,7 @@ export function VUMeter({
         </div>
         {showDigits && (
           <div className="flex flex-col items-end flex-shrink-0">
-            <span className="silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>LEVEL</span>
+            <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>LEVEL</span>
             <span className="lcd lcd-ghost !text-lg !bg-transparent font-semibold tabular-nums">
               {String(Math.round(v)).padStart(3, "0")}%
             </span>
@@ -690,7 +690,7 @@ export function AffiliateButton({
           <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         {children}
-        <span className="silk !text-[0.5625rem] opacity-80">{retailer.toUpperCase()}</span>
+        <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>{retailer.toUpperCase()}</span>
       </a>
       <span className="text-[0.6875rem]" style={{ color: "var(--mut)" }}>
         We may earn a commission — prices set by the retailer. Not a current price quote.
@@ -1024,7 +1024,7 @@ export function FreshnessIndicator({
     <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--line2)", background: "var(--bg)" }}>
       <span className={map.led} aria-hidden="true" />
       <span className="silk" style={{ color: map.color }}>{map.label}</span>
-      {recheckDate && <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>· {recheckDate}</span>}
+      {recheckDate && <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>· {recheckDate}</span>}
     </span>
   );
 }
@@ -1063,7 +1063,7 @@ export function DiagnosticSequence({
       <div className="flex items-center gap-2 mb-3">
         <span className="led led-a led-breathe" aria-hidden="true" />
         <span className="silk" style={{ color: "var(--amber)" }}>Signal path · diagnostic sequence</span>
-        <span className="ml-auto silk !text-[0.5625rem]" style={{ color: "rgba(255,176,0,0.55)" }}>
+        <span className="ml-auto silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-dim)" }}>
           {active ? `STEP ${String(active).padStart(2, "0")} ACTIVE` : "click to jump"}
         </span>
       </div>
@@ -1226,7 +1226,7 @@ export function TapeEdgeLabel({ children, side = "top" }: { children: ReactNode;
       className="absolute silk !text-[0.5625rem] px-2 py-0.5"
       style={{
         background: "var(--plate)",
-        color: "var(--mut)",
+        color: "var(--panel-silk-muted)",
         [side === "top" ? "top" : "bottom"]: "-0.5rem",
         left: "1rem",
         letterSpacing: "0.15em",

@@ -502,7 +502,7 @@ export function PostSequence() {
               />
               <span
                 className="silk !text-[0.5625rem]"
-                style={{ color: c.on ? "var(--amber)" : "rgba(255,176,0,0.3)" }}
+                style={{ color: c.on ? "var(--amber)" : "var(--panel-silk-dim)" }}
               >
                 {c.label}
               </span>
@@ -563,7 +563,7 @@ export function SignalChain({
               <span className="lcd !text-[0.6875rem] !bg-transparent font-semibold" style={{ color: "var(--amber)" }}>
                 {n.label}
               </span>
-              <span className="silk !text-[0.5rem] mt-0.5" style={{ color: "rgba(255,176,0,0.55)" }}>
+              <span className="silk !text-[0.5rem] mt-0.5" style={{ color: "var(--panel-silk-dim)" }}>
                 {n.sub}
               </span>
             </div>
@@ -672,7 +672,7 @@ export function LiveClock() {
       <span className="lcd !text-[0.5625rem] !bg-transparent font-semibold tabular-nums" style={{ color: "var(--amber)" }}>
         {time}
       </span>
-      <span className="silk !text-[0.5rem]" style={{ color: "rgba(255,176,0,0.55)" }}>UTC</span>
+      <span className="silk !text-[0.5rem]" style={{ color: "var(--panel-silk-dim)" }}>UTC</span>
     </span>
   );
 }

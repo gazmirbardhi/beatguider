@@ -224,7 +224,7 @@ The newsletter is not connected yet (the form is honest about this on the page).
 - [x] No console errors; no horizontal overflow; responsive at mobile/tablet/desktop widths
 - [x] Single `<h1>` per page (article titles render as `<h1>` inside `ArticleView`; page heroes own the `<h1>` on indexes)
 - [x] Anti-fake-testing rule enforced structurally; validation passes for all fixture content
-- [x] MDX content pipeline: all 8 articles compile from `content/articles/*.mdx`; metadata, URLs, word counts, reading times and TOC anchors byte-identical to the pre-MDX fixtures
+- [x] MDX content pipeline: all 84 articles compile from `content/articles/*.mdx`; metadata, URLs, word counts, reading times and TOC anchors byte-identical to the pre-MDX fixtures
 - [x] Organization JSON-LD, robots.txt, build-time sitemap.xml, favicon present
 
 ## Known limitations

@@ -259,7 +259,7 @@ function CompatRow({
       <span className="lcd !text-xs font-semibold !px-1.5 !py-0.5 flex-shrink-0" style={{ color: "var(--amber)" }}>{code}</span>
       <span className="flex-1 min-w-0">
         <span style={{ color: "var(--amber)" }}>{keyName}</span>
-        <span className="block silk !text-[0.5625rem] mt-0.5" style={{ color: "rgba(255,176,0,0.55)" }}>{label}</span>
+        <span className="block silk !text-[0.5625rem] mt-0.5" style={{ color: "var(--panel-silk-dim)" }}>{label}</span>
       </span>
       <span className="flex items-center gap-px w-16 flex-shrink-0" aria-hidden="true">
         {Array.from({ length: 8 }).map((_, i) => (
@@ -871,7 +871,7 @@ export function SetLengthPlanner() {
     >
       <div className="grid grid-cols-3 gap-2 mb-3">
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>TRACKS</span>
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>TRACKS</span>
           <input
             type="number"
             min="1"
@@ -883,7 +883,7 @@ export function SetLengthPlanner() {
           />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>AVG BPM</span>
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>AVG BPM</span>
           <input
             type="number"
             min="20"
@@ -895,7 +895,7 @@ export function SetLengthPlanner() {
           />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>MIN/TRACK</span>
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>MIN/TRACK</span>
           <input
             type="number"
             min="1"
@@ -1078,32 +1078,32 @@ export function DjFeeCalculator() {
     >
       <div className="grid grid-cols-2 gap-3 mb-3">
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>HOURS</span>
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>HOURS</span>
           <input type="number" min="1" step="0.5" value={hours} onChange={(e) => setHours(e.target.value)}
             className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }} aria-label="Gig duration in hours" />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>BASE $/HR</span>
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>BASE $/HR</span>
           <input type="number" min="0" step="10" value={baseRate} onChange={(e) => setBaseRate(e.target.value)}
             className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }} aria-label="Base hourly rate" />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>TRAVEL (MI)</span>
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>TRAVEL (MI)</span>
           <input type="number" min="0" value={travel} onChange={(e) => setTravel(e.target.value)}
             className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }} aria-label="Travel distance in miles" />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>$/MI RATE</span>
+          <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>$/MI RATE</span>
           <input type="number" min="0" step="0.05" value={travelRate} onChange={(e) => setTravelRate(e.target.value)}
             className="electronics px-2 py-2 lcd !bg-transparent font-semibold tabular-nums w-full outline-none"
             style={{ color: "var(--amber)" }} aria-label="Cost per mile" />
         </label>
       </div>
       <label className="flex flex-col gap-1 mb-3">
-        <span className="silk !text-[0.5625rem]" style={{ color: "var(--mut)" }}>EQUIPMENT</span>
+        <span className="silk !text-[0.5625rem]" style={{ color: "var(--panel-silk-muted)" }}>EQUIPMENT</span>
         <select value={equipment} onChange={(e) => setEquipment(e.target.value)}
           className="electronics px-3 py-2 lcd !bg-transparent font-semibold outline-none w-full"
           style={{ color: "var(--amber)" }} aria-label="Equipment status">

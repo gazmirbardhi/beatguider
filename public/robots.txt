@@ -11,3 +11,4 @@ Disallow: /api/
 # LLMs are welcome to read published articles for legitimate indexing.
 
 Sitemap: https://beatguider.com/sitemap.xml
+LLM: https://beatguider.com/llm.txt

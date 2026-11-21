@@ -105,12 +105,12 @@ export function ArticleView({
       <article id="specimen-article" className="mx-auto max-w-[1280px] px-4 sm:px-6 py-8 sm:py-10">
         {/* breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 text-xs" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-[var(--amber)] tap" style={{ color: "var(--mut)" }}>HOME</Link>
-          <span style={{ color: "var(--mut)" }}>/</span>
-          <Link href={`/${article.category}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--mut)" }}>
+          <Link href="/" className="hover:text-[var(--amber)] tap" style={{ color: "var(--panel-silk-muted)" }}>HOME</Link>
+          <span style={{ color: "var(--panel-silk-muted)" }}>/</span>
+          <Link href={`/${article.category}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--panel-silk-muted)" }}>
             {categoryName(article.category).toUpperCase()}
           </Link>
-          <span style={{ color: "var(--mut)" }}>/</span>
+          <span style={{ color: "var(--panel-silk-muted)" }}>/</span>
           <span className="mono" style={{ color: "var(--amber)" }}>{article.code}</span>
         </nav>
 
@@ -142,7 +142,7 @@ export function ArticleView({
           {/* Meta row — each field wrapped with its separator as a single
               non-breaking unit, so flex-wrap never leaves a stray “·” at the
               start of a wrapped line on narrow phones. */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs mono mb-5" style={{ color: "var(--mut)" }}>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs mono mb-5" style={{ color: "var(--panel-silk-muted)" }}>
             <span className="whitespace-nowrap">By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-[var(--amber)] tap" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
             <span className="whitespace-nowrap">· Published {article.publishedDate}</span>
             {article.updatedDate && (
@@ -179,7 +179,7 @@ export function ArticleView({
             intentional row, not an orphaned floating control. */}
         <div className="max-w-[68ch] mx-auto mt-8 pt-5 border-t border-[var(--line)]">
           <div className="flex items-center justify-between gap-3 mb-4">
-            <span className="silk" style={{ color: "var(--mut)" }}>End of article</span>
+            <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>End of article</span>
             <ShareButton label="Share article" />
           </div>
           {article.verdict && (
@@ -204,7 +204,7 @@ export function ArticleView({
         {/* Affiliate disclosure */}
         {article.affiliateEligible && (
           <div className="max-w-[68ch] mx-auto mt-8 pt-4 border-t border-[var(--line)]">
-            <p className="text-xs" style={{ color: "var(--mut)" }}>
+            <p className="text-xs" style={{ color: "var(--panel-silk-muted)" }}>
               Affiliate disclosure · BeatGuider may earn a commission on purchases made through
               affiliate links. Prices are set by the retailer. Affiliation does not influence
               test methodology or ratings — the Tested LED is lit only from validated frontmatter.
@@ -267,7 +267,7 @@ function NextArticleCta({ currentArticle }: { currentArticle: ArticleMeta }) {
       >
         <div className="flex items-center gap-2 mb-2">
           <span className="led led-a led-breathe" aria-hidden="true" />
-          <span className="silk" style={{ color: "var(--mut)" }}>Next module · keep reading</span>
+          <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>Next module · keep reading</span>
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">

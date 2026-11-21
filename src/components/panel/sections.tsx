@@ -140,7 +140,7 @@ export function FaceplateHero({ entryCount, lastPublish }: { entryCount: number;
 function LcdStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="electronics px-2 py-1.5 text-center">
-      <div className="silk !text-[0.5rem] mb-0.5" style={{ color: "rgba(255,176,0,0.55)" }}>{label}</div>
+      <div className="silk !text-[0.5rem] mb-0.5" style={{ color: "var(--panel-silk-dim)" }}>{label}</div>
       <div className="lcd !text-sm !bg-transparent font-semibold">{value}</div>
     </div>
   );

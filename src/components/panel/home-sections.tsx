@@ -23,7 +23,7 @@ export function SimplifiedHero({ entryCount, lastPublish }: { entryCount: number
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 py-12 sm:py-20">
         <div className="flex items-center gap-2 mb-4">
           <span className="led led-g" aria-hidden="true" />
-          <span className="silk" style={{ color: "var(--mut)" }}>Independent DJ test bench · BG-1</span>
+          <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>Independent DJ test bench · BG-1</span>
         </div>
         <h1
           className="font-[family-name:var(--font-chakra)] font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
@@ -86,7 +86,7 @@ export function LatestArticles() {
           <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-2xl sm:text-3xl" style={{ color: "var(--text2)" }}>
             Latest
           </h2>
-          <span className="silk" style={{ color: "var(--mut)" }}>— recent articles</span>
+          <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>— recent articles</span>
           <div className="flex-1 h-px ml-2" style={{ background: "var(--line)" }} />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -106,16 +106,16 @@ export function LatestArticles() {
                 <div className="flex items-center gap-2 mb-2">
                   <span className={led} aria-hidden="true" />
                   <span className="codechip">{a.code}</span>
-                  <span className="silk" style={{ color: "var(--mut)" }}>{a.category}</span>
+                  <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>{a.category}</span>
                 </div>
                 <h3 className="font-[family-name:var(--font-chakra)] font-semibold text-base sm:text-lg leading-tight" style={{ color: "var(--text2)" }}>
                   {a.title}
                 </h3>
                 <p className="text-sm mt-1 line-clamp-2" style={{ color: "var(--body)" }}>{a.description}</p>
                 <div className="flex items-center gap-2 mt-3">
-                  <span className="silk" style={{ color: "var(--mut)" }}>{a.publishedDate}</span>
-                  <span style={{ color: "var(--mut)" }}>·</span>
-                  <span className="silk" style={{ color: "var(--mut)" }}>{a.readingTime} min read</span>
+                  <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>{a.publishedDate}</span>
+                  <span style={{ color: "var(--panel-silk-muted)" }}>·</span>
+                  <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>{a.readingTime} min read</span>
                 </div>
               </Link>
             );
@@ -145,7 +145,7 @@ export function CategoryBrowser() {
           <h2 className="font-[family-name:var(--font-chakra)] font-semibold text-2xl sm:text-3xl" style={{ color: "var(--text2)" }}>
             Categories
           </h2>
-          <span className="silk" style={{ color: "var(--mut)" }}>— every article, grouped by category</span>
+          <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>— every article, grouped by category</span>
           <div className="flex-1 h-px ml-2" style={{ background: "var(--line)" }} />
         </div>
 
@@ -165,7 +165,7 @@ export function CategoryBrowser() {
                 >
                   {g.def.name}
                 </Link>
-                <span className="silk" style={{ color: "var(--mut)" }}>
+                <span className="silk" style={{ color: "var(--panel-silk-muted)" }}>
                   {g.items.length} {g.items.length === 1 ? "article" : "articles"} · {g.def.kicker}
                 </span>
                 <Link
@@ -204,10 +204,10 @@ export function CategoryBrowser() {
                           >
                             {a.title}
                           </span>
-                          <span className="silk hidden md:inline flex-shrink-0" style={{ color: "var(--mut)" }}>
+                          <span className="silk hidden md:inline flex-shrink-0" style={{ color: "var(--panel-silk-muted)" }}>
                             {a.publishedDate}
                           </span>
-                          <span className="silk flex-shrink-0 tabular-nums" style={{ color: "var(--mut)" }}>
+                          <span className="silk flex-shrink-0 tabular-nums" style={{ color: "var(--panel-silk-muted)" }}>
                             {a.readingTime} min
                           </span>
                         </Link>

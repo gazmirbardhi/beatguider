@@ -1,0 +1,10 @@
+# BeatGuider — Cloudflare Pages redirect rules
+# Format: source destination status
+# www.beatguider.com is a proxied CNAME to the apex and is NOT attached
+# as a Pages custom domain, so these rules only fire for requests that
+# reach the Pages project directly. The owner will additionally add a
+# zone-level Redirect Rule as the authoritative fix.
+
+https://www.beatguider.com/*  https://beatguider.com/:splat  301
+http://beatguider.com/*       https://beatguider.com/:splat  301
+http://www.beatguider.com/*   https://beatguider.com/:splat  301

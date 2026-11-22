@@ -130,6 +130,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
+      {/* Google Tag Manager */}
+      <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-TGG6K5NB"></script>
       </head>
       <body
         className={`${chakra.variable} ${inter.variable} ${plexMono.variable} antialiased`}

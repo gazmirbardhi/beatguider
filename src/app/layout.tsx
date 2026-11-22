@@ -6,20 +6,21 @@ import { Toaster } from "@/components/ui/toaster";
 const chakra = Chakra_Petch({
   variable: "--font-chakra",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["700"],
   display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "600"],
   display: "swap",
 });
 
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400"],
   display: "swap",
 });
 

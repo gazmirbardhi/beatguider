@@ -14,6 +14,7 @@ import {
   breadcrumbJsonLd,
   SITE_NAME,
 } from "@/lib/seo";
+import { publishedAt, updatedAt } from "@/lib/content/validate";
 import type { ArticleMeta } from "@/lib/content/types";
 import { categoryName, type CategoryId } from "@/lib/content/categories";
 
@@ -99,9 +100,13 @@ function metadataFor(article: ArticleMeta) {
       siteName: SITE_NAME,
       type: "article",
       locale: "en_US",
-      publishedTime: article.publishedDate,
-      modifiedTime: article.updatedDate ?? article.publishedDate,
-      authors: [article.author],
+      publishedTime: publishedAt(article),
+      modifiedTime: updatedAt(article),
+      authors: [
+        absoluteUrl(
+          `/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`
+        ),
+      ],
       section: categoryName(article.category),
       tags: article.tags,
       images: [

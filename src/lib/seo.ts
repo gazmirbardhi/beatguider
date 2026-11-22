@@ -134,6 +134,7 @@ export function collectionJsonLd(category: string, description: string) {
 export function techArticleJsonLd(a: ArticleMeta) {
   const url = absoluteUrl(`/${a.category}/${a.slug}`);
   const image = `/og/${a.slug}.png`;
+  const authorSlug = a.author.toLowerCase().replace(/\s+/g, "-");
   return {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -150,15 +151,21 @@ export function techArticleJsonLd(a: ArticleMeta) {
     keywords: a.tags.join(", "),
     articleSection: categoryName(a.category),
     author: {
-      "@type": "Organization",
+      "@type": "Person",
       name: a.author,
-      url: absoluteUrl(`/author/${a.author.toLowerCase().replace(/\s+/g, "-")}`),
+      url: absoluteUrl(`/author/${authorSlug}`),
+      jobTitle: "DJ / Editor",
+      /* TODO(owner): real author name + bio + sameAs URLs */
+      description:
+        a.author +
+        " — DJ and editor at BeatGuider, an independent DJ publication operated by a working DJ.",
+      sameAs: [],
     },
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
       url: SITE_URL,
-      logo: { "@type": "ImageObject", url: absoluteUrl(OG_BRAND) },
+      logo: { "@type": "ImageObject", url: absoluteUrl("/logo.png") },
     },
     image: [absoluteUrl(image)],
     isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },

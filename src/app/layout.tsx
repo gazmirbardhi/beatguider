@@ -106,10 +106,16 @@ const orgJsonLd = {
     "Independent DJ gear, software, troubleshooting and education publication operated by a working DJ.",
   logo: {
     "@type": "ImageObject",
-    url: "https://beatguider.com/og/brand.png",
-    width: 1200,
-    height: 630,
+    url: "https://beatguider.com/logo.png",
+    width: 512,
+    height: 512,
   },
+  /* TODO(owner): add real social profile URLs */
+  sameAs: [
+    "https://youtube.com/@beatguider",
+    "https://instagram.com/beatguider",
+    "https://x.com/beatguider",
+  ],
 };
 
 export default function RootLayout({

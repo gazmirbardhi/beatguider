@@ -29,7 +29,7 @@ export function SimplifiedHero({ entryCount, lastPublish }: { entryCount: number
           className="font-(family-name:--font-chakra) font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
           style={{ color: "var(--text2)" }}
         >
-          Test. Fix. <span style={{ color: "var(--amber)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>Mix.</span>
+          DJ gear reviews, troubleshooting fixes and mixing guides
         </h1>
         <p className="mt-5 text-base sm:text-lg max-w-[58ch]" style={{ color: "var(--body)" }}>
           BeatGuider is an independent DJ gear, software, troubleshooting and education

@@ -45,7 +45,7 @@ export type CategoryDef = {
   short: string;
   /** Category page hero description. */
   description: string;
-  /** <title> / OG title for the category index page. */
+  /** SEO metadata. */
   metaTitle: string;
   /** Meta description for the category index page. */
   metaDescription: string;
@@ -53,6 +53,8 @@ export type CategoryDef = {
   ogImage: string;
   /** Position in the sticky nav (omit to keep a category out of the nav). */
   navOrder?: number;
+  /** Long-form introduction text (150+ words) displayed above the article grid. */
+  introText?: string;
 };
 
 export const CATEGORIES: CategoryDef[] = [

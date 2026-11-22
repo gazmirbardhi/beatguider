@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Chakra_Petch, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import GoogleAnalytics from "@/components/analytics/google-analytics";
 
 const chakra = Chakra_Petch({
   variable: "--font-chakra",
@@ -132,6 +133,8 @@ export default function RootLayout({
         />
       {/* Google Tag Manager */}
       <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-TGG6K5NB"></script>
+      {/* Google Analytics 4 (gtag.js) */}
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}></script>
       </head>
       <body
         className={`${chakra.variable} ${inter.variable} ${plexMono.variable} antialiased`}
@@ -141,6 +144,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <GoogleAnalytics />
         <Toaster />
       </body>
     </html>

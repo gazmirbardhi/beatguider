@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Privacy",
-  description: "What BeatGuider collects and does not collect — no analytics, no cookies, no tracking. The newsletter is not connected and transmits nothing.",
+  description: "What BeatGuider collects and does not collect — Google Analytics 4 for aggregated, anonymized traffic measurement. No cookies are set by BeatGuider itself; the newsletter is not connected and transmits nothing.",
   path: "/privacy",
 });
 
@@ -13,7 +13,7 @@ export default function Page() {
     <SiteShell>
       <StaticPage code="POL-04" title="Privacy" kicker="data · honest defaults" description="What data BeatGuider collects, what it does not, and what will change if that ever does.">
         <h2>What this site collects</h2>
-        <p>BeatGuider is a fully static site. It runs no analytics, sets no cookies, loads no third-party tracking scripts, and does not collect, transmit or store personal data. The site does not have accounts, comment systems or server-side forms.</p>
+        <p>BeatGuider is a fully static site. It loads Google Analytics 4 (GA4) for aggregated, anonymized traffic measurement — pages visited, referrers, and device/browser category. GA4 sets its own first-party cookies on <code>beatguider.com</code>; BeatGuider itself sets no cookies and does not collect, transmit or store personal data. The site does not have accounts, comment systems or server-side forms. You can opt out of GA4 via the Google Analytics Opt-out Browser Add-on or your browser&rsquo;s tracking-protection settings.</p>
 
         <h2>What is stored on your device</h2>
         <p>The site stores two entries in your own browser&apos;s <code>localStorage</code>: your NIGHT/DAY theme preference (<code>beatguider-mode</code>) and a generated device serial number (<code>beatguider-sn</code>). These never leave your browser and are not transmitted anywhere. Clearing your browser storage removes them.</p>
@@ -22,7 +22,7 @@ export default function Page() {
         <p>The field-log dispatch (newsletter) is <strong>not connected yet — launching soon</strong>. The email field is visual only: nothing you type into it is transmitted, received or stored by BeatGuider or any third party. The page states this directly when you submit.</p>
 
         <h2>Hosting</h2>
-        <p>The site is served by Cloudflare. Like any web host, Cloudflare processes the standard technical request data (such as IP address) needed to deliver pages and protect the service. BeatGuider does not enable or configure any additional analytics on top of that.</p>
+        <p>The site is served by Cloudflare. Like any web host, Cloudflare processes the standard technical request data (such as IP address) needed to deliver pages and protect the service. In addition, BeatGuider enables Google Analytics 4 (GA4) for aggregated, anonymized traffic measurement.</p>
 
         <h2>Affiliate links</h2>
         <p>Some outgoing links to retailers (see the <a href="/affiliate-disclosure" style={{ color: "var(--acc)" }}>affiliate disclosure</a>) may earn BeatGuider a commission. When you follow one, you leave this site and are subject to that retailer&apos;s own privacy policy and practices — BeatGuider has no access to or control over the data retailers collect.</p>

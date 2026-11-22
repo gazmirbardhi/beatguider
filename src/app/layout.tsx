@@ -133,6 +133,15 @@ export default function RootLayout({
         />
       {/* Google Tag Manager */}
       <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-TGG6K5NB"></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          `,
+        }}
+      />
       {/* Google Analytics 4 (gtag.js) */}
       <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}></script>
       </head>

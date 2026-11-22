@@ -106,7 +106,7 @@ export const articles: ArticleMeta[] = [
       }
     ],
     "affiliateEligible": true,
-    "wordCount": 484,
+    "wordCount": 498,
     "readingTime": 2
   },
   {
@@ -151,7 +151,7 @@ export const articles: ArticleMeta[] = [
       "GEAR-014"
     ],
     "affiliateEligible": true,
-    "wordCount": 345,
+    "wordCount": 359,
     "readingTime": 2
   },
   {
@@ -197,7 +197,7 @@ export const articles: ArticleMeta[] = [
       "GEAR-015"
     ],
     "affiliateEligible": true,
-    "wordCount": 150,
+    "wordCount": 164,
     "readingTime": 1
   },
   {
@@ -234,7 +234,7 @@ export const articles: ArticleMeta[] = [
     "relatedGear": [
       "GEAR-014"
     ],
-    "wordCount": 230,
+    "wordCount": 244,
     "readingTime": 1
   },
   {
@@ -256,7 +256,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 198,
+    "wordCount": 212,
     "readingTime": 1
   },
   {
@@ -278,7 +278,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 223,
+    "wordCount": 237,
     "readingTime": 1
   },
   {
@@ -314,8 +314,8 @@ export const articles: ArticleMeta[] = [
       "environment": "Reproducible crash lab"
     },
     "quickAnswer": "rekordbox export crashes almost always trace back to a corrupt track in the playlist, a USB drive with the wrong file system, or a permissions issue after a macOS upgrade. Rule these out in this order before reinstalling anything.",
-    "wordCount": 287,
-    "readingTime": 1
+    "wordCount": 301,
+    "readingTime": 2
   },
   {
     "code": "MOB-004",
@@ -346,7 +346,7 @@ export const articles: ArticleMeta[] = [
       "platforms": [],
       "environment": "Multiple real gig venues, 2022-2024"
     },
-    "wordCount": 190,
+    "wordCount": 204,
     "readingTime": 1
   },
   {
@@ -370,7 +370,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 1970,
+    "wordCount": 1984,
     "readingTime": 10
   },
   {
@@ -396,7 +396,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 4199,
+    "wordCount": 4213,
     "readingTime": 21
   },
   {
@@ -421,7 +421,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2431,
+    "wordCount": 2445,
     "readingTime": 12
   },
   {
@@ -446,7 +446,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2111,
+    "wordCount": 2125,
     "readingTime": 11
   },
   {
@@ -471,7 +471,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 4056,
+    "wordCount": 4070,
     "readingTime": 20
   },
   {
@@ -496,7 +496,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2319,
+    "wordCount": 2333,
     "readingTime": 12
   },
   {
@@ -521,8 +521,8 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1486,
-    "readingTime": 7
+    "wordCount": 1500,
+    "readingTime": 8
   },
   {
     "code": "GEAR-023",
@@ -546,7 +546,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2386,
+    "wordCount": 2400,
     "readingTime": 12
   },
   {
@@ -571,7 +571,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1972,
+    "wordCount": 1986,
     "readingTime": 10
   },
   {
@@ -600,7 +600,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Compare the best DJ software in 2026: Serato vs Rekordbox vs Traktor vs Virtual DJ vs Djay Pro. Find the perfect software for your setup and budget.",
-    "wordCount": 2966,
+    "wordCount": 2980,
     "readingTime": 15
   },
   {
@@ -625,7 +625,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1771,
+    "wordCount": 1785,
     "readingTime": 9
   },
   {
@@ -651,7 +651,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 5347,
+    "wordCount": 5361,
     "readingTime": 27
   },
   {
@@ -676,7 +676,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2329,
+    "wordCount": 2343,
     "readingTime": 12
   },
   {
@@ -700,7 +700,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2945,
+    "wordCount": 2959,
     "readingTime": 15
   },
   {
@@ -726,7 +726,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1084,
+    "wordCount": 1098,
     "readingTime": 5
   },
   {
@@ -756,7 +756,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "guide",
     "experienceType": "research-based",
     "quickAnswer": "Fix DJ audio problems: power adapter hum, Serato laptop speaker noise, balanced vs unbalanced cables, and phone Wi-Fi interference. Every fix explained clearly.",
-    "wordCount": 4472,
+    "wordCount": 4486,
     "readingTime": 22
   },
   {
@@ -781,7 +781,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2374,
+    "wordCount": 2388,
     "readingTime": 12
   },
   {
@@ -810,8 +810,8 @@ export const articles: ArticleMeta[] = [
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 4693,
-    "readingTime": 23
+    "wordCount": 4707,
+    "readingTime": 24
   },
   {
     "code": "LEARN-028",
@@ -839,7 +839,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 4320,
+    "wordCount": 4334,
     "readingTime": 22
   },
   {
@@ -864,7 +864,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 3352,
+    "wordCount": 3366,
     "readingTime": 17
   },
   {
@@ -889,7 +889,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2944,
+    "wordCount": 2958,
     "readingTime": 15
   },
   {
@@ -913,7 +913,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2913,
+    "wordCount": 2927,
     "readingTime": 15
   },
   {
@@ -940,7 +940,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 6154,
+    "wordCount": 6168,
     "readingTime": 31
   },
   {
@@ -972,7 +972,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "DJ stems comparison 2026: 10 platforms tested head-to-head including Serato, Rekordbox, Virtual DJ, Traktor, and djay Pro. Full rankings and stem quality analysis.",
-    "wordCount": 5354,
+    "wordCount": 5368,
     "readingTime": 27
   },
   {
@@ -996,7 +996,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 1936,
+    "wordCount": 1950,
     "readingTime": 10
   },
   {
@@ -1021,7 +1021,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2705,
+    "wordCount": 2719,
     "readingTime": 14
   },
   {
@@ -1049,7 +1049,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "guide",
     "experienceType": "research-based",
     "quickAnswer": "Fix five common Virtual DJ problems plus a complete media redundancy strategy to save your set when USBs, SD cards, or hard drives fail mid-gig.",
-    "wordCount": 3818,
+    "wordCount": 3832,
     "readingTime": 19
   },
   {
@@ -1075,7 +1075,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 6674,
+    "wordCount": 6688,
     "readingTime": 33
   },
   {
@@ -1099,7 +1099,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 3798,
+    "wordCount": 3812,
     "readingTime": 19
   },
   {
@@ -1123,8 +1123,8 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 1290,
-    "readingTime": 6
+    "wordCount": 1304,
+    "readingTime": 7
   },
   {
     "code": "LEARN-038",
@@ -1148,7 +1148,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 3472,
+    "wordCount": 3486,
     "readingTime": 17
   },
   {
@@ -1177,7 +1177,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 5989,
+    "wordCount": 6003,
     "readingTime": 30
   },
   {
@@ -1201,7 +1201,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4274,
+    "wordCount": 4288,
     "readingTime": 21
   },
   {
@@ -1226,7 +1226,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 4115,
+    "wordCount": 4129,
     "readingTime": 21
   },
   {
@@ -1250,7 +1250,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1880,
+    "wordCount": 1894,
     "readingTime": 9
   },
   {
@@ -1277,7 +1277,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 8815,
+    "wordCount": 8829,
     "readingTime": 44
   },
   {
@@ -1305,7 +1305,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 3678,
+    "wordCount": 3692,
     "readingTime": 18
   },
   {
@@ -1329,7 +1329,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1681,
+    "wordCount": 1695,
     "readingTime": 8
   },
   {
@@ -1358,7 +1358,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 8268,
+    "wordCount": 8282,
     "readingTime": 41
   },
   {
@@ -1382,7 +1382,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2105,
+    "wordCount": 2119,
     "readingTime": 11
   },
   {
@@ -1408,7 +1408,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 3781,
+    "wordCount": 3795,
     "readingTime": 19
   },
   {
@@ -1432,7 +1432,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 5972,
+    "wordCount": 5986,
     "readingTime": 30
   },
   {
@@ -1456,7 +1456,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1727,
+    "wordCount": 1741,
     "readingTime": 9
   },
   {
@@ -1480,8 +1480,8 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 1894,
-    "readingTime": 9
+    "wordCount": 1908,
+    "readingTime": 10
   },
   {
     "code": "LEARN-051",
@@ -1508,7 +1508,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2806,
+    "wordCount": 2820,
     "readingTime": 14
   },
   {
@@ -1533,7 +1533,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2462,
+    "wordCount": 2476,
     "readingTime": 12
   },
   {
@@ -1558,7 +1558,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2104,
+    "wordCount": 2118,
     "readingTime": 11
   },
   {
@@ -1583,7 +1583,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2154,
+    "wordCount": 2168,
     "readingTime": 11
   },
   {
@@ -1608,7 +1608,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1759,
+    "wordCount": 1773,
     "readingTime": 9
   },
   {
@@ -1633,7 +1633,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2396,
+    "wordCount": 2410,
     "readingTime": 12
   },
   {
@@ -1657,7 +1657,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1629,
+    "wordCount": 1643,
     "readingTime": 8
   },
   {
@@ -1682,7 +1682,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4122,
+    "wordCount": 4136,
     "readingTime": 21
   },
   {
@@ -1707,7 +1707,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Pioneer DDJ FLX4 vs DDJ Rev1 complete comparison: layout, software compatibility, jog wheel size, effects, beginner features, and which controller fits your DJ style.",
-    "wordCount": 2413,
+    "wordCount": 2427,
     "readingTime": 12
   },
   {
@@ -1732,7 +1732,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Both the Pioneer PLX 1000 and Stanton ST-150 share the same Super OEM DNA — the same motor and core components. This comparison covers: Super OEM Design: Same motor, same underpinnings across multiple brands Build Quality: PLX 1000 has a better brushed metal finish; ST-150 is more utilitarian Features: ST-150 has reverse, key lock, adjustable brake, internal preamp — PLX 1000 is no-frills Pitch Sl",
-    "wordCount": 2272,
+    "wordCount": 2286,
     "readingTime": 11
   },
   {
@@ -1763,7 +1763,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Pioneer (Alpha Theta) is the industry standard for clubs worldwide — extreme reliability, consistent workflow, and ecosystem compatibility. Denon offers fantastic products at a fraction of the price with more features and streaming support, but has historically struggled with stability and USB load times. Within the Pioneer lineup, the XDJ-AZ is built for club-style DJs with CDJ-3000 jog wheels an",
-    "wordCount": 3657,
+    "wordCount": 3671,
     "readingTime": 18
   },
   {
@@ -1792,7 +1792,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "The XDJ-AZ and Opus Quad are two very different four-channel standalone DJ systems from the same company. The XDJ-AZ is a club-style controller with CDJ-3000 jog wheels, ProDJ Link for external decks, Beatport streaming, wireless Sonic Link headphones, and Gate Cue mode. The Opus Quad targets high-end mobile DJs with a striking curved design, Zone output for multi-room audio, XY effects pad, built",
-    "wordCount": 3679,
+    "wordCount": 3693,
     "readingTime": 18
   },
   {
@@ -1817,7 +1817,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Rekordbox vs Serato for beginners: honest comparison of USB vs laptop club setups, stems support, and which software is right for your DJ style and goals.",
-    "wordCount": 2786,
+    "wordCount": 2800,
     "readingTime": 14
   },
   {
@@ -1842,7 +1842,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2442,
+    "wordCount": 2456,
     "readingTime": 12
   },
   {
@@ -1867,7 +1867,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2077,
+    "wordCount": 2091,
     "readingTime": 10
   },
   {
@@ -1892,7 +1892,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1539,
+    "wordCount": 1553,
     "readingTime": 8
   },
   {
@@ -1917,7 +1917,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Both the Sennheiser HD58X Jubilee and AKG K7XX are excellent headphones, but they serve different purposes. This comparison covers: HD58X Sound Signature: Neutral, dry, with better sub-bass extension and resolution K7XX Sound Signature: Laid-back, comfortable, perfect for movies and gaming Build Quality: Both are mostly plastic — the HD58X feels narrower than the HD600 line Value: HD58X at $150 vs",
-    "wordCount": 1373,
+    "wordCount": 1387,
     "readingTime": 7
   },
   {
@@ -1941,7 +1941,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2356,
+    "wordCount": 2370,
     "readingTime": 12
   },
   {
@@ -1965,7 +1965,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 1581,
+    "wordCount": 1595,
     "readingTime": 8
   },
   {
@@ -1990,7 +1990,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1114,
+    "wordCount": 1128,
     "readingTime": 6
   },
   {
@@ -2015,7 +2015,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1526,
+    "wordCount": 1540,
     "readingTime": 8
   },
   {
@@ -2039,7 +2039,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2053,
+    "wordCount": 2067,
     "readingTime": 10
   },
   {
@@ -2063,7 +2063,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4173,
+    "wordCount": 4187,
     "readingTime": 21
   },
   {
@@ -2088,7 +2088,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Vinyl DJing vs CDJs: side-by-side comparison of BPM readouts, cueing, beat matching, and why vinyl DJs are so passionate about the craft of turntable mixing.",
-    "wordCount": 2902,
+    "wordCount": 2916,
     "readingTime": 15
   },
   {
@@ -2112,7 +2112,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2907,
+    "wordCount": 2921,
     "readingTime": 15
   },
   {
@@ -2139,7 +2139,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 4597,
+    "wordCount": 4611,
     "readingTime": 23
   },
   {
@@ -2163,7 +2163,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2027,
+    "wordCount": 2041,
     "readingTime": 10
   },
   {
@@ -2187,7 +2187,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2827,
+    "wordCount": 2841,
     "readingTime": 14
   },
   {
@@ -2215,7 +2215,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 3556,
+    "wordCount": 3570,
     "readingTime": 18
   },
   {
@@ -2243,7 +2243,7 @@ export const articles: ArticleMeta[] = [
     "author": "BeatGuider Team",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 6109,
+    "wordCount": 6123,
     "readingTime": 31
   },
   {
@@ -2269,7 +2269,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2731,
+    "wordCount": 2745,
     "readingTime": 14
   },
   {
@@ -2298,7 +2298,7 @@ export const articles: ArticleMeta[] = [
     "contentType": "guide",
     "experienceType": "research-based",
     "quickAnswer": "Fix a DDJ-FLX4 that rekordbox cannot detect. Check the correct USB-C port, cable, direct connection, OS detection, current software, and firmware.",
-    "wordCount": 2540,
+    "wordCount": 2554,
     "readingTime": 13
   }
 ];

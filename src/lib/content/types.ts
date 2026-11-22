@@ -82,6 +82,25 @@ export type ArticleMeta = {
   relatedGear?: string[]; // gear codes
   sources?: { title: string; url?: string; date?: string }[];
   affiliateEligible?: boolean;
+  /** Hero image — required for every article. Renders above the article
+   *  title with explicit width/height (CLS-safe). No fabricated
+   *  placeholders — leave absent with TODO(owner) until a real photo
+   *  exists. */
+  hero?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    caption?: string;
+  };
+  /** In-body images — illustrations within the article body. */
+  images?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    caption?: string;
+  }[];
 };
 
 export type GearEntry = {

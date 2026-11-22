@@ -15,6 +15,7 @@ import {
   ReadingTimeChip,
   ShareButton,
   ModuleCard,
+  ArticleImage,
 } from "./components";
 import { ReaderBar } from "./chrome";
 import { freshnessStatus, gearDb, articles, type ArticleMeta } from "@/lib/content/data";
@@ -160,6 +161,22 @@ export function ArticleView({
             />
           )}
         </SpecPlate>
+
+        {/* Hero image — rendered above the article body when frontmatter
+            provides one. Explicit width/height + fetchpriority=high
+            prevent CLS. */}
+        {article.hero && (
+          <div className="max-w-[68ch] mx-auto mt-8">
+            <ArticleImage
+              src={article.hero.src}
+              alt={article.hero.alt}
+              width={article.hero.width}
+              height={article.hero.height}
+              caption={article.hero.caption}
+              hero
+            />
+          </div>
+        )}
 
         {/* Quick answer */}
         {article.quickAnswer && (

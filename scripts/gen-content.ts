@@ -49,6 +49,27 @@ async function main() {
     process.exit(1);
   }
 
+  /* Build-time image warning: every article needs ≥1 hero + 2 in-body images.
+     This is a warning (not a failure) — real photos must be added by the
+     owner; we never fabricate placeholders. */
+  const imageWarns: string[] = [];
+  for (const a of articles) {
+    const m = a.meta;
+    const hasHero = !!m.hero;
+    const imageCount = (m.images ?? []).length;
+    if (!hasHero || imageCount < 2) {
+      imageWarns.push(
+        `  ✗ [${m.code}] ${m.slug} — hero: ${hasHero ? "yes" : "MISSING"} · ` +
+          `in-body images: ${imageCount} (need ≥2)`
+      );
+    }
+  }
+  if (imageWarns.length > 0) {
+    console.log(`\n⚠ BeatGuider image warning — ${imageWarns.length} article(s) short on images:`);
+    for (const w of imageWarns) console.log(w);
+    console.log("Add real photos to the article frontmatter (hero + images). Never fabricate placeholders.\n");
+  }
+
   const metas = articles.map((a) => a.meta);
 
   /* Generation date (UTC, day precision) baked into the generated module.

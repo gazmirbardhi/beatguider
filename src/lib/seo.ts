@@ -133,7 +133,7 @@ export function collectionJsonLd(category: string, description: string) {
 
 export function techArticleJsonLd(a: ArticleMeta) {
   const url = absoluteUrl(`/${a.category}/${a.slug}`);
-  const image = `/og/${a.slug}.png`;
+  const heroImage = a.hero ? absoluteUrl(a.hero.src) : `/og/${a.slug}.png`;
   const authorSlug = a.author.toLowerCase().replace(/\s+/g, "-");
   return {
     "@context": "https://schema.org",
@@ -167,7 +167,15 @@ export function techArticleJsonLd(a: ArticleMeta) {
       url: SITE_URL,
       logo: { "@type": "ImageObject", url: absoluteUrl("/logo.png") },
     },
-    image: [absoluteUrl(image)],
+    image: [
+      {
+        "@type": "ImageObject",
+        url: heroImage,
+        ...(a.hero
+          ? { width: a.hero.width, height: a.hero.height }
+          : { width: 1200, height: 630 }),
+      },
+    ],
     isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
   };
 }

@@ -70,8 +70,10 @@ export function generateArticleMetadata(category: Category, slug: string) {
 
 function metadataFor(article: ArticleMeta) {
   const path = `/${article.category}/${article.slug}`;
-  // every article slug ships a matching 1200×630 card in /og/
-  const image = `/og/${article.slug}.png`;
+  // per-article OG image: hero image if present, else /og/<slug>.png, else brand
+  const ogImage = article.hero
+    ? article.hero.src
+    : `/og/${article.slug}.png`;
 
   return {
     /* Long titles drop the " · BeatGuider" suffix instead of getting
@@ -111,10 +113,10 @@ function metadataFor(article: ArticleMeta) {
       tags: article.tags,
       images: [
         {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: `${article.title} — ${SITE_NAME}`,
+          url: ogImage,
+          ...(article.hero
+            ? { width: article.hero.width, height: article.hero.height, alt: article.hero.alt }
+            : { width: 1200, height: 630, alt: `${article.title} — ${SITE_NAME}` }),
         },
       ],
     },
@@ -122,7 +124,7 @@ function metadataFor(article: ArticleMeta) {
       card: "summary_large_image",
       title: article.title,
       description: article.description,
-      images: [image],
+      images: [ogImage],
     },
   };
 }

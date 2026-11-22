@@ -108,6 +108,28 @@ const frontmatterSchema = z.strictObject({
     )
     .optional(),
   affiliateEligible: z.boolean().optional(),
+  /* Hero image — optional in frontmatter (build-time warning if absent).
+     URLs must be absolute or start with /; dimensions are required. */
+  hero: z
+    .strictObject({
+      src: z.string().min(1),
+      alt: z.string().min(1),
+      width: z.number().positive(),
+      height: z.number().positive(),
+      caption: z.string().optional(),
+    })
+    .optional(),
+  images: z
+    .array(
+      z.strictObject({
+        src: z.string().min(1),
+        alt: z.string().min(1),
+        width: z.number().positive(),
+        height: z.number().positive(),
+        caption: z.string().optional(),
+      })
+    )
+    .optional(),
 });
 
 /* Article files are named NN-slug.mdx — the numeric prefix defines the
@@ -222,6 +244,8 @@ export function parseArticleFile(
     ...(fm.affiliateEligible !== undefined
       ? { affiliateEligible: fm.affiliateEligible }
       : {}),
+    ...(fm.hero !== undefined ? { hero: fm.hero } : {}),
+    ...(fm.images !== undefined ? { images: fm.images } : {}),
   };
 
   return { ok: true, article: { meta, body: parsed.content.trim() + "\n" } };

@@ -1381,3 +1381,63 @@ export function ErrorLog({
     </div>
   );
 }
+
+/* ─── ArticleImage — hero / in-body image with explicit dimensions ───
+   Always renders <picture> with WebP/AVIF sources + JPEG/PNG fallback.
+   width/height are mandatory (prevents CLS). Hero images get
+   fetchpriority=high and no lazy loading; below-fold images get
+   loading=lazy + decoding=async. Wraps in <figure>+<figcaption> when
+   a caption is provided. alt is required. */
+export function ArticleImage({
+  src,
+  alt,
+  width,
+  height,
+  caption,
+  hero = false,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption?: string;
+  hero?: boolean;
+}) {
+  const ext = src.split(".").pop()?.toLowerCase();
+  const isAvif = ext === "avif";
+  const isWebp = ext === "webp";
+  const base = src.replace(/\.(avif|webp|jpg|jpeg|png)$/i, "");
+
+  return (
+    <figure className={caption ? "my-6" : "my-0"} style={{ margin: 0 }}>
+      <picture>
+        {isAvif && <source srcSet={`${base}.avif`} type="image/avif" />}
+        {isWebp && <source srcSet={`${base}.webp`} type="image/webp" />}
+        {!isAvif && !isWebp && (
+          <source srcSet={`${base}.webp`} type="image/webp" />
+        )}
+        <img
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          loading={hero ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={hero ? "high" : "auto"}
+          style={{
+            display: "block",
+            width: "100%",
+            height: "auto",
+            maxWidth: "100%",
+          }}
+        />
+      </picture>
+      {caption && (
+        <figcaption className="mono text-xs mt-2 flex items-baseline gap-2" style={{ color: "var(--mut)" }}>
+          <span style={{ color: "var(--amber)", textShadow: "0 0 4px rgba(0,0,0,0.3)" }}>FIG</span>
+          <span style={{ color: "var(--body)" }}>{caption}</span>
+        </figcaption>
+      )}
+    </figure>
+  );
+}

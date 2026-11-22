@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Chakra_Petch, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
 import { Toaster } from "@/components/ui/toaster";
 
 const chakra = Chakra_Petch({
@@ -132,13 +131,16 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
       {/* Google Tag Manager */}
-      <Script id="gtm" strategy="afterInteractive">
-        {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-TGG6K5NB');`}
-      </Script>
+      <script
+        id="gtm"
+        dangerouslySetInnerHTML={{
+          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-TGG6K5NB');`,
+        }}
+      />
       </head>
       <body
         className={`${chakra.variable} ${inter.variable} ${plexMono.variable} antialiased`}

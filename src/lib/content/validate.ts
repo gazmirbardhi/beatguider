@@ -17,11 +17,47 @@ export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 export const CODE_RE = /^[A-Z]+-\d{3}$/;
 export const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-/* ─── Cross-article validation (anti-fake-testing rule + integrity checks) ───
-   Runs at build time from scripts/gen-content.ts AND at render time from
-   src/lib/content/loader.ts — violations fail the build with the errors
-   listed below. data.ts re-exports this via validateContent() for the
-   style-guide ErrorLog display. */
+/* ─── Canonical date helpers ───
+   Derive the authoritative published/updated dates from the new
+   publishedAt/updatedAt fields, falling back to the legacy
+   publishedDate/updatedDate fields. Used by sitemap.ts, JSON-LD, and
+   the homepage LAST PUB indicator. */
+export function publishedAt(a: ArticleMeta): string {
+  return a.publishedAt ?? a.publishedDate;
+}
+export function updatedAt(a: ArticleMeta): string {
+  return a.updatedAt ?? a.updatedDate ?? a.publishedDate;
+}
+
+/* ─── Build-time date guard ───
+   Throws if any publishedAt is in the future relative to GENERATED_AT,
+   or if updatedAt < publishedAt. Called from scripts/gen-content.ts. */
+export function validateDates(
+  arts: ArticleMeta[],
+  generatedAt: string
+): ValidationError[] {
+  const errs: ValidationError[] = [];
+  const now = new Date(generatedAt);
+  for (const a of arts) {
+    const pub = new Date(publishedAt(a));
+    const upd = new Date(updatedAt(a));
+    if (!isNaN(pub.getTime()) && pub > now) {
+      errs.push({
+        code: a.code,
+        field: "publishedAt",
+        message: `publishedAt ${publishedAt(a)} is in the future (now ${generatedAt})`,
+      });
+    }
+    if (!isNaN(upd.getTime()) && !isNaN(pub.getTime()) && upd < pub) {
+      errs.push({
+        code: a.code,
+        field: "updatedAt",
+        message: `updatedAt ${updatedAt(a)} is earlier than publishedAt ${publishedAt(a)}`,
+      });
+    }
+  }
+  return errs;
+}
 export function validateCrossReferences(
   arts: ArticleMeta[],
   gear: GearEntry[]

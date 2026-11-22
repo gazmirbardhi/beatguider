@@ -7,6 +7,7 @@ import { SimplifiedHero, LatestArticles, CategoryBrowser, SimpleNewsletterCta } 
 import { articles, validateContent, gearDb } from "@/lib/content/data";
 import { navCategories } from "@/lib/content/categories";
 import { pageMetadata, websiteJsonLd } from "@/lib/seo";
+import { updatedAt } from "@/lib/content/validate";
 
 // Homepage canonical + social card — defined here (not in the layout) so
 // child pages can never inherit the wrong canonical.
@@ -25,7 +26,10 @@ const siteLd = websiteJsonLd();
 
 export default function HomePage() {
   const entryCount = articles.length + gearDb.length;
-  const lastPublish = [...articles].sort((a, b) => (b.publishedDate > a.publishedDate ? 1 : -1))[0]?.publishedDate ?? "—";
+  const lastPublish = [...articles]
+    .sort((a, b) => (updatedAt(b) > updatedAt(a) ? 1 : -1))[0]?.updatedAt ??
+    articles[0]?.publishedDate ??
+    "—";
 
   // Nav derives from the category registry (categories.ts) — categories
   // without a navOrder stay off the sticky nav; Tools is appended as a

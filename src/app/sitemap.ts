@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { sitemapEntries, SITE_URL } from "@/lib/seo";
+import { updatedAt } from "@/lib/content/validate";
 
 /* Force static emission so `output: "export"` includes /sitemap.xml in out/. */
 export const dynamic = "force-static";

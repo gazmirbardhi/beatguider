@@ -43,9 +43,16 @@ export type ArticleMeta = {
   category: ArticleCategory;
   topic: string;
   tags: string[];
-  publishedDate: string; // ISO yyyy-mm-dd
-  updatedDate?: string;
+  publishedDate: string; // ISO yyyy-mm-dd (legacy — see publishedAt)
+  updatedDate?: string; // ISO yyyy-mm-dd (legacy — see updatedAt)
   lastVerified?: string;
+  /** Canonical first-publication date (ISO yyyy-mm-dd).
+   *  Set by the author; falls back to publishedDate if absent.
+   *  Never earlier than the site's real deploy date (2026-11-21) unless confirmed real. */
+  publishedAt?: string;
+  /** Canonical last-update date (ISO yyyy-mm-dd).
+   *  Set by the author; falls back to updatedDate then publishedDate if absent. */
+  updatedAt?: string;
   author: string;
   contentType: ContentType;
   experienceType: ExperienceType;

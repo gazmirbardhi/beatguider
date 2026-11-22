@@ -6,6 +6,7 @@ import { SiteFooter, SearchOverlay, ShortcutsHelp } from "./footer";
 import { ThemeProvider, useTheme } from "./theme-toggle";
 import { BootSplash, LedChase, ScrollToTopButton, PostSequence } from "./decorative";
 import { articles, gearDb } from "@/lib/content/data";
+import { updatedAt } from "@/lib/content/validate";
 
 /**
  * SiteShell — the shared page wrapper for ALL routes.
@@ -33,7 +34,10 @@ export function SiteShell({
   const [helpOpen, setHelpOpen] = useState(false);
 
   const entryCount = articles.length + gearDb.length;
-  const lastPublish = [...articles].sort((a, b) => (b.publishedDate > a.publishedDate ? 1 : -1))[0]?.publishedDate ?? "—";
+  const lastPublish = [...articles]
+    .sort((a, b) => (updatedAt(b) > updatedAt(a) ? 1 : -1))[0]?.updatedAt ??
+    articles[0]?.publishedDate ??
+    "—";
   const serial = "2025-0000";
 
   return (

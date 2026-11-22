@@ -21,7 +21,7 @@ const OUT_FILE = join(__dirname, "..", "src", "lib", "content", "generated", "ar
 async function main() {
   // Reuse the exact same loader + validation the article pages use.
   const { loadArticleFiles } = await import("../src/lib/content/loader");
-  const { validateCrossReferences } = await import("../src/lib/content/validate");
+  const { validateCrossReferences, validateDates } = await import("../src/lib/content/validate");
   const { gearDb } = await import("../src/lib/content/gear");
 
   const { articles, issues } = loadArticleFiles();
@@ -39,6 +39,16 @@ async function main() {
     process.exit(1);
   }
 
+  /* Build-time date guard: no future publishedAt, no updatedAt < publishedAt. */
+  const generatedAt = new Date().toISOString().slice(0, 10);
+  const dateErrs = validateDates(articles.map((a) => a.meta), generatedAt);
+  if (dateErrs.length > 0) {
+    console.error(`\n✗ BeatGuider date validation failed — ${dateErrs.length} issue(s):\n`);
+    for (const i of dateErrs) console.error(`  ✗ [${i.code}] ${i.field}: ${i.message}`);
+    console.error("\nFix the MDX frontmatter dates and re-run `bun run content:gen`.");
+    process.exit(1);
+  }
+
   const metas = articles.map((a) => a.meta);
 
   /* Generation date (UTC, day precision) baked into the generated module.
@@ -48,7 +58,6 @@ async function main() {
      hydration mismatch). Pinning "now" to this literal keeps both sides
      identical while preserving the freshness-window behavior. It refreshes
      automatically on every `bun run content:gen` / `build:static`. */
-  const generatedAt = new Date().toISOString().slice(0, 10);
 
   const header = `/*
   GENERATED FILE — DO NOT EDIT DIRECTLY.

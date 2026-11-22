@@ -58,6 +58,8 @@ const frontmatterSchema = z.strictObject({
   publishedDate: isoDate,
   updatedDate: isoDate.optional(),
   lastVerified: isoDate.optional(),
+  publishedAt: isoDate.optional(),
+  updatedAt: isoDate.optional(),
   author: z.string().min(1, "required"),
   contentType: z.enum([
     "guide",
@@ -195,6 +197,8 @@ export function parseArticleFile(
     publishedDate: fm.publishedDate,
     ...(fm.updatedDate !== undefined ? { updatedDate: fm.updatedDate } : {}),
     ...(fm.lastVerified !== undefined ? { lastVerified: fm.lastVerified } : {}),
+    ...(fm.publishedAt !== undefined ? { publishedAt: fm.publishedAt } : {}),
+    ...(fm.updatedAt !== undefined ? { updatedAt: fm.updatedAt } : {}),
     author: fm.author,
     contentType: fm.contentType,
     experienceType: fm.experienceType,

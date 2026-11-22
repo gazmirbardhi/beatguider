@@ -17,6 +17,7 @@ import {
   categoryName,
   getCategory,
 } from "@/lib/content/categories";
+import { publishedAt, updatedAt } from "@/lib/content/validate";
 
 export const SITE_URL = "https://beatguider.com";
 export const SITE_NAME = "BeatGuider";
@@ -140,8 +141,8 @@ export function techArticleJsonLd(a: ArticleMeta) {
     description: a.description,
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    datePublished: a.publishedDate,
-    dateModified: a.updatedDate ?? a.publishedDate,
+    datePublished: publishedAt(a),
+    dateModified: updatedAt(a),
     inLanguage: "en",
     /* wordCount is computed from the article's MDX body at build time
        (scripts/gen-content.ts) — honest, like everything else here. */
@@ -215,7 +216,7 @@ export function sitemapEntries(): SitemapEntry[] {
   for (const a of articles) {
     entries.push({
       path: `/${a.category}/${a.slug}`,
-      lastModified: new Date(a.updatedDate ?? a.publishedDate),
+      lastModified: new Date(updatedAt(a)),
       changeFrequency: "monthly",
       priority: 0.8,
     });

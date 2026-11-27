@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Chakra_Petch, Inter, IBM_Plex_Mono } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -104,19 +105,22 @@ const orgJsonLd = {
   url: "https://beatguider.com",
   slogan: "Test. Fix. Mix.",
   description:
-    "Independent DJ gear, software, troubleshooting and education publication operated by a working DJ.",
+    "Independent DJ gear, software, troubleshooting and education publication operated by DJ Mondi — a working DJ testing gear, software, and techniques hands-on.",
   logo: {
     "@type": "ImageObject",
     url: "https://beatguider.com/logo.png",
     width: 512,
     height: 512,
   },
-  /* TODO(owner): add real social profile URLs */
   sameAs: [
-    "https://youtube.com/@beatguider",
-    "https://instagram.com/beatguider",
-    "https://x.com/beatguider",
+    "https://www.tiktok.com/@mondial_dj",
+    "https://www.instagram.com/dj_mondial_/",
   ],
+  founder: {
+    "@type": "Person",
+    name: "DJ Mondi",
+    url: "https://beatguider.com/author/dj-mondi",
+  },
 };
 
 export default function RootLayout({
@@ -131,16 +135,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
       {/* Google Tag Manager */}
-      <script
-        id="gtm"
-        dangerouslySetInnerHTML={{
-          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-TGG6K5NB');`,
-        }}
-      />
+      <GoogleTagManager gtmId="GTM-TGG6K5NB" />
       </head>
       <body
         className={`${chakra.variable} ${inter.variable} ${plexMono.variable} antialiased`}

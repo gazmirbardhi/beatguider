@@ -5,6 +5,14 @@ import { articles } from "@/lib/content/data";
 import { notFound } from "next/navigation";
 import { personJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 
+const DJ_MONDI_BIO =
+  "DJ Mondi is a working DJ and gear reviewer based in the UK. With years of experience playing weddings, clubs, and private events, he runs BeatGuider — an independent DJ publication that tests controllers, mixers, and software hands-on. No speculation, just real gear used at real gigs. When he's not writing troubleshooting guides or reviewing the latest controllers, you'll find him mixing behind the decks or sharing sets on TikTok and Instagram.";
+
+const DJ_MONDI_SOCIALS = [
+  "https://www.tiktok.com/@mondial_dj",
+  "https://www.instagram.com/dj_mondial_/",
+];
+
 export function generateStaticParams() {
   // generate author slugs from the articles' author fields
   const authors = new Set<string>();
@@ -28,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     // The layout template appends "· BeatGuider" — no brand duplication here.
     title: `${authorName} — author`,
-    description: `Articles by ${authorName}: ${count} published piece${count === 1 ? "" : "s"} on BeatGuider, an independent DJ publication operated by a working DJ.`,
+    description: `Articles by ${authorName}: ${count} published piece${count === 1 ? "" : "s"} on BeatGuider, an independent DJ publication operated by DJ Mondi.`,
     alternates: { canonical: `/author/${slug}` },
     openGraph: {
       title: `${authorName} — author`,
@@ -58,16 +66,24 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     (a) => a.author.toLowerCase().replace(/\s+/g, "-") === slug
   ).length;
 
+  const isMondi = authorName.toLowerCase().replace(/\s+/g, "-") === "dj-mondi";
+
   return (
     <SiteShell>
-      <JsonLd data={personJsonLd(authorName, slug, count)} />
+      <JsonLd
+        data={personJsonLd(authorName, slug, count, {
+          bio: isMondi ? DJ_MONDI_BIO : undefined,
+          sameAs: isMondi ? DJ_MONDI_SOCIALS : undefined,
+          image: isMondi ? "/images/author/dj-mondi.jpg" : undefined,
+        })}
+      />
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: authorName, path: `/author/${slug}` },
         ])}
       />
-      <AuthorPage authorSlug={slug} />
+      <AuthorPage authorSlug={slug} isMondi={isMondi} mondiBio={DJ_MONDI_BIO} mondiSocials={DJ_MONDI_SOCIALS} />
     </SiteShell>
   );
 }

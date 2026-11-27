@@ -11,7 +11,17 @@ import { articles } from "@/lib/content/data";
    years of experience (spec §11).
    ════════════════════════════════════════════════════════════════ */
 
-export function AuthorPage({ authorSlug }: { authorSlug: string }) {
+export function AuthorPage({
+  authorSlug,
+  isMondi = false,
+  mondiBio,
+  mondiSocials,
+}: {
+  authorSlug: string;
+  isMondi?: boolean;
+  mondiBio?: string;
+  mondiSocials?: string[];
+}) {
   // Real byline from the articles data — slug → name reconstruction
   // mangles multi-case names ("beatguider-team" → "Beatguider Team").
   const authorName =
@@ -33,14 +43,22 @@ export function AuthorPage({ authorSlug }: { authorSlug: string }) {
             <span className="mono" style={{ color: "var(--amber)" }}>AUTHOR</span>
           </nav>
           <div className="flex items-center gap-5 flex-wrap">
-            {/* Author avatar — a stylized LCD portrait, not a fabricated photo */}
-            <div className="electronics w-20 h-20 flex items-center justify-center shrink-0">
-              <span
-                className="font-(family-name:--font-chakra) font-bold text-2xl"
-                style={{ color: "var(--amber)" }}
-              >
-                {authorName.split(" ").map((w) => w[0]).join("").slice(0, 2)}
-              </span>
+            {/* Author avatar — real profile photo for DJ Mondi */}
+            <div className="electronics w-20 h-20 flex items-center justify-center shrink-0 relative overflow-hidden rounded-full border border-(--line)">
+              {isMondi ? (
+                <img
+                  src="/images/author/dj-mondi.jpg"
+                  alt="DJ Mondi"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span
+                  className="font-(family-name:--font-chakra) font-bold text-2xl"
+                  style={{ color: "var(--amber)" }}
+                >
+                  {authorName.split(" ").map((w) => w[0]).join("").slice(0, 2)}
+                </span>
+              )}
             </div>
             <div className="min-w-0">
               <h1
@@ -52,7 +70,7 @@ export function AuthorPage({ authorSlug }: { authorSlug: string }) {
               <div className="flex items-center gap-2">
                 <span className="led led-g" aria-hidden="true" />
                 <span className="silk" style={{ color: "var(--mut)" }}>
-                  {authorArticles.length} articles · BeatGuider Team
+                  {authorArticles.length} articles · BeatGuider
                 </span>
               </div>
             </div>
@@ -68,15 +86,39 @@ export function AuthorPage({ authorSlug }: { authorSlug: string }) {
               <span className="led led-a led-breathe" aria-hidden="true" />
               <span className="silk" style={{ color: "var(--amber)" }}>About this author</span>
             </div>
-            <p className="text-sm leading-relaxed" style={{ color: "var(--body)" }}>
-              {authorName} is the default byline for BeatGuider. BeatGuider is operated by a working DJ.
-              We do not invent author biographies, years of experience, venues, tests or equipment usage
-              (per the BeatGuider editorial policy). When an article is genuinely authored by a specific
-              individual, the byline + a real, verifiable bio will appear here.
-            </p>
-            <p className="text-xs mt-3 mono" style={{ color: "var(--mut)" }}>
-              &gt; this page is honest about its simplicity — no fabricated credentials
-            </p>
+            {isMondi && mondiBio ? (
+              <>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--body)" }}>
+                  {mondiBio}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {(mondiSocials ?? []).map((url) => (
+                    <a
+                      key={url}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs mono hover:text-amber tap"
+                      style={{ color: "var(--mut)" }}
+                    >
+                      {new URL(url).hostname.replace("www.", "")}
+                    </a>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--body)" }}>
+                  {authorName} is the default byline for BeatGuider. BeatGuider is operated by a working DJ.
+                  We do not invent author biographies, years of experience, venues, tests or equipment usage
+                  (per the BeatGuider editorial policy). When an article is genuinely authored by a specific
+                  individual, the byline + a real, verifiable bio will appear here.
+                </p>
+                <p className="text-xs mt-3 mono" style={{ color: "var(--mut)" }}>
+                  &gt; this page is honest about its simplicity — no fabricated credentials
+                </p>
+              </>
+            )}
           </div>
         </div>
       </section>

@@ -13,7 +13,7 @@ import type { ArticleMeta } from "../types";
 
 /* UTC date this file was generated — the deterministic "as of" reference
    for freshnessStatus(). Day precision: freshness windows are in months. */
-export const GENERATED_AT = "2026-11-22";
+export const GENERATED_AT = "2026-11-27";
 
 export const articles: ArticleMeta[] = [
   {
@@ -32,9 +32,7 @@ export const articles: ArticleMeta[] = [
     "publishedDate": "2025-01-12",
     "updatedDate": "2025-01-20",
     "lastVerified": "2025-01-20",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "hands-on",
     "ownershipStatus": "owned",
@@ -106,7 +104,7 @@ export const articles: ArticleMeta[] = [
       }
     ],
     "affiliateEligible": true,
-    "wordCount": 498,
+    "wordCount": 484,
     "readingTime": 2
   },
   {
@@ -124,9 +122,7 @@ export const articles: ArticleMeta[] = [
     "publishedDate": "2025-01-08",
     "updatedDate": "2025-01-18",
     "lastVerified": "2025-01-18",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "long-term-owned",
     "ownershipStatus": "owned",
@@ -151,7 +147,7 @@ export const articles: ArticleMeta[] = [
       "GEAR-014"
     ],
     "affiliateEligible": true,
-    "wordCount": 359,
+    "wordCount": 345,
     "readingTime": 2
   },
   {
@@ -168,9 +164,7 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2025-01-15",
     "lastVerified": "2025-01-15",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "hands-on",
     "ownershipStatus": "owned",
@@ -197,8 +191,8 @@ export const articles: ArticleMeta[] = [
       "GEAR-015"
     ],
     "affiliateEligible": true,
-    "wordCount": 164,
-    "readingTime": 1
+    "wordCount": 974,
+    "readingTime": 5
   },
   {
     "code": "SW-008",
@@ -214,9 +208,7 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2025-01-10",
     "lastVerified": "2025-01-14",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "software-tested",
     "tested": {
@@ -234,8 +226,8 @@ export const articles: ArticleMeta[] = [
     "relatedGear": [
       "GEAR-014"
     ],
-    "wordCount": 244,
-    "readingTime": 1
+    "wordCount": 699,
+    "readingTime": 3
   },
   {
     "code": "LEARN-021",
@@ -251,13 +243,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2025-01-05",
     "lastVerified": "2025-01-05",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 212,
-    "readingTime": 1
+    "wordCount": 641,
+    "readingTime": 3
   },
   {
     "code": "LEARN-022",
@@ -273,13 +263,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2025-01-06",
     "lastVerified": "2025-01-06",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 237,
-    "readingTime": 1
+    "wordCount": 687,
+    "readingTime": 3
   },
   {
     "code": "FIX-002",
@@ -296,9 +284,7 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2025-01-11",
     "lastVerified": "2025-01-14",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "software-tested",
     "tested": {
@@ -314,8 +300,8 @@ export const articles: ArticleMeta[] = [
       "environment": "Reproducible crash lab"
     },
     "quickAnswer": "rekordbox export crashes almost always trace back to a corrupt track in the playlist, a USB drive with the wrong file system, or a permissions issue after a macOS upgrade. Rule these out in this order before reinstalling anything.",
-    "wordCount": 301,
-    "readingTime": 2
+    "wordCount": 287,
+    "readingTime": 1
   },
   {
     "code": "MOB-004",
@@ -332,9 +318,7 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2025-01-09",
     "lastVerified": "2025-01-09",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "long-term-owned",
     "ownershipStatus": "owned",
@@ -346,7 +330,7 @@ export const articles: ArticleMeta[] = [
       "platforms": [],
       "environment": "Multiple real gig venues, 2022-2024"
     },
-    "wordCount": 204,
+    "wordCount": 190,
     "readingTime": 1
   },
   {
@@ -365,12 +349,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-01",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 1984,
+    "wordCount": 1970,
     "readingTime": 10
   },
   {
@@ -391,12 +373,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-03",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 4213,
+    "wordCount": 4199,
     "readingTime": 21
   },
   {
@@ -416,12 +396,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-05",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2445,
+    "wordCount": 2431,
     "readingTime": 12
   },
   {
@@ -440,13 +418,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-07",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2125,
+    "wordCount": 2111,
     "readingTime": 11
   },
   {
@@ -465,13 +441,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-09",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 4070,
+    "wordCount": 4056,
     "readingTime": 20
   },
   {
@@ -490,13 +464,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-11",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2333,
+    "wordCount": 2319,
     "readingTime": 12
   },
   {
@@ -515,14 +487,12 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-13",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1500,
-    "readingTime": 8
+    "wordCount": 1486,
+    "readingTime": 7
   },
   {
     "code": "GEAR-023",
@@ -540,13 +510,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-15",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2400,
+    "wordCount": 2386,
     "readingTime": 12
   },
   {
@@ -565,13 +533,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-17",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1986,
+    "wordCount": 1972,
     "readingTime": 10
   },
   {
@@ -594,13 +560,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-06-03",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Compare the best DJ software in 2026: Serato vs Rekordbox vs Traktor vs Virtual DJ vs Djay Pro. Find the perfect software for your setup and budget.",
-    "wordCount": 2980,
+    "wordCount": 2966,
     "readingTime": 15
   },
   {
@@ -619,13 +583,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-19",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1785,
+    "wordCount": 1771,
     "readingTime": 9
   },
   {
@@ -645,13 +607,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-21",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 5361,
+    "wordCount": 5347,
     "readingTime": 27
   },
   {
@@ -670,13 +630,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-23",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2343,
+    "wordCount": 2329,
     "readingTime": 12
   },
   {
@@ -695,12 +653,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-25",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2959,
+    "wordCount": 2945,
     "readingTime": 15
   },
   {
@@ -720,13 +676,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-27",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1098,
+    "wordCount": 1084,
     "readingTime": 5
   },
   {
@@ -750,13 +704,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-31",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
     "quickAnswer": "Fix DJ audio problems: power adapter hum, Serato laptop speaker noise, balanced vs unbalanced cables, and phone Wi-Fi interference. Every fix explained clearly.",
-    "wordCount": 4486,
+    "wordCount": 4472,
     "readingTime": 22
   },
   {
@@ -776,12 +728,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-02",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2388,
+    "wordCount": 2374,
     "readingTime": 12
   },
   {
@@ -804,14 +754,12 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-04",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "roundup",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 4707,
-    "readingTime": 24
+    "wordCount": 4693,
+    "readingTime": 23
   },
   {
     "code": "LEARN-028",
@@ -834,12 +782,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-06",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 4334,
+    "wordCount": 4320,
     "readingTime": 22
   },
   {
@@ -859,12 +805,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-08",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 3366,
+    "wordCount": 3352,
     "readingTime": 17
   },
   {
@@ -884,12 +828,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-10",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2958,
+    "wordCount": 2944,
     "readingTime": 15
   },
   {
@@ -908,12 +850,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-12",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2927,
+    "wordCount": 2913,
     "readingTime": 15
   },
   {
@@ -935,12 +875,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-14",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 6168,
+    "wordCount": 6154,
     "readingTime": 31
   },
   {
@@ -966,13 +904,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-16",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "DJ stems comparison 2026: 10 platforms tested head-to-head including Serato, Rekordbox, Virtual DJ, Traktor, and djay Pro. Full rankings and stem quality analysis.",
-    "wordCount": 5368,
+    "wordCount": 5354,
     "readingTime": 27
   },
   {
@@ -991,12 +927,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-18",
     "updatedDate": "2026-02-18",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 1950,
+    "wordCount": 1936,
     "readingTime": 10
   },
   {
@@ -1016,12 +950,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-20",
     "updatedDate": "2026-02-20",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2719,
+    "wordCount": 2705,
     "readingTime": 14
   },
   {
@@ -1043,13 +975,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-22",
     "updatedDate": "2026-02-22",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
     "quickAnswer": "Fix five common Virtual DJ problems plus a complete media redundancy strategy to save your set when USBs, SD cards, or hard drives fail mid-gig.",
-    "wordCount": 3832,
+    "wordCount": 3818,
     "readingTime": 19
   },
   {
@@ -1070,12 +1000,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-24",
     "updatedDate": "2026-02-24",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 6688,
+    "wordCount": 6674,
     "readingTime": 33
   },
   {
@@ -1094,12 +1022,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-02-26",
     "updatedDate": "2026-02-26",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 3812,
+    "wordCount": 3798,
     "readingTime": 19
   },
   {
@@ -1118,13 +1044,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-02",
     "updatedDate": "2026-03-02",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 1304,
-    "readingTime": 7
+    "wordCount": 1290,
+    "readingTime": 6
   },
   {
     "code": "LEARN-038",
@@ -1143,12 +1067,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-04",
     "updatedDate": "2026-03-04",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 3486,
+    "wordCount": 3472,
     "readingTime": 17
   },
   {
@@ -1172,12 +1094,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-06",
     "updatedDate": "2026-03-06",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 6003,
+    "wordCount": 5989,
     "readingTime": 30
   },
   {
@@ -1196,12 +1116,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-10",
     "updatedDate": "2026-03-10",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4288,
+    "wordCount": 4274,
     "readingTime": 21
   },
   {
@@ -1221,12 +1139,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-12",
     "updatedDate": "2026-03-12",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 4129,
+    "wordCount": 4115,
     "readingTime": 21
   },
   {
@@ -1245,12 +1161,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-14",
     "updatedDate": "2026-03-14",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1894,
+    "wordCount": 1880,
     "readingTime": 9
   },
   {
@@ -1272,12 +1186,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-16",
     "updatedDate": "2026-03-16",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 8829,
+    "wordCount": 8815,
     "readingTime": 44
   },
   {
@@ -1300,12 +1212,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-18",
     "updatedDate": "2026-03-18",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 3692,
+    "wordCount": 3678,
     "readingTime": 18
   },
   {
@@ -1324,12 +1234,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-20",
     "updatedDate": "2026-03-20",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1695,
+    "wordCount": 1681,
     "readingTime": 8
   },
   {
@@ -1353,12 +1261,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-22",
     "updatedDate": "2026-03-22",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 8282,
+    "wordCount": 8268,
     "readingTime": 41
   },
   {
@@ -1377,12 +1283,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-24",
     "updatedDate": "2026-03-24",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 2119,
+    "wordCount": 2105,
     "readingTime": 11
   },
   {
@@ -1403,12 +1307,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-26",
     "updatedDate": "2026-03-26",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 3795,
+    "wordCount": 3781,
     "readingTime": 19
   },
   {
@@ -1427,12 +1329,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-28",
     "updatedDate": "2026-03-28",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 5986,
+    "wordCount": 5972,
     "readingTime": 30
   },
   {
@@ -1451,12 +1351,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-03-30",
     "updatedDate": "2026-03-30",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1741,
+    "wordCount": 1727,
     "readingTime": 9
   },
   {
@@ -1475,13 +1373,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-01",
     "updatedDate": "2026-04-01",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 1908,
-    "readingTime": 10
+    "wordCount": 1894,
+    "readingTime": 9
   },
   {
     "code": "LEARN-051",
@@ -1503,12 +1399,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-03",
     "updatedDate": "2026-04-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2820,
+    "wordCount": 2806,
     "readingTime": 14
   },
   {
@@ -1527,13 +1421,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-05",
     "updatedDate": "2026-04-05",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2476,
+    "wordCount": 2462,
     "readingTime": 12
   },
   {
@@ -1552,13 +1444,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-07",
     "updatedDate": "2026-04-07",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2118,
+    "wordCount": 2104,
     "readingTime": 11
   },
   {
@@ -1577,13 +1467,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-09",
     "updatedDate": "2026-04-09",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2168,
+    "wordCount": 2154,
     "readingTime": 11
   },
   {
@@ -1602,13 +1490,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-11",
     "updatedDate": "2026-04-11",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1773,
+    "wordCount": 1759,
     "readingTime": 9
   },
   {
@@ -1627,13 +1513,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-13",
     "updatedDate": "2026-04-13",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2410,
+    "wordCount": 2396,
     "readingTime": 12
   },
   {
@@ -1652,12 +1536,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-15",
     "updatedDate": "2026-04-15",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 1643,
+    "wordCount": 1629,
     "readingTime": 8
   },
   {
@@ -1677,12 +1559,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-17",
     "updatedDate": "2026-04-17",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4136,
+    "wordCount": 4122,
     "readingTime": 21
   },
   {
@@ -1701,13 +1581,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-19",
     "updatedDate": "2026-04-19",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Pioneer DDJ FLX4 vs DDJ Rev1 complete comparison: layout, software compatibility, jog wheel size, effects, beginner features, and which controller fits your DJ style.",
-    "wordCount": 2427,
+    "wordCount": 2413,
     "readingTime": 12
   },
   {
@@ -1726,13 +1604,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-21",
     "updatedDate": "2026-04-21",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Both the Pioneer PLX 1000 and Stanton ST-150 share the same Super OEM DNA — the same motor and core components. This comparison covers: Super OEM Design: Same motor, same underpinnings across multiple brands Build Quality: PLX 1000 has a better brushed metal finish; ST-150 is more utilitarian Features: ST-150 has reverse, key lock, adjustable brake, internal preamp — PLX 1000 is no-frills Pitch Sl",
-    "wordCount": 2286,
+    "wordCount": 2272,
     "readingTime": 11
   },
   {
@@ -1757,13 +1633,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-23",
     "updatedDate": "2026-04-23",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Pioneer (Alpha Theta) is the industry standard for clubs worldwide — extreme reliability, consistent workflow, and ecosystem compatibility. Denon offers fantastic products at a fraction of the price with more features and streaming support, but has historically struggled with stability and USB load times. Within the Pioneer lineup, the XDJ-AZ is built for club-style DJs with CDJ-3000 jog wheels an",
-    "wordCount": 3671,
+    "wordCount": 3657,
     "readingTime": 18
   },
   {
@@ -1786,13 +1660,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-25",
     "updatedDate": "2026-04-25",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "The XDJ-AZ and Opus Quad are two very different four-channel standalone DJ systems from the same company. The XDJ-AZ is a club-style controller with CDJ-3000 jog wheels, ProDJ Link for external decks, Beatport streaming, wireless Sonic Link headphones, and Gate Cue mode. The Opus Quad targets high-end mobile DJs with a striking curved design, Zone output for multi-room audio, XY effects pad, built",
-    "wordCount": 3693,
+    "wordCount": 3679,
     "readingTime": 18
   },
   {
@@ -1811,13 +1683,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-04-29",
     "updatedDate": "2026-04-29",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Rekordbox vs Serato for beginners: honest comparison of USB vs laptop club setups, stems support, and which software is right for your DJ style and goals.",
-    "wordCount": 2800,
+    "wordCount": 2786,
     "readingTime": 14
   },
   {
@@ -1836,13 +1706,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-01",
     "updatedDate": "2026-05-01",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2456,
+    "wordCount": 2442,
     "readingTime": 12
   },
   {
@@ -1861,13 +1729,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-03",
     "updatedDate": "2026-05-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2091,
+    "wordCount": 2077,
     "readingTime": 10
   },
   {
@@ -1886,13 +1752,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-05",
     "updatedDate": "2026-05-05",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1553,
+    "wordCount": 1539,
     "readingTime": 8
   },
   {
@@ -1911,13 +1775,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-07",
     "updatedDate": "2026-05-07",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Both the Sennheiser HD58X Jubilee and AKG K7XX are excellent headphones, but they serve different purposes. This comparison covers: HD58X Sound Signature: Neutral, dry, with better sub-bass extension and resolution K7XX Sound Signature: Laid-back, comfortable, perfect for movies and gaming Build Quality: Both are mostly plastic — the HD58X feels narrower than the HD600 line Value: HD58X at $150 vs",
-    "wordCount": 1387,
+    "wordCount": 1373,
     "readingTime": 7
   },
   {
@@ -1936,12 +1798,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-09",
     "updatedDate": "2026-05-09",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2370,
+    "wordCount": 2356,
     "readingTime": 12
   },
   {
@@ -1960,12 +1820,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-11",
     "updatedDate": "2026-05-11",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 1595,
+    "wordCount": 1581,
     "readingTime": 8
   },
   {
@@ -1984,13 +1842,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-13",
     "updatedDate": "2026-05-13",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1128,
+    "wordCount": 1114,
     "readingTime": 6
   },
   {
@@ -2009,13 +1865,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-15",
     "updatedDate": "2026-05-15",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 1540,
+    "wordCount": 1526,
     "readingTime": 8
   },
   {
@@ -2034,12 +1888,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-17",
     "updatedDate": "2026-05-17",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2067,
+    "wordCount": 2053,
     "readingTime": 10
   },
   {
@@ -2058,12 +1910,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-06-03",
     "updatedDate": "2026-06-03",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
-    "wordCount": 4187,
+    "wordCount": 4173,
     "readingTime": 21
   },
   {
@@ -2082,13 +1932,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-19",
     "updatedDate": "2026-05-19",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "comparison",
     "experienceType": "research-based",
     "quickAnswer": "Vinyl DJing vs CDJs: side-by-side comparison of BPM readouts, cueing, beat matching, and why vinyl DJs are so passionate about the craft of turntable mixing.",
-    "wordCount": 2916,
+    "wordCount": 2902,
     "readingTime": 15
   },
   {
@@ -2107,12 +1955,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-21",
     "updatedDate": "2026-05-21",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2921,
+    "wordCount": 2907,
     "readingTime": 15
   },
   {
@@ -2134,12 +1980,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-23",
     "updatedDate": "2026-05-23",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 4611,
+    "wordCount": 4597,
     "readingTime": 23
   },
   {
@@ -2158,12 +2002,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-25",
     "updatedDate": "2026-05-25",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "explainer",
     "experienceType": "research-based",
-    "wordCount": 2041,
+    "wordCount": 2027,
     "readingTime": 10
   },
   {
@@ -2182,12 +2024,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-27",
     "updatedDate": "2026-05-27",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 2841,
+    "wordCount": 2827,
     "readingTime": 14
   },
   {
@@ -2209,13 +2049,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-29",
     "updatedDate": "2026-05-29",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 3570,
+    "wordCount": 3556,
     "readingTime": 18
   },
   {
@@ -2238,12 +2076,10 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-05-31",
     "updatedDate": "2026-05-31",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "business",
     "experienceType": "research-based",
-    "wordCount": 6123,
+    "wordCount": 6109,
     "readingTime": 31
   },
   {
@@ -2263,13 +2099,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-06-02",
     "updatedDate": "2026-06-02",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "review",
     "experienceType": "research-based",
     "affiliateEligible": true,
-    "wordCount": 2745,
+    "wordCount": 2731,
     "readingTime": 14
   },
   {
@@ -2292,13 +2126,11 @@ export const articles: ArticleMeta[] = [
     ],
     "publishedDate": "2026-01-29",
     "updatedDate": "2026-08-09",
-    "publishedAt": "2026-11-21",
-    "updatedAt": "2026-11-21",
-    "author": "BeatGuider Team",
+    "author": "dj mondi",
     "contentType": "guide",
     "experienceType": "research-based",
     "quickAnswer": "Fix a DDJ-FLX4 that rekordbox cannot detect. Check the correct USB-C port, cable, direct connection, OS detection, current software, and firmware.",
-    "wordCount": 2554,
+    "wordCount": 2540,
     "readingTime": 13
   }
 ];

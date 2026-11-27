@@ -180,15 +180,24 @@ export function techArticleJsonLd(a: ArticleMeta) {
   };
 }
 
-export function personJsonLd(name: string, slug: string, articleCount: number) {
+export function personJsonLd(
+  name: string,
+  slug: string,
+  articleCount: number,
+  opts?: { bio?: string; sameAs?: string[]; image?: string }
+) {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     name,
     url: absoluteUrl(`/author/${slug}`),
-    jobTitle: "Author",
-    description: `${name} — byline for ${articleCount} published article${articleCount === 1 ? "" : "s"} on ${SITE_NAME}, an independent DJ publication operated by a working DJ.`,
+    jobTitle: "DJ & Editor",
+    description:
+      opts?.bio ??
+      `${name} — byline for ${articleCount} published article${articleCount === 1 ? "" : "s"} on ${SITE_NAME}, an independent DJ publication operated by a working DJ.`,
+    image: opts?.image ?? undefined,
     worksFor: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    sameAs: opts?.sameAs ?? [],
   };
 }
 

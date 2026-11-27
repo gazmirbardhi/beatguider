@@ -144,7 +144,15 @@ export function ArticleView({
               non-breaking unit, so flex-wrap never leaves a stray “·” at the
               start of a wrapped line on narrow phones. */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs mono mb-5" style={{ color: "var(--panel-silk-muted)" }}>
-            <span className="whitespace-nowrap">By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-amber tap" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
+            <span className="whitespace-nowrap flex items-center gap-1.5">
+              {article.author.toLowerCase().replace(/\s+/g, "-") === "dj-mondi" ? (
+                <img
+                  src="/images/author/dj-mondi.jpg"
+                  alt="DJ Mondi"
+                  className="w-4 h-4 rounded-full object-cover border border-(--line)"
+                />
+              ) : null}
+              By <Link href={`/author/${article.author.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-amber tap" style={{ color: "var(--text2)" }}>{article.author}</Link></span>
             <span className="whitespace-nowrap">· Published {article.publishedDate}</span>
             {article.updatedDate && (
               <span className="whitespace-nowrap">· Updated {article.updatedDate}</span>

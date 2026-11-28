@@ -6,6 +6,7 @@
 */
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { publishedAt, updatedAt } from "../src/lib/content/validate";
 
 const OUT = join(process.cwd(), "public", "feed.xml");
 
@@ -16,13 +17,13 @@ async function main() {
   // Full-post feed: every published article is included so no post is
   // hidden from subscribers/crawlers by an arbitrary recency cap.
   const sorted = [...articles].sort((a, b) =>
-    new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()
+    new Date(publishedAt(b)).getTime() - new Date(publishedAt(a)).getTime()
   );
 
   const items = sorted.map((a) => {
     // Real permalink — the article's own URL, not a homepage anchor.
     const url = `https://beatguider.com/${a.category}/${a.slug}`;
-    const pub = new Date(a.publishedDate).toISOString();
+    const pub = new Date(publishedAt(a)).toISOString();
     const cats = a.tags.map((t) => `      <category>${escapeXml(t)}</category>`).join("\n");
     return `    <item>
       <title>${escapeXml(a.title)}</title>
@@ -34,7 +35,13 @@ ${cats}
     </item>`;
   }).join("\n");
 
-  const lastBuild = new Date().toISOString();
+  // Deterministic lastBuildDate: the most recent article update, NOT the
+  // wall clock — a Date.now()-based value churns the tracked feed.xml diff
+  // on every regeneration even when no content changed.
+  const lastModified = [...articles].sort(
+    (a, b) => new Date(updatedAt(b)).getTime() - new Date(updatedAt(a)).getTime()
+  )[0];
+  const lastBuild = new Date(updatedAt(lastModified)).toISOString();
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -45,8 +52,8 @@ ${cats}
     <language>en-us</language>
     <lastBuildDate>${lastBuild}</lastBuildDate>
     <atom:link href="https://beatguider.com/feed.xml" rel="self" type="application/rss+xml" />
-    <managingEditor>editorial@beatguider.com (BeatGuider Team)</managingEditor>
-    <webMaster>webmaster@beatguider.com (BeatGuider Team)</webMaster>
+    <managingEditor>editorial@beatguider.com (DJ Mondi)</managingEditor>
+    <webMaster>webmaster@beatguider.com (DJ Mondi)</webMaster>
     <ttl>60</ttl>
 ${items}
   </channel>

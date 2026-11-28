@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useRef } from "react";
 import Link from "next/link";
-import { ModeRocker, ModeIconButton } from "./theme-toggle";
+import { ModeRocker, ModeIconButton, useTheme } from "./theme-toggle";
 
 /* ───────────────────────── FACEPLATE HEADER ─────────────────────────
    The top of the device. Wordmark (amber on "GUIDER"), model tag BG-1,
@@ -12,12 +12,14 @@ import { ModeRocker, ModeIconButton } from "./theme-toggle";
 export function FaceplateHeader({
   entryCount,
   lastPublish,
-  mode,
 }: {
   entryCount: number;
   lastPublish: string;
-  mode: string;
 }) {
+  // The MODE readout mirrors the live chassis state (synced with the
+  // rocker) instead of a hardcoded value. Pre-mount it shows NIGHT —
+  // the no-flash default the inline head script also assumes.
+  const { mode, mounted } = useTheme();
   return (
     <header className="panel-surface border-b border-(--line)">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -39,7 +41,11 @@ export function FaceplateHeader({
                 GUIDER
               </span>
             </Link>
-            <span className="codechip hidden sm:inline-flex">BG-1</span>
+            {/* .codechip sets its own display, so `hidden` must live on an
+                outer controller span to win the cascade (see ReaderBar). */}
+            <span className="hidden sm:inline-flex">
+              <span className="codechip">BG-1</span>
+            </span>
           </div>
 
           {/* LED row + mode switch */}
@@ -62,7 +68,7 @@ export function FaceplateHeader({
         {/* LCD status line */}
         <LcdStatus
           segments={[
-            { label: "MODE", value: mode.toUpperCase() },
+            { label: "MODE", value: (mounted ? mode : "night").toUpperCase() },
             { label: "ENTRIES", value: String(entryCount).padStart(3, "0") },
             { label: "LAST PUB", value: lastPublish },
             { label: "SIG", value: "OK" },
@@ -141,7 +147,6 @@ export function LcdStatus({
     </div>
   );
 }
-
 /* ───────────────────────── STICKY HARDWARE NAV ─────────────────────────
    GEAR / SOFTWARE / FIX / LEARN / SEARCH — 44px targets, active amber,
    SEARCH focuses the search module.
@@ -154,6 +159,11 @@ export function StickyNav({
   onSearchClick?: () => void;
 }) {
   const [active, setActive] = useState<string>("");
+  // edge-fade state — masks the scrolling item list instead of painting a
+  // gradient overlay (the nav bar is translucent + backdrop-blurred, so a
+  // solid gradient patch read as a smudge, and covered the bottom border).
+  const ulRef = useRef<HTMLUListElement>(null);
+  const [edge, setEdge] = useState({ scrollable: false, start: true, end: true });
 
   useEffect(() => {
     // observe sections to highlight active nav
@@ -174,6 +184,27 @@ export function StickyNav({
     return () => obs.disconnect();
   }, [items]);
 
+  useEffect(() => {
+    const el = ulRef.current;
+    if (!el) return;
+    const update = () => {
+      const overflow = el.scrollWidth - el.clientWidth;
+      setEdge({
+        scrollable: overflow > 1,
+        start: el.scrollLeft <= 1,
+        end: el.scrollLeft >= overflow - 1,
+      });
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <nav
       className="panel-surface sticky top-0 z-40 border-b border-(--line) backdrop-blur-sm"
@@ -181,16 +212,25 @@ export function StickyNav({
       aria-label="Primary"
     >
       <div className="mx-auto max-w-7xl px-2 sm:px-6 relative">
-        <ul className="flex items-stretch gap-0 overflow-x-auto no-scrollbar">
+        <ul
+          ref={ulRef}
+          className="flex items-stretch gap-0 overflow-x-auto no-scrollbar"
+          style={
+            edge.scrollable
+              ? (() => {
+                  const mask = `linear-gradient(90deg, transparent 0, #000 ${edge.start ? "0rem" : "5rem"}, #000 calc(100% - ${edge.end ? "0rem" : "5rem"}), transparent 100%)`;
+                  return { WebkitMaskImage: mask, maskImage: mask };
+                })()
+              : undefined
+          }
+        >
           {items.map((it) => {
             const isActive = active === it.href;
             return (
               <li key={it.href} className="shrink-0">
                 <a
                   href={it.href}
-                  className={`relative flex items-center gap-2 px-3 sm:px-4 h-11 font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold tracking-wider uppercase transition-colors ${isActive ? "text-amber" : "text-text"} hover:text-(--text2)
-                    isActive ? "text-[var(--amber)]" : "text-text hover:text-[var(--text2)]"
-                  }`}
+                  className={`relative flex items-center gap-2 px-3 sm:px-4 h-11 font-(family-name:--font-chakra) text-xs sm:text-sm font-semibold tracking-wider uppercase transition-colors ${isActive ? "text-amber" : "text-text hover:text-(--text2)"}`}
                 >
                   {isActive && (
                     <span className="absolute left-2 top-1.5 w-1 h-1 rounded-full led led-a" aria-hidden="true" />
@@ -214,15 +254,9 @@ export function StickyNav({
             </li>
           )}
         </ul>
-        {/* right-edge fade — mobile only, signals more nav items to the right
-            of the horizontal scroll (the last "Mobile DJ" item is otherwise
-            cut with no affordance). Wide + opaque enough at the edge to
-            fully dissolve the truncated glyph; pointer-events-none so taps
-            pass through to the items beneath. */}
-        <div
-          className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-0 w-14 bg-linear-to-l from-(--card)/85 via-(--card)/85 to-transparent"
-          aria-hidden="true"
-        />
+        {/* Edge fades are handled by a mask on the <ul> itself (see the edge
+            state above) — no painted overlay, so nothing covers the nav's
+            bottom border or smudges against the translucent, blurred bar. */}
       </div>
     </nav>
   );
@@ -375,14 +409,19 @@ export function ReaderBar({
                 {String(progress).padStart(3, "0")}%
               </span>
             </div>
-            {/* chapter indicator — which section the reader is in */}
+            {/* chapter indicator — which section the reader is in.
+                Visibility lives on an outer controller span: .codechip sets
+                its own display (unlayered CSS), which would defeat the
+                layered `hidden` utility on the same element. */}
             {chapter && (
-              <span
-                className="hidden md:inline-flex codechip max-w-70"
-                aria-label={`Current section: ${chapter}`}
-              >
-                <span className="led led-a shrink-0" aria-hidden="true" />
-                <span className="truncate">{chapter}</span>
+              <span className="hidden md:inline-flex" aria-hidden="false">
+                <span
+                  className="codechip max-w-70"
+                  aria-label={`Current section: ${chapter}`}
+                >
+                  <span className="led led-a shrink-0" aria-hidden="true" />
+                  <span className="truncate">{chapter}</span>
+                </span>
               </span>
             )}
             {/* mobile compact percent */}

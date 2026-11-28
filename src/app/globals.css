@@ -97,7 +97,9 @@
   --line2: #333333;
   --text: #D8D8D8;
   --text2: #F2F2F2;
-  --mut: #7E7E7E;
+  /* ≈5.6:1 on --card — the old #7E7E7E landed at 4.46:1 on cards, under
+     the 4.5:1 AA line for the 9-11px silkscreen labels that use it. */
+  --mut: #8F8F8F;
   --body: #C6C6C6;
   --acc: #FFB000;
   --acc-b: rgba(255, 176, 0, 0.4);
@@ -137,9 +139,9 @@
   --line2: #BDBDB8;
   --text: #3A3A38;
   --text2: #1F1F1E;
-  --mut: #7B7B74;
+  --mut: #65655F;
   --body: #4A4A46;
-  --acc: #A67708;
+  --acc: #7D5A06;
   --acc-b: rgba(166, 119, 8, 0.5);
   --acc-soft: rgba(166, 119, 8, 0.10);
   --err: #C73225;
@@ -158,6 +160,9 @@
   --disp: #0A0A0A;
   /* panel secondary silk text — calibrated for 4.5:1 on small text */
   --panel-silk-muted: #4A4A46;
+  /* LCD sub-labels sit on the DARK display strip in BOTH modes — keep this
+     light enough for 4.5:1 on #0A0A0A. (Darkened variants belong on light
+     plates: see --acc.) */
   --panel-silk-dim: #A67708;
   --disp-b: #2E2E2E;
   --amber: #FFB000;
@@ -267,7 +272,9 @@
       rgba(255, 255, 255, 0.28) 3px
     );
 }
-/* night brushed = subtle noise via vertical lines */
+/* night brushed = subtle noise via vertical lines
+   (mobile devices disable ALL brushed textures in the
+   MOBILE OPTIMIZATION block at the bottom of this file) */
 .brushed {
   background-image: repeating-linear-gradient(
     90deg,
@@ -443,7 +450,9 @@
 
 /* ─── spec plate ─── */
 .specplate {
-  background: var(--plate);
+  /* background-COLOR only — the `background` shorthand silently resets
+     background-image, which killed the .brushed texture on every plate */
+  background-color: var(--plate);
   border: 1px solid var(--plate-b);
   border-radius: 4px;
   position: relative;
@@ -452,8 +461,7 @@
    margin band above the plate's bottom edge */
 .specplate > :last-child { margin-bottom: 0; }
 [data-mode="day"] .specplate {
-  background:
-    var(--plate);
+  background-color: var(--plate);
 }
 .specplate.brushed-day {
   /* extra brushed emphasis on day */
@@ -499,7 +507,10 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 4px 8px;
+  /* 8px vertical padding keeps the switch hardware-like while giving the
+     button a ~27px hit area — the 4px original measured 19px tall, below
+     the 24px WCAG 2.5.8 target-size minimum. */
+  padding: 8px 10px;
   border-radius: 2px;
   color: var(--mut);
   cursor: pointer;
@@ -835,38 +846,36 @@ html { scroll-behavior: smooth; }
 }
 
 /* ─── scroll affordance (ScrollFade, components.tsx) ───
-   Outer wrapper (position:relative) carries edge fades; the inner
-   .scrollfade-scroll div does the actual horizontal scrolling. A fade
-   appears on any side that still has content beyond the edge, and
-   never renders when everything fits. Wider on phones so truncated
-   table text clearly reads as "swipe" rather than "broken". */
+   Outer wrapper (position:relative) tracks scroll state via data
+   attributes; the inner .scrollfade-scroll div does the actual
+   horizontal scrolling. A fade appears on any side that still has
+   content beyond the edge, and never renders when everything fits.
+
+   The fade is a MASK on the scrolling content — not a painted
+   gradient. The old approach painted a var(--bg) gradient OVER the
+   table, but tables sit on plates/cards whose surface color differs
+   from --bg, which read as a dirty shadow smudge on the table edge
+   (especially in DAY mode). A mask fades the actual pixels out, so
+   it works over any surface in both themes. Wider on phones so
+   truncated table text clearly reads as "swipe" rather than
+   "broken". */
 .scrollfade { position: relative; }
 .scrollfade-scroll {
   overflow-x: auto;
   scrollbar-width: thin;
   border-radius: inherit;
 }
-.scrollfade[data-scroll]:not([data-end])::after {
-  content: "";
-  position: absolute;
-  top: 0; right: 0; bottom: 0;
-  width: 2.25rem;
-  background: linear-gradient(270deg, var(--bg), transparent);
-  pointer-events: none;
-  z-index: 1;
+.scrollfade[data-scroll] .scrollfade-scroll {
+  --sf-start: 0rem;
+  --sf-end: 0rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--sf-start), #000 calc(100% - var(--sf-end)), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 var(--sf-start), #000 calc(100% - var(--sf-end)), transparent 100%);
 }
-.scrollfade[data-scroll]:not([data-start])::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 2.25rem;
-  background: linear-gradient(90deg, var(--bg), transparent);
-  pointer-events: none;
-  z-index: 1;
-}
+.scrollfade[data-scroll]:not([data-start]) .scrollfade-scroll { --sf-start: 2.25rem; }
+.scrollfade[data-scroll]:not([data-end]) .scrollfade-scroll { --sf-end: 2.25rem; }
 @media (max-width: 640px) {
-  .scrollfade[data-scroll]:not([data-end])::after,
-  .scrollfade[data-scroll]:not([data-start])::before { width: 3rem; }
+  .scrollfade[data-scroll]:not([data-start]) .scrollfade-scroll { --sf-start: 3rem; }
+  .scrollfade[data-scroll]:not([data-end]) .scrollfade-scroll { --sf-end: 3rem; }
 }
 
 /* skip link */
@@ -1916,16 +1925,14 @@ html { scroll-behavior: smooth; }
   .electronics::before {
     animation: none;
   }
-  /* soften the brushed texture — increase period to avoid moiré */
+  /* brushed texture OFF on phones — even the softened 4% variant bands
+     visibly on high-DPI mobile displays and read as a dirty gradient
+     artifact behind article titles. Desktop keeps the full 50%
+     "brushed silver" texture (restored — the .specplate background
+     shorthand used to silently wipe it there too). */
   [data-mode="day"] .brushed,
   .brushed {
-    background-image: repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.04) 0px,
-      rgba(255, 255, 255, 0.04) 1px,
-      transparent 1px,
-      transparent 4px
-    );
+    background-image: none;
   }
   /* disable the wire-grid graticule on mobile — it's subtle but adds noise */
   .electronics::after {

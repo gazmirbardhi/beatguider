@@ -26,10 +26,13 @@ const siteLd = websiteJsonLd();
 
 export default function HomePage() {
   const entryCount = articles.length + gearDb.length;
-  const lastPublish = [...articles]
-    .sort((a, b) => (updatedAt(b) > updatedAt(a) ? 1 : -1))[0]?.updatedAt ??
-    articles[0]?.publishedDate ??
-    "—";
+  // Canonical published/updated dates via the updatedAt() helper — the raw
+  // legacy .updatedAt field is missing on newer articles, which made this
+  // read as "2025-01-12" on the homepage LCD.
+  const lastPublish = articles.reduce(
+    (max, a) => (updatedAt(a) > max ? updatedAt(a) : max),
+    "0000-00-00"
+  );
 
   // Nav derives from the category registry (categories.ts) — categories
   // without a navOrder stay off the sticky nav; Tools is appended as a
@@ -38,10 +41,9 @@ export default function HomePage() {
 
   return (
     <HomePageClient
-      faceplate={<FaceplateHeader entryCount={entryCount} lastPublish={lastPublish} mode="night" />}
+      faceplate={<FaceplateHeader entryCount={entryCount} lastPublish={lastPublish} />}
       nav={navItems}
       validationErrors={validationErrors}
-      serial="2025-0000"
     >
       <script
         type="application/ld+json"

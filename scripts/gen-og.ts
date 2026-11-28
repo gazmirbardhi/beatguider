@@ -561,6 +561,24 @@ async function main() {
     );
   }
 
+  // ─── Stale-output cleanup ───
+  // Remove any og/*.png this run did NOT generate — renamed or deleted slugs
+  // would otherwise leave orphan cards behind as repo dead weight.
+  const expected = new Set<string>([
+    "brand.png",
+    ...articles.map((a) => `${a.slug}.png`),
+    ...gearDb.filter((x) => x.tested).map((g) => `gear-${g.slug}.png`),
+    ...tools.map((t) => `tool-${t.slug}.png`),
+  ]);
+  const { readdirSync, unlinkSync } = await import("node:fs");
+  let removed = 0;
+  for (const f of readdirSync(OUT_DIR)) {
+    if (!f.endsWith(".png") || expected.has(f)) continue;
+    unlinkSync(join(OUT_DIR, f));
+    removed++;
+  }
+  if (removed > 0) console.log(`✓ removed ${removed} stale OG card(s)`);
+
   console.log(`\n✓ OG generation complete — ${articles.length + gearDb.filter((x) => x.tested).length + tools.length + 1} images in ${OUT_DIR}`);
 }
 

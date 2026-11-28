@@ -1,15 +1,11 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Screws } from "./components";
-import { articles, gearDb } from "@/lib/content/data";
 
 /* ════════════════════════════════════════════════════════════════
-   BeatGuider signature decorative + live-feed components (round 2)
-   - SpectrumAnalyzer: animated EQ bars in the hero signal monitor
-   - LabActivityFeed: live ticker of recent test-bench events
-   Both are Client Components; JS loads per-route. The spectrum uses
-   requestAnimationFrame, paused under reduced-motion + when offscreen.
+   BeatGuider decorative + ambient components.
+   All are Client Components; JS loads per-route. Animated pieces
+   respect prefers-reduced-motion and pause when offscreen.
    ════════════════════════════════════════════════════════════════ */
 
 /* ─── Spectrum analyzer — decorative EQ bars ───
@@ -128,103 +124,6 @@ export function SpectrumAnalyzer({
   );
 }
 
-/* ─── Lab activity feed — live ticker of recent test-bench events ───
-   A scrolling marquee of recent activity: articles published, gear
-   tested, validations run. Purely decorative but uses real data from
-   the content layer (no fabrication). Pauses under reduced-motion. */
-export function LabActivityFeed() {
-  const [reduced, setReduced] = useState(false);
-  const [paused, setPaused] = useState(false);
-  const [offset, setOffset] = useState(0);
-  const rafRef = useRef<number | null>(null);
-  const lastTick = useRef(0);
-
-  useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    /* eslint-enable react-hooks/set-state-in-effect */
-  }, []);
-
-  // build the feed items from real content (no fabrication)
-  const items: { code: string; label: string; ts: string }[] = [
-    ...articles.slice(0, 5).map((a) => ({
-      code: a.code,
-      label: `${a.contentType.toUpperCase()} published · ${a.title.slice(0, 50)}`,
-      ts: a.publishedDate,
-    })),
-    ...gearDb.filter((g) => g.tested).map((g) => ({
-      code: g.code,
-      label: `GEAR tested · ${g.manufacturer} ${g.model}`,
-      ts: g.priceLastChecked ?? "2025-01",
-    })),
-    { code: "SYS", label: "content validation · 0 errors · anti-fake-testing rule enforced", ts: "now" },
-    { code: "SYS", label: "freshness check · all entries within window", ts: "now" },
-  ];
-
-  useEffect(() => {
-    if (reduced || paused) return;
-    const tick = (t: number) => {
-      if (t - lastTick.current > 30) {
-        lastTick.current = t;
-        setOffset((o) => (o - 0.5) % 1000);
-      }
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, [reduced, paused]);
-
-  const doubled = [...items, ...items];
-
-  return (
-    <div
-      className="electronics overflow-hidden relative"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      role="marquee"
-      aria-label="Recent lab activity — pauses on hover"
-    >
-      <div className="flex items-center gap-2 px-3 py-1.5 border-b border-disp-b" style={{ background: "#060606" }}>
-        <span className={`led led-g ${reduced ? "" : "led-breathe"}`} aria-hidden="true" />
-        <span className="silk" style={{ color: "var(--amber)" }}>LAB · ACTIVITY</span>
-        {/* Cassette reels — decorative tape-deck spinners when live */}
-        {!paused && !reduced && <CassetteReels size={14} />}
-        {/* REC indicator — blinking red dot when live */}
-        {!paused && !reduced && (
-          <span className="rec-indicator" aria-hidden="true">
-            <span className="led led-r" />
-            <span className="silk text-[0.5rem]!" style={{ color: "var(--vu-r)" }}>REC</span>
-          </span>
-        )}
-        <span className="silk ml-auto" style={{ color: "rgba(255,176,0,0.5)" }}>
-          {paused ? "PAUSED" : reduced ? "STATIC" : "LIVE"}
-        </span>
-      </div>
-      <div className="relative overflow-hidden py-2" style={{ height: "2rem" }}>
-        <div
-          className="flex items-center gap-8 whitespace-nowrap absolute"
-          style={{
-            transform: `translateX(${offset}px)`,
-            transition: reduced ? "none" : undefined,
-          }}
-        >
-          {doubled.map((it, i) => (
-            <span key={i} className="lcd text-xs! bg-transparent! inline-flex items-center gap-2" style={{ color: "var(--amber)" }}>
-              <span className="codechip text-[0.5625rem]!">{it.code}</span>
-              <span>{it.label}</span>
-              <span style={{ color: "rgba(255,176,0,0.5)" }}>· {it.ts}</span>
-              <span style={{ color: "var(--vu-g)" }}>▮</span>
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ─── Knob component — decorative rotary dial ───
    For tool headers and spec plates. The indicator position is
    controlled by the `value` prop (0..100). Pure CSS. */
@@ -263,46 +162,6 @@ export function RivetRow({ count = 6 }: { count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <span key={i} className="rivet" />
       ))}
-    </div>
-  );
-}
-
-/* ─── Animated LCD cursor (blink) ───
-   Drop into any LCD readout for a "waiting for input" feel. */
-export function LcdCursor() {
-  return <span className="lcd-cursor lcd bg-transparent!" style={{ color: "var(--amber)" }}>█</span>;
-}
-
-/* ─── Phase meter — stereo correlation indicator ───
-   A horizontal bar with a moving dot, like a real phase correlator.
-   Decorative. Centered = in-phase; extremes = out-of-phase. */
-export function PhaseMeter({ value = 0 }: { value?: number }) {
-  // -1 (out, left) .. 0 (center, in phase) .. +1 (out, right)
-  const v = Math.max(-1, Math.min(1, value));
-  const pct = ((v + 1) / 2) * 100;
-  return (
-    <div className="electronics p-3 my-3" aria-hidden="true">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="led led-g" />
-        <span className="silk" style={{ color: "var(--amber)" }}>PHASE · CORRELATION</span>
-      </div>
-      <div className="relative h-2 rounded-sm" style={{ background: "var(--disp-b)" }}>
-        <div className="absolute top-0 bottom-0 left-1/2 w-px" style={{ background: "var(--amber)", opacity: 0.4 }} />
-        <div
-          className="absolute top-1/2 -translate-y-1/2 w-2 h-3 rounded-sm"
-          style={{
-            left: `calc(${pct}% - 4px)`,
-            background: "var(--amber)",
-            boxShadow: "0 0 6px var(--amber)",
-            transition: "left 200ms ease",
-          }}
-        />
-      </div>
-      <div className="flex justify-between mt-1 silk text-[0.5rem]!" style={{ color: "rgba(255,176,0,0.5)" }}>
-        <span>L</span>
-        <span>IN-PHASE</span>
-        <span>R</span>
-      </div>
     </div>
   );
 }
@@ -423,7 +282,7 @@ export function ScrollToTopButton() {
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
       }}
-      className="fixed bottom-4 right-4 z-30 hwbtn !p-2.5 !rounded-full"
+      className="fixed bottom-4 right-4 z-30 hwbtn p-2.5! rounded-full!"
       aria-label="Scroll to top of page"
       title="Back to top"
     >
@@ -514,130 +373,6 @@ export function PostSequence() {
         </div>
       </div>
     </div>
-  );
-}
-
-/* ─── Signal chain visualization ───
-   A horizontal block diagram showing the DJ signal path:
-   SOURCE → MIXER → FX → OUTPUT. Each node is a dark display module
-   with an amber LED + label. Animated signal dots flow between nodes
-   (paused under reduced-motion). Decorative but educational. */
-export function SignalChain({
-  nodes = [
-    { label: "SOURCE", sub: "deck / DVS" },
-    { label: "MIXER", sub: "EQ / gain" },
-    { label: "FX", sub: "filter / echo" },
-    { label: "MASTER", sub: "limiter" },
-    { label: "OUTPUT", sub: "RCA / booth" },
-  ],
-}: {
-  nodes?: { label: string; sub: string }[];
-}) {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    /* eslint-enable react-hooks/set-state-in-effect */
-  }, []);
-
-  return (
-    <div className="electronics p-4 my-4">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="led led-a led-breathe" aria-hidden="true" />
-        <span className="silk" style={{ color: "var(--amber)" }}>Signal chain · audio path</span>
-        <span className="ml-auto codechip">SIG-02</span>
-      </div>
-      <div className="flex items-stretch gap-1 overflow-x-auto scroll-x pb-1">
-        {nodes.map((n, i) => (
-          <div key={n.label} className="flex items-stretch shrink-0">
-            <div
-              className="flex flex-col items-center justify-center px-3 py-2 border rounded-sm"
-              style={{
-                borderColor: "var(--disp-b)",
-                background: "#060606",
-                minWidth: "70px",
-              }}
-            >
-              <span className="led led-a mb-1" aria-hidden="true" />
-              <span className="lcd text-[0.6875rem]! bg-transparent! font-semibold" style={{ color: "var(--amber)" }}>
-                {n.label}
-              </span>
-              <span className="silk text-[0.5rem]! mt-0.5" style={{ color: "var(--panel-silk-dim)" }}>
-                {n.sub}
-              </span>
-            </div>
-            {i < nodes.length - 1 && (
-              <div
-                className="signal-flow flex items-center self-stretch"
-                aria-hidden="true"
-                style={{ width: "28px", position: "relative" }}
-              >
-                {!reduced && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: 0,
-                      width: "5px",
-                      height: "5px",
-                      borderRadius: "50%",
-                      background: "var(--amber)",
-                      boxShadow: "0 0 4px var(--amber)",
-                      transform: "translateY(-50%)",
-                      animation: "signal-travel 2s linear infinite",
-                      animationDelay: `${i * 250}ms`,
-                    }}
-                  />
-                )}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      <p className="lcd text-[0.6875rem]! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
-        &gt; signal flows left → right · each node adds processing · output is line-level
-      </p>
-    </div>
-  );
-}
-
-/* ─── Cassette reel spinner ───
-   Two circular reels that spin slowly, like a tape deck. Decorative.
-   For the Lab Activity feed header. Paused under reduced-motion. */
-export function CassetteReels({ size = 24 }: { size?: number }) {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    /* eslint-enable react-hooks/set-state-in-effect */
-  }, []);
-
-  return (
-    <span className="inline-flex items-center gap-1" aria-hidden="true">
-      <span
-        className="inline-block rounded-full border-2"
-        style={{
-          width: size,
-          height: size,
-          borderColor: "var(--amber)",
-          borderTopColor: "transparent",
-          animation: reduced ? "none" : "reel-spin 2s linear infinite",
-        }}
-      />
-      <span
-        className="inline-block rounded-full border-2"
-        style={{
-          width: size,
-          height: size,
-          borderColor: "var(--amber)",
-          borderBottomColor: "transparent",
-          animation: reduced ? "none" : "reel-spin 2s linear infinite reverse",
-        }}
-      />
-      <style>{`@keyframes reel-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
-    </span>
   );
 }
 

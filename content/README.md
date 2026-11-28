@@ -97,7 +97,7 @@ category: "fix"                 # REQUIRED — gear | software | fix | learn | m
 topic: "ddj-flx4"               # REQUIRED
 tags: ["pioneer", "audio"]      # REQUIRED — at least one
 publishedDate: "2025-02-01"     # REQUIRED — ISO yyyy-mm-dd (quote it!)
-author: "BeatGuider Team"       # REQUIRED
+author: "DJ Mondi"                # REQUIRED
 contentType: "guide"            # REQUIRED — guide | review | comparison | roundup | explainer | business
 experienceType: "hands-on"      # REQUIRED — hands-on | long-term-owned | software-tested | research-based
 
@@ -180,7 +180,7 @@ category: "fix"
 topic: "examples"
 tags: ["example"]
 publishedDate: "2025-02-01"
-author: "BeatGuider Team"
+author: "DJ Mondi"
 contentType: "guide"
 experienceType: "software-tested"
 quickAnswer: "Copy this file, edit the frontmatter, run bun run content:gen."

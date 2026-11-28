@@ -50,13 +50,15 @@ export function Section({ id, title }: { id: string; title: string }) {
   );
 }
 
-/* StepList — the middle-dot item list used inside <Step>, matching the
-   pre-MDX step rendering exactly (ul.space-y-1 + "· " item prefix). */
+/* StepList — the item list used inside <Step>. Items get the standard
+   "–" marker from the .prose-panel list CSS, like every other list in
+   an article body — adding a manual "· " prefix here double-marked
+   each item ("– · item"). */
 export function StepList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-1">
       {items.map((item, j) => (
-        <li key={j}>· {item}</li>
+        <li key={j}>{item}</li>
       ))}
     </ul>
   );

@@ -12,7 +12,8 @@ type Mode = "night" | "day";
  * Night is the attribute-less default — site remains correct with JS disabled.
  * Day activates via [data-mode="day"] on <html>.
  *
- * Persistence: localStorage key `beatguider-mode` + prefers-color-scheme fallback.
+ * Persistence: localStorage key `beatguider-mode`; first-time visitors get
+ * NIGHT (no prefers-color-scheme lookup — the black chassis is the brand).
  * The no-flash inline script in layout.tsx sets the attribute before paint.
  *
  * Theme state is lifted into a Context so the faceplate rocker and the
@@ -138,7 +139,7 @@ export function ModeIconButton() {
       aria-pressed={isDay}
       aria-label={isDay ? "Switch to night mode" : "Switch to day mode"}
       title={isDay ? "Switch to night mode" : "Switch to day mode"}
-      className="hwbtn px-2!.5 !py-2"
+      className="hwbtn px-2.5! py-2!"
     >
       <span className="led led-a" aria-hidden="true" />
       <span className="text-[0.6875rem]">{isDay ? "DAY" : "NIGHT"}</span>

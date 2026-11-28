@@ -17,7 +17,7 @@ export default function Page() {
         <p>The site is built in a hardware-faceplate design language — the PANEL system — because the design itself is the site's integrity mechanism. The Tested LED only lights when validated frontmatter proves hands-on testing. The freshness LEDs show when content needs rechecking. The anti-fake-testing rule is a build error, not an editorial promise.</p>
         
         <h2>Who runs it</h2>
-        <p>BeatGuider is operated by a working DJ. We do not invent author biographies, years of experience, venues, tests or equipment usage. The default byline is "BeatGuider Team." When an article is genuinely authored by a specific individual, a real, verifiable bio will appear on their author page.</p>
+        <p>BeatGuider is operated by a working DJ. We do not invent author biographies, years of experience, venues, tests or equipment usage. All articles are authored by DJ Mondi; every byline links to a real author page with a verifiable bio.</p>
         
         <h2>What we do not do</h2>
         <ul>

@@ -18,13 +18,11 @@ export function HomePageClient({
   faceplate,
   nav,
   validationErrors,
-  serial,
   children,
 }: {
   faceplate: ReactNode;
   nav: { label: string; href: string }[];
   validationErrors: { code: string; field: string; message: string }[];
-  serial: string;
   children: ReactNode;
 }) {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -57,7 +55,7 @@ export function HomePageClient({
           </div>
         )}
 
-        <SiteFooter serial={serial} />
+        <SiteFooter />
         <ScrollToTopButton />
 
         <SearchOverlay open={searchOpen} setOpen={setSearchOpen} />

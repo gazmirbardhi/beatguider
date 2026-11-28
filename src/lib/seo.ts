@@ -11,7 +11,7 @@
 */
 
 import type { Metadata } from "next";
-import { articles, type ArticleMeta } from "@/lib/content/data";
+import { articles, gearDb, type ArticleMeta } from "@/lib/content/data";
 import {
   CATEGORIES,
   categoryName,
@@ -22,6 +22,19 @@ import { publishedAt, updatedAt } from "@/lib/content/validate";
 export const SITE_URL = "https://beatguider.com";
 export const SITE_NAME = "BeatGuider";
 export const SITE_TAGLINE = "Test. Fix. Mix.";
+
+/* ─── Site author (single source of truth) ───
+   Every byline is DJ Mondi. The public profiles here are mirrored into
+   JSON-LD (TechArticle/Review author sameAs) and consumed by the author
+   page — one place to update when a profile changes. */
+export const SITE_AUTHOR = {
+  name: "DJ Mondi",
+  slug: "dj-mondi",
+  sameAs: [
+    "https://www.tiktok.com/@mondial_dj",
+    "https://www.instagram.com/dj_mondial_/",
+  ],
+};
 
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
@@ -133,7 +146,9 @@ export function collectionJsonLd(category: string, description: string) {
 
 export function techArticleJsonLd(a: ArticleMeta) {
   const url = absoluteUrl(`/${a.category}/${a.slug}`);
-  const heroImage = a.hero ? absoluteUrl(a.hero.src) : `/og/${a.slug}.png`;
+  // Structured-data image URLs MUST be absolute (Google guideline) —
+  // relative URLs get the article image ignored.
+  const heroImage = a.hero ? absoluteUrl(a.hero.src) : absoluteUrl(`/og/${a.slug}.png`);
   const authorSlug = a.author.toLowerCase().replace(/\s+/g, "-");
   return {
     "@context": "https://schema.org",
@@ -155,11 +170,12 @@ export function techArticleJsonLd(a: ArticleMeta) {
       name: a.author,
       url: absoluteUrl(`/author/${authorSlug}`),
       jobTitle: "DJ / Editor",
-      /* TODO(owner): real author name + bio + sameAs URLs */
       description:
         a.author +
         " — DJ and editor at BeatGuider, an independent DJ publication operated by a working DJ.",
-      sameAs: [],
+      /* Identity consolidation: link the byline to the author's public
+         profiles so engines can merge author entities across pages. */
+      sameAs: SITE_AUTHOR.sameAs,
     },
     publisher: {
       "@type": "Organization",
@@ -177,6 +193,54 @@ export function techArticleJsonLd(a: ArticleMeta) {
       },
     ],
     isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+  };
+}
+
+/* ─── Review JSON-LD (gear reviews only) ───
+   Emits a schema.org Review of the tested product when — and only when —
+   the article is a genuine hands-on/long-term review tied to a gear entry
+   that carries real rating data. This mirrors the anti-fake-testing rule:
+   no rating data → no Review node → no rich-result claim we can't back.
+   Returns null for everything else; callers skip rendering when null. */
+export function reviewJsonLd(a: ArticleMeta): object | null {
+  if (a.contentType !== "review") return null;
+  if (a.experienceType !== "hands-on" && a.experienceType !== "long-term-owned") return null;
+  const gearCode = a.relatedGear?.[0];
+  if (!gearCode) return null;
+  const gear = gearDb.find((g) => g.code === gearCode);
+  if (!gear?.rating || gear.rating.length === 0) return null;
+  const value = Math.round(
+    gear.rating.reduce((s, r) => s + r.value, 0) / gear.rating.length
+  );
+  const url = absoluteUrl(`/${a.category}/${a.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    url,
+    headline: a.title,
+    datePublished: publishedAt(a),
+    dateModified: updatedAt(a),
+    inLanguage: "en",
+    author: {
+      "@type": "Person",
+      name: a.author,
+      url: absoluteUrl(`/author/${a.author.toLowerCase().replace(/\s+/g, "-")}`),
+      sameAs: SITE_AUTHOR.sameAs,
+    },
+    itemReviewed: {
+      "@type": "Product",
+      name: `${gear.manufacturer} ${gear.model}`,
+      brand: { "@type": "Brand", name: gear.manufacturer },
+      /* OG card (guaranteed to exist) — real product photos replace this
+         as they are captured for each review. */
+      image: absoluteUrl(`/og/${a.slug}.png`),
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: value,
+      bestRating: 100,
+      worstRating: 0,
+    },
   };
 }
 
@@ -215,7 +279,7 @@ type SitemapEntry = {
 
 export function sitemapEntries(): SitemapEntry[] {
   const latestArticle = [...articles]
-    .map((a) => new Date(a.updatedDate ?? a.publishedDate))
+    .map((a) => new Date(updatedAt(a)))
     .sort((x, y) => y.getTime() - x.getTime())[0] ?? new Date();
 
   // Annotated so entries added below may use any SitemapFrequency — without
@@ -228,7 +292,7 @@ export function sitemapEntries(): SitemapEntry[] {
   for (const c of CATEGORIES) {
     const catLatest =
       [...articles.filter((a) => a.category === c.id)]
-        .map((a) => new Date(a.updatedDate ?? a.publishedDate))
+        .map((a) => new Date(updatedAt(a)))
         .sort((x, y) => y.getTime() - x.getTime())[0] ?? latestArticle;
     entries.push({ path: `/${c.id}`, lastModified: catLatest, changeFrequency: "weekly", priority: 0.9 });
   }

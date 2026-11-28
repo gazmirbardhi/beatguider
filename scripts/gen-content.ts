@@ -66,7 +66,10 @@ async function main() {
   }
   if (imageWarns.length > 0) {
     console.log(`\n⚠ BeatGuider image warning — ${imageWarns.length} article(s) short on images:`);
-    for (const w of imageWarns) console.log(w);
+    // Cap the list — with the whole library short on photos this would
+    // print 80+ lines on every dev/build run and drown the useful output.
+    for (const w of imageWarns.slice(0, 10)) console.log(w);
+    if (imageWarns.length > 10) console.log(`  … and ${imageWarns.length - 10} more`);
     console.log("Add real photos to the article frontmatter (hero + images). Never fabricate placeholders.\n");
   }
 
@@ -99,7 +102,7 @@ export const GENERATED_AT = "${generatedAt}";
 
 export const articles: ArticleMeta[] = `;
 
-  const body = JSON.stringify(metas, null, 2).replace(/\n/g, "\n") + ";\n";
+  const body = JSON.stringify(metas, null, 2) + ";\n";
 
   mkdirSync(dirname(OUT_FILE), { recursive: true });
   writeFileSync(OUT_FILE, `${header}${body}`, "utf8");

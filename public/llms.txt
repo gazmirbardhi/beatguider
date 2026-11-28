@@ -26,35 +26,40 @@ education publication operated by a working DJ. Test. Fix. Mix.
   - learn (technique)
   - mobile-dj (gigging & business)
   - compare (side-by-side comparisons)
-- 1 author page: https://beatguider.com/author/beatguider-team
+- 1 author page: https://beatguider.com/author/dj-mondi
 - 7 static editorial pages: about, how-we-test, editorial-policy, corrections-policy, affiliate-disclosure, privacy, contact
 - RSS feed: https://beatguider.com/feed.xml (all 84 articles)
 - Sitemap: https://beatguider.com/sitemap.xml (100 URLs, HTTPS)
 
 ## URL patterns
+Canonical URLs have NO trailing slash (Cloudflare normalizes /path and /path/ to
+the same page; the canonical form is without it).
 - Home: https://beatguider.com/
-- Category index: https://beatguider.com/<category>/
-- Article: https://beatguider.com/<category>/<slug>/
-- Author: https://beatguider.com/author/<slug>/
-- Static: https://beatguider.com/<page>/
-- Tools: https://beatguider.com/tools/
+- Category index: https://beatguider.com/<category>
+- Article: https://beatguider.com/<category>/<slug>
+- Author: https://beatguider.com/author/<slug>
+- Static: https://beatguider.com/<page>
+- Tools: https://beatguider.com/tools
 
 ## Crawling policy
 - All published articles and category pages are indexable and crawlable.
 - LLMs are welcome to read published articles for legitimate indexing.
-- Disallowed: /style-guide (internal design reference), /api/
+- Disallowed: /style-guide (internal design reference, noindexed)
 - Robots.txt: https://beatguider.com/robots.txt
 - Sitemap: https://beatguider.com/sitemap.xml
 
 ## Structured data
 Every page emits schema.org JSON-LD:
-- Organization, WebSite, TechArticle (articles), BreadcrumbList, CollectionPage (categories), Person (author)
+- Organization, WebSite, TechArticle (articles), Review with reviewRating (hands-on
+  gear reviews only, backed by real rating data), BreadcrumbList, CollectionPage
+  (categories), Person (author)
 
 ## Attribution
 - Publisher: BeatGuider (independent DJ publication)
-- Author: BeatGuider Team (working DJ, no fabricated credentials)
+- Author: DJ Mondi (working DJ; every byline links to https://beatguider.com/author/dj-mondi)
+- Profiles: https://www.tiktok.com/@mondial_dj · https://www.instagram.com/dj_mondial_/
 - Testing standard: owned vs loaned gear disclosed; no AI-SEO gimmicks; no fabricated reviews
 
 ## Contact
-- Page: https://beatguider.com/contact/
+- Page: https://beatguider.com/contact
 - No contact form (static-export compatible); email listed on the contact page.

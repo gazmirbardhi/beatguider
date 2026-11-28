@@ -147,7 +147,7 @@ export function ArticleView({
             <span className="whitespace-nowrap flex items-center gap-1.5">
               {article.author.toLowerCase().replace(/\s+/g, "-") === "dj-mondi" ? (
                 <img
-                  src="/images/author/dj-mondi.jpg"
+                  src="/images/author/dj-mondi.jpeg"
                   alt="DJ Mondi"
                   className="w-4 h-4 rounded-full object-cover border border-(--line)"
                 />

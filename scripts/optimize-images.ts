@@ -3,11 +3,15 @@ import fs from "fs";
 import path from "path";
 
 const PUBLIC_DIR = path.resolve("public");
+
+/* Content-image dirs that get AVIF/WebP <picture> sources (ArticleImage
+   derives `${base}.webp` / `${base}.avif` for every src). public/og is
+   intentionally NOT processed: og:image meta tags are fetched by crawlers
+   as the exact URL (always .png), so derivatives would be dead weight. */
 const IMAGE_DIRS = [
   path.join(PUBLIC_DIR, "images", "author"),
-  path.join(PUBLIC_DIR, "images", "articles"),
-  path.join(PUBLIC_DIR, "images", "hero"),
-  path.join(PUBLIC_DIR, "og"),
+  path.join(PUBLIC_DIR, "articles"),
+  path.join(PUBLIC_DIR, "gear"),
 ];
 
 // AVIF quality: 30 = good balance of size/quality for photos
@@ -28,7 +32,7 @@ async function convertToWebp(input: string, output: string) {
 }
 
 async function processDirectory(dir: string) {
-  if (!fs.existsSync(dir)) return;
+  if (!fs.existsSync(dir)) return 0;
 
   const files = fs.readdirSync(dir);
   let converted = 0;
@@ -43,19 +47,20 @@ async function processDirectory(dir: string) {
     const avifPath = `${base}.avif`;
     const webpPath = `${base}.webp`;
 
-    // Skip if AVIF already exists and is newer than source
-    if (
-      fs.existsSync(avifPath) &&
-      fs.statSync(avifPath).mtimeMs > fs.statSync(inputPath).mtimeMs
-    ) {
-      continue;
-    }
+    const srcMtime = fs.statSync(inputPath).mtimeMs;
+    const fresh = (p: string) =>
+      fs.existsSync(p) && fs.statSync(p).mtimeMs > srcMtime;
+
+    // Skip only when BOTH derivatives exist and are newer than the source —
+    // a missing or stale .webp alone used to never regenerate (the old
+    // check keyed on .avif only).
+    if (fresh(avifPath) && fresh(webpPath)) continue;
 
     try {
       await convertToAvif(inputPath, avifPath);
       await convertToWebp(inputPath, webpPath);
       converted++;
-      console.log(`  ✓ ${file} → .avif + .webp`);
+      console.log(`  ✓ ${path.relative(PUBLIC_DIR, inputPath)} → .avif + .webp`);
     } catch (err) {
       console.error(`  ✗ ${file}: ${err}`);
     }
@@ -71,8 +76,8 @@ async function main() {
   for (const dir of IMAGE_DIRS) {
     console.log(`Scanning: ${path.relative(PUBLIC_DIR, dir)}/`);
     const count = await processDirectory(dir);
-    if (count) total += count!;
-    console.log(`  Converted: ${count ?? 0}\n`);
+    total += count;
+    console.log(`  Converted: ${count}\n`);
   }
 
   console.log(`✅ Total converted: ${total}`);

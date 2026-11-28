@@ -34,11 +34,13 @@ export function SiteShell({
   const [helpOpen, setHelpOpen] = useState(false);
 
   const entryCount = articles.length + gearDb.length;
-  const lastPublish = [...articles]
-    .sort((a, b) => (updatedAt(b) > updatedAt(a) ? 1 : -1))[0]?.updatedAt ??
-    articles[0]?.publishedDate ??
-    "—";
-  const serial = "2025-0000";
+  // Canonical published/updated dates via the updatedAt() helper — reading
+  // the raw legacy .updatedAt field made this read as "2025-01-12" even
+  // though newer articles exist.
+  const lastPublish = articles.reduce(
+    (max, a) => (updatedAt(a) > max ? updatedAt(a) : max),
+    "0000-00-00"
+  );
 
   return (
     <ThemeProvider>
@@ -47,14 +49,14 @@ export function SiteShell({
       <LedChase />
       <GlobalKeyHandler setHelpOpen={setHelpOpen} setSearchOpen={setSearchOpen} />
       <div className="min-h-screen flex flex-col panel-surface">
-        <FaceplateHeader entryCount={entryCount} lastPublish={lastPublish} mode="night" />
+        <FaceplateHeader entryCount={entryCount} lastPublish={lastPublish} />
         <StickyNav items={navItems} onSearchClick={searchDisabled ? undefined : () => setSearchOpen(true)} />
 
         <main id="main" className="flex-1">
           {children}
         </main>
 
-        <SiteFooter serial={serial} />
+        <SiteFooter />
         <ScrollToTopButton />
 
         <SearchOverlay open={searchOpen} setOpen={setSearchOpen} />

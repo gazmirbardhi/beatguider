@@ -5,7 +5,8 @@ import { FaceplateHeader, StickyNav } from "./chrome";
 import { SiteFooter } from "./footer";
 import { Screws } from "./components";
 import Link from "next/link";
-import { articles } from "@/lib/content/data";
+import { articles, gearDb } from "@/lib/content/data";
+import { updatedAt } from "@/lib/content/validate";
 import type { ReactNode } from "react";
 
 /**
@@ -14,13 +15,17 @@ import type { ReactNode } from "react";
  * as the homepage).
  */
 export function NotFoundClient({ children }: { children?: ReactNode }) {
-  const entryCount = articles.length;
-  const lastPublish = [...articles].sort((a, b) => (b.publishedDate > a.publishedDate ? 1 : -1))[0]?.publishedDate ?? "—";
+  // Same counts as the site shell so the LCD reads identically everywhere.
+  const entryCount = articles.length + gearDb.length;
+  const lastPublish = articles.reduce(
+    (max, a) => (updatedAt(a) > max ? updatedAt(a) : max),
+    "0000-00-00"
+  );
 
   return (
     <ThemeProvider>
       <div className="min-h-screen flex flex-col panel-surface">
-        <FaceplateHeader entryCount={entryCount} lastPublish={lastPublish} mode="night" />
+        <FaceplateHeader entryCount={entryCount} lastPublish={lastPublish} />
         <StickyNav
           items={[
             { label: "Gear", href: "/" },

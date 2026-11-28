@@ -170,7 +170,7 @@ export function ShortcutsHelp({
                   {s.keys.map((k) => (
                     <kbd
                       key={k}
-                      className="lcd text-xs! font-semibold px-2! !py-1 min-w-[24px] text-center"
+                      className="lcd text-xs! font-semibold px-2! py-1! min-w-[24px] text-center"
                       style={{ color: "var(--amber)" }}
                     >
                       {k}
@@ -184,7 +184,7 @@ export function ShortcutsHelp({
                   <button
                     type="button"
                     onClick={s.action}
-                    className="hwbtn text-[0.5625rem]! !py-1 px-2!"
+                    className="hwbtn text-[0.5625rem]! py-1! px-2!"
                     aria-label={s.label}
                   >
                     run
@@ -208,11 +208,14 @@ export function ShortcutsHelp({
   );
 }
 
+/* Chassis serial shown in the footer — a display-only design detail. */
+export const DEVICE_SERIAL = "2025-0000";
+
 /* ───────────────────────── SITE FOOTER ─────────────────────────
    Serial line (BEATGUIDER BG-1 — SN 2025-XXXX), vent strip, policy links.
    Footer is sticky/fixed to bottom (mt-auto on the root wrapper handles this).
    Corner screws on plates; vent texture in footer; both mode-aware. */
-export function SiteFooter({ serial }: { serial: string }) {
+export function SiteFooter({ serial = DEVICE_SERIAL }: { serial?: string }) {
   return (
     <footer
       className="mt-auto panel-surface border-t border-(--line)"
@@ -309,29 +312,21 @@ export function SiteFooter({ serial }: { serial: string }) {
             <span className="mono text-xs" style={{ color: "var(--panel-silk-muted)" }}>
               BEATGUIDER BG-1 — independent DJ test bench
             </span>
-            {/* temperature readout — decorative, clearly illustrative; the
-                wrapper span (no custom class) carries the responsive hide so
-                the unlayered .temp-readout display rule can't override it. */}
-            <span className="hidden sm:inline-flex" aria-hidden="true">
-              <span className="temp-readout">
-                <span className="temp-bar" />
-                <span className="lcd text-[0.5625rem]! bg-transparent!" style={{ color: "var(--amber)" }}>34.2°C</span>
-                <span className="silk text-[0.5rem]!" style={{ color: "var(--panel-silk-muted)" }}>TEMP</span>
+            {/* content readouts — REAL counts from the content layer. They
+                replace the old simulated TEMP/BATT numbers, which clashed
+                with the site's no-fabrication stance. Kept in the same LCD
+                readout style; responsive hide lives on the wrapper spans. */}
+            <span className="hidden sm:inline-flex items-center gap-1.5" aria-hidden="true">
+              <span className="lcd text-[0.5625rem]! bg-transparent! font-semibold" style={{ color: "var(--amber)" }}>
+                {String(articles.length).padStart(3, "0")}
               </span>
+              <span className="silk text-[0.5rem]!" style={{ color: "var(--panel-silk-muted)" }}>ARTICLES</span>
             </span>
-            {/* battery readout — decorative backup-power indicator; wrapped
-                so the responsive hide isn't overridden by .battery-readout. */}
-            <span className="hidden sm:inline-flex" aria-hidden="true">
-              <span className="battery-readout">
-                <span className="battery-cells">
-                  <span className="on" />
-                  <span className="on" />
-                  <span className="on" />
-                  <span />
-                </span>
-                <span className="lcd text-[0.5625rem]! bg-transparent!" style={{ color: "var(--amber)" }}>75%</span>
-                <span className="silk text-[0.5rem]!" style={{ color: "var(--panel-silk-muted)" }}>BATT</span>
+            <span className="hidden sm:inline-flex items-center gap-1.5" aria-hidden="true">
+              <span className="lcd text-[0.5625rem]! bg-transparent! font-semibold" style={{ color: "var(--amber)" }}>
+                {String(gearDb.length).padStart(2, "0")}
               </span>
+              <span className="silk text-[0.5rem]!" style={{ color: "var(--panel-silk-muted)" }}>GEAR DB</span>
             </span>
             {/* live clock readout — real-time HH:MM:SS with blinking tick LED */}
             <LiveClock />

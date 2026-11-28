@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Chakra_Petch, Inter, IBM_Plex_Mono } from "next/font/google";
 import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 
 const chakra = Chakra_Petch({
   variable: "--font-chakra",
@@ -27,10 +26,10 @@ const plexMono = IBM_Plex_Mono({
 
 // No-flash theme script: < 1KB, blocking, sets data-mode on <html> only.
 // Sets colors only — never geometry — so it cannot cause CLS.
-const themeScript = `(function(){try{var k='beatguider-mode';var s=localStorage.getItem(k);var m=s||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'day':'night');document.documentElement.setAttribute('data-mode',m);var b=new Date();var z=function(n){return (n<10?'0':'')+n};var sn='2025-'+z(b.getMonth()+1)+z(b.getDate())+'-'+b.getHours()+z(b.getMinutes());localStorage.setItem('beatguider-sn',sn);}catch(e){document.documentElement.setAttribute('data-mode','night');}})();`;
-
-// Mode-aware favicon script: switches between day and night favicons based on data-mode
-const faviconScript = `(function(){try{var mode=document.documentElement.getAttribute('data-mode')||'night';var dayIcon=document.querySelector('link[rel="icon"][href*="favicon-day"]');var nightIcon=document.querySelector('link[rel="alternate icon"][href*="favicon-night"]');if(!dayIcon||!nightIcon)return;if(mode==='day'){if(nightIcon.parentNode)nightIcon.parentNode.removeChild(nightIcon);dayIcon.rel='icon'}else{if(dayIcon.parentNode)dayIcon.parentNode.removeChild(dayIcon);nightIcon.rel='alternate icon'});`;
+// NIGHT is the default chassis for first-time visitors; a saved DAY
+// preference (beatguider-mode) always wins. The OS prefers-color-scheme
+// is intentionally NOT followed — the black test-bench is the brand.
+const themeScript = `(function(){try{var k='beatguider-mode';var m=localStorage.getItem(k)||'night';document.documentElement.setAttribute('data-mode',m);}catch(e){document.documentElement.setAttribute('data-mode','night');}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://beatguider.com"),
@@ -49,7 +48,7 @@ export const metadata: Metadata = {
     "DJ education",
     "BeatGuider",
   ],
-  authors: [{ name: "BeatGuider Team" }],
+  authors: [{ name: "DJ Mondi" }],
   publisher: "BeatGuider",
   applicationName: "BeatGuider BG-1",
   formatDetection: { telephone: false },
@@ -92,10 +91,10 @@ export const metadata: Metadata = {
       "Independent DJ gear, software, troubleshooting and education publication.",
     images: ["/og/brand.png"],
   },
-  icons: { 
-  icon: "/favicon.svg",
-  shortcut: "/favicon-night.svg",
-},
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon-night.svg",
+  },
 };
 
 const orgJsonLd = {
@@ -153,7 +152,6 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
-        <Toaster />
       </body>
     </html>
   );

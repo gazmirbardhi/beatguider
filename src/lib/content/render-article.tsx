@@ -11,6 +11,7 @@ import { renderMdxBody } from "@/lib/content/mdx";
 import {
   absoluteUrl,
   techArticleJsonLd,
+  reviewJsonLd,
   breadcrumbJsonLd,
   SITE_NAME,
 } from "@/lib/seo";
@@ -37,6 +38,9 @@ export async function renderArticlePage(category: Category, slug: string) {
   }));
 
   const articleLd = techArticleJsonLd(article);
+  // Review node only for genuine hands-on gear reviews with real ratings —
+  // null otherwise (see reviewJsonLd gating).
+  const reviewLd = reviewJsonLd(article);
   const breadcrumbLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: categoryName(category), path: `/${category}` },
@@ -51,6 +55,12 @@ export async function renderArticlePage(category: Category, slug: string) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
         />
+        {reviewLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewLd) }}
+          />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}

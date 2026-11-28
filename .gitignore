@@ -46,8 +46,9 @@ local-*
 *.log
 dev.log
 dev.out.log
-test
-prompt
+# sandbox scratch names — root-scoped so a legit tests/ dir stays trackable
+/test
+/prompt
 
 server.log
 # Skills directory

@@ -47,7 +47,7 @@ export function AuthorPage({
             <div className="electronics w-20 h-20 flex items-center justify-center shrink-0 relative overflow-hidden rounded-full border border-(--line)">
               {isMondi ? (
                 <img
-                  src="/images/author/dj-mondi.jpg"
+                  src="/images/author/dj-mondi.jpeg"
                   alt="DJ Mondi"
                   className="w-full h-full object-cover"
                 />

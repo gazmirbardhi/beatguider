@@ -3,15 +3,12 @@ import { AuthorPage } from "@/components/panel/author-page";
 import { JsonLd } from "@/components/json-ld";
 import { articles } from "@/lib/content/data";
 import { notFound } from "next/navigation";
-import { personJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { personJsonLd, breadcrumbJsonLd, SITE_AUTHOR } from "@/lib/seo";
 
 const DJ_MONDI_BIO =
   "DJ Mondi is a working DJ and gear reviewer based in the UK. With years of experience playing weddings, clubs, and private events, he runs BeatGuider — an independent DJ publication that tests controllers, mixers, and software hands-on. No speculation, just real gear used at real gigs. When he's not writing troubleshooting guides or reviewing the latest controllers, you'll find him mixing behind the decks or sharing sets on TikTok and Instagram.";
 
-const DJ_MONDI_SOCIALS = [
-  "https://www.tiktok.com/@mondial_dj",
-  "https://www.instagram.com/dj_mondial_/",
-];
+const DJ_MONDI_SOCIALS = SITE_AUTHOR.sameAs;
 
 export function generateStaticParams() {
   // generate author slugs from the articles' author fields
@@ -25,7 +22,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   // Look up the real byline from the articles data — never reconstruct
-  // casing from the slug ("beatguider-team" → "BeatGuider Team").
+  // casing from the slug ("dj-mondi" → "DJ Mondi").
   const realName = articles.find(
     (a) => a.author.toLowerCase().replace(/\s+/g, "-") === slug
   )?.author;
@@ -74,7 +71,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         data={personJsonLd(authorName, slug, count, {
           bio: isMondi ? DJ_MONDI_BIO : undefined,
           sameAs: isMondi ? DJ_MONDI_SOCIALS : undefined,
-          image: isMondi ? "/images/author/dj-mondi.jpg" : undefined,
+          image: isMondi ? "/images/author/dj-mondi.jpeg" : undefined,
         })}
       />
       <JsonLd

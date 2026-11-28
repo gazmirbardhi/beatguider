@@ -49,11 +49,20 @@ function formatIssues(issues: (FileIssue | { code: string; field: string; messag
 
 /* Read + parse every article file. Files are ordered by filename —
    the NN- prefix defines the site-wide article order (mirrored by
-   scripts/gen-content.ts into the generated module). */
+   scripts/gen-content.ts into the generated module).
+
+   Memoized under production (next build) only: prerendering calls
+   loadArticleFiles() several times per article page (metadata, body,
+   TOC), which would otherwise re-read all 84 files each time. Dev
+   stays uncached so `next dev` picks up MDX edits without a restart. */
+let cache: { articles: LoadedArticle[]; issues: FileIssue[] } | null = null;
+
 export function loadArticleFiles(): {
   articles: LoadedArticle[];
   issues: FileIssue[];
 } {
+  if (cache && process.env.NODE_ENV === "production") return cache;
+
   const issues: FileIssue[] = [];
   const articles: LoadedArticle[] = [];
 
@@ -88,7 +97,9 @@ export function loadArticleFiles(): {
     });
   }
 
-  return { articles, issues };
+  const result = { articles, issues };
+  if (process.env.NODE_ENV === "production") cache = result;
+  return result;
 }
 
 /* wordCount + readingTime are computed from the MDX body — never authored. */

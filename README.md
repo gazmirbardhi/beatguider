@@ -122,8 +122,11 @@ Sticky `ReaderBar` (on every article page via `ArticleView`): back · code+title
 bun install
 bun run dev      # http://localhost:3000 (runs content:gen first)
 bun run lint     # ESLint (clean)
+bun run test     # content-integrity smoke test (scripts/smoke.ts)
 bun run content:gen   # regenerate the metadata module from content/articles/*.mdx
-bun run build:static  # content:gen + next build → static export ./out (Cloudflare Pages build command)
+bun run gen:og        # regenerate OG cards (public/og/*.png) + prune stale ones
+bun run gen:rss       # regenerate public/feed.xml
+bun run build:static  # content:gen + optimize-images + gen:og + gen:rss + next build → ./out (Cloudflare Pages build command)
 ```
 
 The dev server runs Next.js 16.1.3 with Turbopack on port 3000. `next dev` works under `output: "export"` — the site uses no request-time server features. MDX **body** edits show on page refresh (the loader re-reads files per render); **frontmatter** edits need `bun run content:gen` re-run (or a dev-server restart, which runs it automatically).
@@ -145,7 +148,7 @@ title: description: slug:
 category:          # gear | software | fix | learn | mobile-dj | compare
 topic: tags:
 publishedDate: updatedDate: lastVerified:
-author:            # default: BeatGuider Team
+author:            # default: DJ Mondi
 contentType:       # guide | review | comparison | roundup | explainer | business
 experienceType:    # hands-on | long-term-owned | software-tested | research-based
 ownershipStatus:   # owned | loaned | n/a
@@ -191,22 +194,13 @@ Handles: URL lookup, `rel="sponsored nofollow noopener"` + `target="_blank"`, cl
 
 ## Deployment — Cloudflare (static export)
 
-`next.config.ts` runs `output: "export"` (verified working — `bun run build:static` emits `./out`). `trailingSlash` is intentionally left unset; `wrangler.jsonc` uses `html_handling: "auto-trailing-slash"` to normalize URLs at the edge. No request-time Node.js runtime.
+`next.config.ts` runs `output: "export"` (verified working — `bun run build:static` emits `./out`). `trailingSlash` is intentionally left unset; Cloudflare normalizes URLs at the edge (Pages `html_handling: "auto-trailing-slash"` behavior). No request-time Node.js runtime.
 
 Build command: `bun run build:static` · Output directory: `./out` · `public/_headers` supplies production security/cache headers (Next's `headers()` are dev-only under export).
 
-`wrangler.jsonc` (already in the repo — Workers Static Assets config, also honored by Pages `_headers` conventions):
+**www canonicalization (owner action required once):** `public/_redirects` only fires for requests that reach the Pages project directly. `www.beatguider.com` is a proxied CNAME that is NOT attached as a Pages custom domain, so the authoritative www→apex 301 must be a **zone-level Redirect Rule** in the Cloudflare dashboard (bulk redirects: `www.beatguider.com/*` → `https://beatguider.com/$1`, 301). Verify it exists — otherwise `www.` may not resolve or may serve without redirecting (duplicate-host risk).
 
-```jsonc
-{
-  "name": "beatguider",
-  "assets": {
-    "directory": "./out",
-    "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
-  }
-}
-```
+Deploy config lives in `wrangler.toml` (`pages_build_output_dir = "out"`). NOTE: the docs previously described a `wrangler.jsonc` with `not_found_handling: "404-page"` — that file does not exist. Under Pages, the static export's `out/404.html` serves 404s by default; if you move to Workers Static Assets, add `"not_found_handling": "404-page"` to the assets config then.
 
 The newsletter is not connected yet (the form is honest about this on the page). When it launches it will use client-side requests to a third-party service or a dedicated Worker — **never a reason to convert the site to SSR**. Update `/privacy` before adding it.
 

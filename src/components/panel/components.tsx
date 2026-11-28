@@ -64,44 +64,6 @@ export function ScrollFade({
   );
 }
 
-/* ─── PanelButton — hardware button, inset shadow, pressed state, amber active ─── */
-export function PanelButton({
-  children,
-  href,
-  variant = "default",
-  onClick,
-  type = "button",
-  className = "",
-  ariaLabel,
-  target,
-  rel,
-}: {
-  children: ReactNode;
-  href?: string;
-  variant?: "default" | "amber";
-  onClick?: () => void;
-  type?: "button" | "submit";
-  className?: string;
-  ariaLabel?: string;
-  target?: string;
-  rel?: string;
-}) {
-  const cls = `hwbtn ${variant === "amber" ? "hwbtn-amber" : ""} ${className}`;
-  if (href) {
-    return (
-      <Link href={href} className={cls} aria-label={ariaLabel} target={target} rel={rel}>
-        {children}
-      </Link>
-    );
-  }
-  return (
-    <button type={type} onClick={onClick} className={cls} aria-label={ariaLabel}>
-      {children}
-    </button>
-  );
-}
-
-/* ─── Module card: status LED + title + display code + chevron, 3px left border ─── */
 export function ModuleCard({
   code,
   title,
@@ -222,7 +184,7 @@ export function LongTermBadge({ size = "md" }: { size?: "sm" | "md" }) {
 export function QuickAnswer({ children }: { children: ReactNode }) {
   return (
     <aside
-      className="electronics !block p-4 sm:p-5 my-6 relative"
+      className="electronics block! p-4 sm:p-5 my-6 relative"
       style={{ borderLeft: "3px solid var(--amber)" }}
       aria-label="Quick answer"
     >
@@ -313,7 +275,10 @@ export function StepBlock({
           >
             {title}
           </h3>
-          <div className="lcd text-sm! bg-transparent! leading-relaxed" style={{ color: "var(--amber)" }}>
+          {/* Body copy in Inter/body color — full paragraphs were previously
+              rendered in amber Plex Mono (.lcd), which hurt readability on
+              long steps. Labels, numbers and LCD data stay mono/amber. */}
+          <div className="text-sm leading-relaxed" style={{ color: "var(--body)", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
             {children}
           </div>
         </div>
@@ -699,84 +664,6 @@ export function AffiliateButton({
   );
 }
 
-/* ─── Gear card: LED, GEAR-### code, mono model line ─── */
-export function GearCard({
-  code,
-  model,
-  manufacturer,
-  category,
-  year,
-  status = "active",
-  rating,
-  href,
-  imageSlot,
-}: {
-  code: string;
-  model: string;
-  manufacturer: string;
-  category: string;
-  year?: number;
-  status?: "active" | "discontinued";
-  rating?: number;
-  href?: string;
-  imageSlot?: ReactNode;
-}) {
-  const ledCls = status === "active" ? "led led-g" : "led";
-  return (
-    <article className="modcard p-4" style={{ borderLeftColor: status === "active" ? "var(--ok)" : "var(--mut)" }}>
-      <div className="flex items-start gap-3">
-        {imageSlot && (
-          <div className="electronics w-16 h-16 shrink-0 flex items-center justify-center overflow-hidden relative">
-            {imageSlot}
-            {/* SPIN UP indicator — brief amber pulse on mount, like a platter spinning up */}
-            <span
-              className="spin-up-badge absolute top-1 right-1 silk text-[0.5rem]! px-1 py-0.5 rounded-sm"
-              style={{ background: "var(--amber)", color: "var(--disp)", opacity: 0 }}
-              aria-hidden="true"
-            >
-              ▶
-            </span>
-          </div>
-        )}
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 flex-wrap mb-1">
-            <span className="codechip">{code}</span>
-            <span className="led led-g" aria-hidden="true" />
-            <span className="silk" style={{ color: "var(--mut)" }}>{category}</span>
-          </div>
-          <h3 className="mono font-semibold text-sm" style={{ color: "var(--text2)" }}>
-            {manufacturer} {model}
-          </h3>
-          <p className="silk mt-1" style={{ color: "var(--mut)" }}>
-            {manufacturer} · {year ? `Rel. ${year}` : "Rel. N/A"} · {status === "active" ? "ACTIVE" : "DISCONTINUED"}
-          </p>
-          {typeof rating === "number" && (
-            <div className="flex items-center gap-px mt-2 w-32" aria-hidden="true">
-              {Array.from({ length: 12 }).map((_, i) => {
-                const on = i < Math.round((rating / 100) * 12);
-                const cls = i < 8 ? "vu-seg-g" : i < 10 ? "vu-seg-a" : "vu-seg-r";
-                return <span key={i} className={`vu-seg h-1.5 ${on ? cls : ""}`} />;
-              })}
-              <span className="lcd text-[0.6875rem]! bg-transparent! ml-2 font-semibold tabular-nums">
-                {String(Math.round(rating)).padStart(3, "0")}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-      {href && (
-        <a href={href} className="silk mt-3 inline-flex items-center gap-1 hover:text-amber" style={{ color: "var(--mut)" }}>
-          Open module
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </a>
-      )}
-    </article>
-  );
-}
-
-/* ─── Sources: numbered Plex Mono list ─── */
 export function SourcesList({ sources }: { sources: { title: string; url?: string; date?: string }[] }) {
   return (
     <ol className="my-5 space-y-2.5 mono text-sm">
@@ -1016,12 +903,18 @@ export function FreshnessIndicator({
   recheckDate?: string;
 }) {
   const map = {
-    fresh: { led: "led led-g", label: "VERIFIED", color: "var(--ok)" },
-    recheck: { led: "led led-a", label: "RECHECK DUE", color: "var(--acc)" },
-    stale: { led: "led led-r", label: "OVERDUE", color: "var(--err)" },
+    fresh: { led: "led led-g", label: "VERIFIED", color: "var(--ok)", hint: "Verified within its freshness window." },
+    recheck: { led: "led led-a", label: "RECHECK DUE", color: "var(--acc)", hint: "Approaching its freshness window — re-verification due." },
+    /* "VERIFY DUE" rather than "OVERDUE": still honest (red LED), but states
+       the action instead of scolding the content. */
+    stale: { led: "led led-r", label: "VERIFY DUE", color: "var(--err)", hint: "Past its freshness window — re-verification pending." },
   }[status];
   return (
-    <span className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm" style={{ borderColor: "var(--line2)", background: "var(--bg)" }}>
+    <span
+      className="inline-flex items-center gap-1.5 px-2 py-1 border rounded-sm"
+      style={{ borderColor: "var(--line2)", background: "var(--bg)" }}
+      title={map.hint}
+    >
       <span className={map.led} aria-hidden="true" />
       <span className="silk" style={{ color: map.color }}>{map.label}</span>
       {recheckDate && <span className="silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-muted)" }}>· {recheckDate}</span>}
@@ -1029,101 +922,6 @@ export function FreshnessIndicator({
   );
 }
 
-/* ─── Diagnostic sequence — signal-path stepper for FIX articles ───
-   A horizontal flow diagram showing the diagnostic steps as a signal
-   chain, like a real test-bench signal path. Each node is a dark display
-   module with the step number glowing amber. Active step (click) lights
-   amber + scrolls to the matching section. Reduced-motion safe. */
-export function DiagnosticSequence({
-  steps,
-  active: activeProp,
-  onSelect,
-}: {
-  steps: { n: number; label: string; status?: "pass" | "fail" | "pending"; target?: string }[];
-  active?: number;
-  onSelect?: (n: number) => void;
-}) {
-  const [activeState, setActiveState] = useState<number | undefined>(activeProp);
-  const active = activeProp ?? activeState;
-
-  const handleSelect = (s: { n: number; target?: string }) => {
-    setActiveState(s.n);
-    onSelect?.(s.n);
-    // scroll to the target section if provided (TOC chip behavior)
-    if (s.target) {
-      const el = document.getElementById(s.target);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-  };
-
-  return (
-    <nav aria-label="Diagnostic sequence" className="my-6 electronics p-4">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="led led-a led-breathe" aria-hidden="true" />
-        <span className="silk" style={{ color: "var(--amber)" }}>Signal path · diagnostic sequence</span>
-        <span className="ml-auto silk text-[0.5625rem]!" style={{ color: "var(--panel-silk-dim)" }}>
-          {active ? `STEP ${String(active).padStart(2, "0")} ACTIVE` : "click to jump"}
-        </span>
-      </div>
-      <ol className="flex items-stretch gap-1 overflow-x-auto scroll-x pb-1">
-        {steps.map((s, i) => {
-          const isActive = active === s.n;
-          const statusLed =
-            s.status === "pass" ? "led led-g" :
-            s.status === "fail" ? "led led-r" :
-            isActive ? "led led-a" : "led";
-          return (
-            <li key={s.n} className="flex items-stretch shrink-0">
-              <button
-                type="button"
-                onClick={() => handleSelect(s)}
-                className={`flex items-center gap-2 px-3 py-2 border rounded-sm transition-colors text-left ${isActive ? "bg-[#161616]" : "hover:bg-[#161616]"}`}
-                style={{
-                  borderColor: isActive ? "var(--amber)" : "var(--disp-b)",
-                  boxShadow: isActive ? "0 0 8px rgba(255,176,0,0.3)" : "none",
-                }}
-                aria-pressed={isActive}
-                aria-label={`Step ${s.n}: ${s.label}`}
-              >
-                <span
-                  className="font-(family-name:--font-chakra) font-bold text-lg shrink-0"
-                  style={{
-                    color: "var(--amber)",
-                    textShadow: isActive ? "0 0 12px rgba(255,176,0,0.8), 0 0 4px rgba(0,0,0,0.3)" : "0 0 8px rgba(255,176,0,0.6), 0 0 4px rgba(0,0,0,0.3)",
-                  }}
-                >
-                  {String(s.n).padStart(2, "0")}
-                </span>
-                <span className="lcd text-xs! bg-transparent! flex-1 min-w-0" style={{ color: "var(--amber)", textShadow: "0 0 4px rgba(0,0,0,0.3)"}}>
-                  {s.label}
-                </span>
-                <span className={statusLed} aria-hidden="true" />
-              </button>
-              {i < steps.length - 1 && (
-                <span
-                  className="flex items-center px-1 shrink-0 transition-colors"
-                  style={{ color: isActive ? "var(--amber)" : "var(--disp-b)" }}
-                  aria-hidden="true"
-                >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M2 8H14M14 8L10 4M14 8L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-      <p className="lcd text-[0.6875rem]! bg-transparent! mt-2" style={{ color: "rgba(255,176,0,0.55)" }}>
-        &gt; walk the chain in failure-probability order · do not skip nodes · click to jump
-      </p>
-    </nav>
-  );
-}
-
-/* ─── Reading-time chip — auto-computed, never hand-written (spec §8) ─── */
 export function ReadingTimeChip({ minutes }: { minutes: number }) {
   return (
     <span className="inline-flex items-center gap-1.5 codechip" title={`Auto-computed: words ÷ 200`}>
@@ -1288,49 +1086,6 @@ export function ShareButton({ label = "Share signal" }: { label?: string }) {
   );
 }
 
-/* ─── Lab notes strip — build-time generated methodology digest ───
-   A dark LCD log strip rendering methodology + test-environment data
-   as a scrolling log. Uses real content (no fabrication). For FIX
-   articles it surfaces the tested.equipment + environment fields. */
-export function LabNotesStrip({
-  entries,
-}: {
-  entries: { label: string; value: string; led?: "g" | "a" | "r" | "data" }[];
-}) {
-  return (
-    <div className="electronics p-4 my-6">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="led led-a led-breathe" aria-hidden="true" />
-        <span className="silk" style={{ color: "var(--amber)" }}>Lab notes · test environment log</span>
-        <span className="ml-auto codechip">LAB-01</span>
-      </div>
-      <ul className="space-y-1.5">
-        {entries.map((e, i) => {
-          const ledCls =
-            e.led === "g" ? "led led-g" :
-            e.led === "r" ? "led led-r" :
-            e.led === "data" ? "led led-data" :
-            "led led-a";
-          return (
-            <li key={i} className="flex items-baseline gap-3 lcd text-xs! bg-transparent!" style={{ color: "var(--amber)" }}>
-              <span className={ledCls} aria-hidden="true" />
-              <span style={{ color: "rgba(255,176,0,0.65)" }}>{String(i + 1).padStart(2, "0")}</span>
-              <span style={{ color: "var(--amber)" }}>{e.label}</span>
-              <span className="flex-1 border-b border-dotted border-disp-b mx-2" style={{ borderBottomWidth: "1px" }} />
-              <span className="font-semibold text-right">{e.value}</span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-}
-
-/* ─── Error log — build-time validation results console ───
-   A dark LCD console-style log of the content validation results.
-   Surfaces the anti-fake-testing rule status visually: each check
-   renders as a log line with a PASS/FAIL LED. For the style guide
-   or a dedicated editorial-trust section. */
 export function ErrorLog({
   checks,
 }: {

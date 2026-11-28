@@ -1,0 +1,10 @@
+<!-- BeatGuider apple-touch-icon source — full-bleed square (iOS applies its own corner mask) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <rect width="180" height="180" fill="#0A0A0A"/>
+  <rect x="45" y="137.5" width="90" height="17" rx="5" fill="#33FF66"/>
+  <rect x="45" y="115" width="90" height="17" rx="5" fill="#33FF66"/>
+  <rect x="45" y="92.5" width="90" height="17" rx="5" fill="#FFB000"/>
+  <rect x="45" y="70" width="90" height="17" rx="5" fill="#FFB000"/>
+  <rect x="45" y="47.5" width="90" height="17" rx="5" fill="#FF7A00"/>
+  <rect x="45" y="25" width="90" height="17" rx="5" fill="#FF4444"/>
+</svg>

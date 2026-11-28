@@ -1,12 +1,11 @@
-# BeatGuider BG-1 — night mode favicon
-# Lime wordmark on lighter dark electronics module faceplate
+<!-- BeatGuider favicon — VU meter LED ladder at full level (night palette) -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="8" fill="#1A1A1A"/>
-  <rect x="2" y="2" width="60" height="60" rx="6" fill="none" stroke="#3D3D3D" stroke-width="2"/>
-  <circle cx="10" cy="10" r="2" fill="#FF66B2"/>
-  <circle cx="54" cy="10" r="2" fill="#FF66B2"/>
-  <circle cx="10" cy="54" r="2" fill="#FF66B2"/>
-  <circle cx="54" cy="54" r="2" fill="#FF66B2"/>
-  <text x="32" y="40" font-family="monospace" font-size="22" font-weight="700" text-anchor="middle" fill="#00FFC5">BG</text>
-  <text x="32" y="54" font-family="monospace" font-size="6" text-anchor="middle" fill="#00FFC5" opacity="0.7">BG-1</text>
+  <rect width="64" height="64" rx="10" fill="#1A1A1A"/>
+  <rect x="3" y="3" width="58" height="58" rx="8" fill="none" stroke="#3D3D3D" stroke-width="1.5"/>
+  <rect x="16" y="50" width="32" height="6" rx="2" fill="#00FFC5"/>
+  <rect x="16" y="42" width="32" height="6" rx="2" fill="#00FFC5"/>
+  <rect x="16" y="34" width="32" height="6" rx="2" fill="#FFB000"/>
+  <rect x="16" y="26" width="32" height="6" rx="2" fill="#FFB000"/>
+  <rect x="16" y="18" width="32" height="6" rx="2" fill="#FF7A00"/>
+  <rect x="16" y="10" width="32" height="6" rx="2" fill="#FF66B2"/>
 </svg>

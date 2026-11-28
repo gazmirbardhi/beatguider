@@ -13,7 +13,7 @@ import type { ArticleMeta } from "../types";
 
 /* UTC date this file was generated — the deterministic "as of" reference
    for freshnessStatus(). Day precision: freshness windows are in months. */
-export const GENERATED_AT = "2026-11-27";
+export const GENERATED_AT = "2026-11-28";
 
 export const articles: ArticleMeta[] = [
   {

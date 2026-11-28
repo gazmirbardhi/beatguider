@@ -12,7 +12,7 @@
 
   Exit code 0 = all green; 1 = list of failures printed.
 */
-import { existsSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = process.cwd();
@@ -136,6 +136,55 @@ async function main() {
   const stale = articles.filter((a) => updatedAt(a.meta) < publishedAt(a.meta));
   check("updatedAt ≥ publishedAt for every article", stale.length === 0,
     stale.map((a) => a.meta.code).join(", "));
+
+  console.log("\n7. Every bare import is a declared dependency");
+  // Guards against the "works via hoisted leftovers, breaks on fresh
+  // install" class of bug: a source file imports a package that
+  // package.json doesn't declare.
+  const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
+  const declared: Set<string> = new Set([
+    ...Object.keys(pkg.dependencies ?? {}),
+    ...Object.keys(pkg.devDependencies ?? {}),
+  ]);
+  const srcFiles: string[] = [];
+  const collect = (dir: string) => {
+    for (const f of readdirSync(dir)) {
+      const p = join(dir, f);
+      if (statSync(p).isDirectory()) collect(p);
+      else if (p.endsWith(".ts") || p.endsWith(".tsx")) srcFiles.push(p);
+    }
+  };
+  collect(join(ROOT, "src"));
+  for (const f of readdirSync(join(ROOT, "scripts"))) {
+    if (f.endsWith(".ts")) srcFiles.push(join(ROOT, "scripts", f));
+  }
+  // root-level TS configs are typechecked by tsc too — a dead config file
+  // importing an undeclared package breaks fresh installs (this bit us:
+  // tailwind.config.ts imported tailwindcss-animate, long unused)
+  for (const f of readdirSync(ROOT)) {
+    if (f.endsWith(".ts")) srcFiles.push(join(ROOT, f));
+  }
+  const IMPORT_RE = /(?:from\s+|require\(|import\s*\(\s*)["']([^"']+)["']/g;
+  const NODE_BUILTINS = new Set(["fs", "path", "url", "zlib", "crypto", "util", "os", "stream", "http", "https"]);
+  const bare = new Set<string>();
+  for (const f of srcFiles) {
+    const src = readFileSync(f, "utf8");
+    for (const m of src.matchAll(IMPORT_RE)) {
+      let spec = m[1];
+      if (spec.startsWith("@/") || spec.startsWith(".")) continue; // tsconfig alias / relative
+      if (spec.startsWith("node:")) continue;
+      spec = spec.startsWith("@") ? spec.split("/").slice(0, 2).join("/") : spec.split("/")[0];
+      if (spec === "react" || NODE_BUILTINS.has(spec)) continue; // peer of next / node builtins
+      bare.add(spec);
+    }
+  }
+  const undeclared = [...bare].filter((b) => !declared.has(b));
+  check(`${bare.size} distinct imports all declared in package.json`, undeclared.length === 0,
+    `missing: ${undeclared.join(", ")}`);
+  for (const b of [...bare].sort()) {
+    const ok = existsSync(join(ROOT, "node_modules", b, "package.json")) || existsSync(join(ROOT, "node_modules", b));
+    if (!ok) check(`node_modules/${b} installed`, false);
+  }
 
   console.log("");
   if (failures.length > 0) {
